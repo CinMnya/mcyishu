@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "id": "yishu:feng_shui_compass"
+    },
+    "title": {
+      "text": "寻龙点穴"
+    },
+    "description": {
+      "text": "获得风水罗盘，脚下每一块地都开始有话要说。"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "obtain": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:feng_shui_compass"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "yishu:main/root"
+}

@@ -1,0 +1,25 @@
+{
+  "parent": "yishu:main/first_gate",
+  "display": {
+    "icon": {
+      "id": "yishu:astral_stone"
+    },
+    "title": {
+      "text": "星命之约"
+    },
+    "description": {
+      "text": "初次踏入命理维度——浮空的原野之上，命盘正在缓缓转动。"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "enter": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "yishu:fate_realm"
+      }
+    }
+  }
+}

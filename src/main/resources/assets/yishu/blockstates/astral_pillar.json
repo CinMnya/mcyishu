@@ -1,0 +1,16 @@
+{
+ "variants": {
+  "axis=y": {
+   "model": "yishu:block/astral_pillar"
+  },
+  "axis=z": {
+   "model": "yishu:block/astral_pillar",
+   "x": 90
+  },
+  "axis=x": {
+   "model": "yishu:block/astral_pillar",
+   "x": 90,
+   "y": 90
+  }
+ }
+}

@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "id": "yishu:dragon_core_shard"
+    },
+    "title": {
+      "text": "逆天改命之始"
+    },
+    "description": {
+      "text": "获得龙脉核心碎片——命，是可以改的。"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "obtain": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:dragon_core_shard"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "yishu:main/root"
+}

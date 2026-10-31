@@ -1,0 +1,7 @@
+{
+ "parent": "minecraft:block/cube_column",
+ "textures": {
+  "side": "yishu:block/yao_pillar_side",
+  "end": "yishu:block/yao_pillar_top"
+ }
+}

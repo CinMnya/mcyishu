@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "P": "minecraft:paper",
+    "S": "yishu:star_sand",
+    "C": "yishu:feng_shui_compass"
+  },
+  "pattern": [
+    "PPP",
+    "SCS",
+    "PPP"
+  ],
+  "result": {
+    "id": "yishu:vein_map"
+  }
+}

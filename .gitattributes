@@ -1,0 +1,20 @@
+# 统一换行：仓库里存 LF，检出时按平台转换
+* text=auto eol=lf
+
+# 源码
+*.java    text eol=lf
+*.py      text eol=lf
+*.json    text eol=lf
+*.md      text eol=lf
+*.gradle  text eol=lf
+*.properties text eol=lf
+*.mcmeta  text eol=lf
+
+# 二进制：不要做任何换行/编码转换，也不要显示 diff
+*.png     binary
+*.nbt     binary
+*.jar     binary
+*.ogg     binary
+
+# 生成物在 GitHub 上折叠显示
+*.png     linguist-generated=false

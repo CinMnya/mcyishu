@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:item/generated",
+ "textures": {
+  "layer0": "yishu:item/stone_guardian_spawn_egg"
+ }
+}

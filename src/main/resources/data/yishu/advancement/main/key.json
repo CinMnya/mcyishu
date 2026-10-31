@@ -1,0 +1,89 @@
+{
+  "parent": "yishu:main/root",
+  "display": {
+    "icon": {
+      "id": "yishu:astral_key"
+    },
+    "title": {
+      "text": "万界之钥"
+    },
+    "description": {
+      "text": "拿到一把灵引。遗迹宝箱与流浪商人带着它，也能用四份界域料在工台上铸出来。"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "astral": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:astral_key"
+          }
+        ]
+      }
+    },
+    "jade": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:jade_key"
+          }
+        ]
+      }
+    },
+    "yao": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:yao_key"
+          }
+        ]
+      }
+    },
+    "ziwei": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:ziwei_key"
+          }
+        ]
+      }
+    },
+    "liuren": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:liuren_key"
+          }
+        ]
+      }
+    },
+    "qimen": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:qimen_key"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "astral",
+      "jade",
+      "yao",
+      "ziwei",
+      "liuren",
+      "qimen"
+    ]
+  ]
+}

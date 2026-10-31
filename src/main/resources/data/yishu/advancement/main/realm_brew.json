@@ -1,0 +1,77 @@
+{
+  "parent": "yishu:main/first_gate",
+  "display": {
+    "icon": {
+      "id": "yishu:astral_dew_bucket"
+    },
+    "title": {
+      "text": "六界灵泉"
+    },
+    "description": {
+      "text": "用桶舀起一份异界的液体——星辉露、玉髓浆、玄墨水，或紫微露、壬水、遁甲汞。"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "dew": {
+      "trigger": "minecraft:filled_bucket",
+      "conditions": {
+        "item": {
+          "items": "yishu:astral_dew_bucket"
+        }
+      }
+    },
+    "ichor": {
+      "trigger": "minecraft:filled_bucket",
+      "conditions": {
+        "item": {
+          "items": "yishu:jade_ichor_bucket"
+        }
+      }
+    },
+    "ink": {
+      "trigger": "minecraft:filled_bucket",
+      "conditions": {
+        "item": {
+          "items": "yishu:yao_ink_bucket"
+        }
+      }
+    },
+    "ambrosia": {
+      "trigger": "minecraft:filled_bucket",
+      "conditions": {
+        "item": {
+          "items": "yishu:ziwei_ambrosia_bucket"
+        }
+      }
+    },
+    "water": {
+      "trigger": "minecraft:filled_bucket",
+      "conditions": {
+        "item": {
+          "items": "yishu:liuren_water_bucket"
+        }
+      }
+    },
+    "mercury": {
+      "trigger": "minecraft:filled_bucket",
+      "conditions": {
+        "item": {
+          "items": "yishu:qimen_mercury_bucket"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "dew",
+      "ichor",
+      "ink",
+      "ambrosia",
+      "water",
+      "mercury"
+    ]
+  ]
+}

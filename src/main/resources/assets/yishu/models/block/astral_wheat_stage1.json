@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:block/crop",
+ "textures": {
+  "crop": "yishu:block/astral_wheat_stage1"
+ }
+}

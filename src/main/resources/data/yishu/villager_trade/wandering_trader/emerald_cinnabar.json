@@ -1,0 +1,11 @@
+{
+  "gives": {
+    "id": "minecraft:cinnabar",
+    "count": 4
+  },
+  "reputation_discount": 0.05,
+  "wants": {
+    "id": "minecraft:emerald",
+    "count": 1
+  }
+}

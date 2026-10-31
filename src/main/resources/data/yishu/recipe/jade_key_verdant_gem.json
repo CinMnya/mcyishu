@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "yishu:verdant_gem",
+    "X": "yishu:yinyang_stone"
+  },
+  "pattern": [
+    " D ",
+    "DXD",
+    " D "
+  ],
+  "result": {
+    "id": "yishu:jade_key"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "parent": "yishu:main/realm_fate",
+  "display": {
+    "icon": {
+      "id": "yishu:fate_slip"
+    },
+    "title": {
+      "text": "六界巡游"
+    },
+    "description": {
+      "text": "命理、风水、六爻、紫微、六壬、奇门——六个界域，都留下一串脚印。"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "fate": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "yishu:fate_realm"
+      }
+    },
+    "fengshui": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "yishu:fengshui_realm"
+      }
+    },
+    "liuyao": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "yishu:liuyao_realm"
+      }
+    },
+    "ziwei": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "yishu:ziwei_realm"
+      }
+    },
+    "liuren": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "yishu:liuren_realm"
+      }
+    },
+    "qimen": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "yishu:qimen_realm"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "fate"
+    ],
+    [
+      "fengshui"
+    ],
+    [
+      "liuyao"
+    ],
+    [
+      "ziwei"
+    ],
+    [
+      "liuren"
+    ],
+    [
+      "qimen"
+    ]
+  ]
+}

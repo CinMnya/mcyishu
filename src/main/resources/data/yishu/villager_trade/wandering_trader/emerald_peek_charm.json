@@ -1,0 +1,11 @@
+{
+  "gives": {
+    "id": "yishu:peek_charm",
+    "count": 1
+  },
+  "reputation_discount": 0.05,
+  "wants": {
+    "id": "minecraft:emerald",
+    "count": 8
+  }
+}

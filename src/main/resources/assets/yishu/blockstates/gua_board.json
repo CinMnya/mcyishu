@@ -1,0 +1,772 @@
+{
+ "variants": {
+  "gua=0,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=0,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=0,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=0,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=1,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=1,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=1,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=1,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=2,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=2,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=2,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=2,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=3,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=3,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=3,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=3,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=4,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=4,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=4,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=4,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=5,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=5,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=5,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=5,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=6,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=6,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=6,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=6,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=7,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=7,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=7,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=7,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=8,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=8,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=8,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=8,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=9,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=9,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=9,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=9,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=10,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=10,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=10,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=10,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=11,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=11,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=11,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=11,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=12,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=12,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=12,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=12,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=13,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=13,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=13,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=13,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=14,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=14,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=14,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=14,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=15,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=15,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=15,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=15,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=16,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=16,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=16,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=16,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=17,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=17,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=17,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=17,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=18,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=18,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=18,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=18,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=19,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=19,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=19,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=19,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=20,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=20,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=20,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=20,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=21,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=21,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=21,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=21,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=22,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=22,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=22,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=22,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=23,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=23,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=23,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=23,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=24,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=24,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=24,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=24,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=25,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=25,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=25,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=25,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=26,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=26,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=26,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=26,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=27,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=27,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=27,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=27,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=28,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=28,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=28,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=28,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=29,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=29,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=29,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=29,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=30,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=30,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=30,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=30,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=31,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=31,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=31,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=31,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=32,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=32,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=32,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=32,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=33,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=33,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=33,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=33,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=34,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=34,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=34,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=34,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=35,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=35,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=35,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=35,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=36,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=36,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=36,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=36,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=37,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=37,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=37,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=37,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=38,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=38,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=38,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=38,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=39,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=39,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=39,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=39,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=40,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=40,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=40,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=40,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=41,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=41,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=41,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=41,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=42,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=42,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=42,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=42,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=43,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=43,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=43,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=43,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=44,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=44,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=44,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=44,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=45,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=45,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=45,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=45,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=46,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=46,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=46,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=46,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=47,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=47,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=47,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=47,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=48,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=48,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=48,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=48,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=49,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=49,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=49,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=49,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=50,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=50,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=50,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=50,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=51,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=51,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=51,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=51,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=52,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=52,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=52,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=52,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=53,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=53,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=53,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=53,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=54,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=54,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=54,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=54,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=55,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=55,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=55,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=55,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=56,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=56,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=56,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=56,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=57,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=57,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=57,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=57,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=58,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=58,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=58,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=58,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=59,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=59,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=59,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=59,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=60,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=60,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=60,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=60,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=61,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=61,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=61,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=61,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=62,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=62,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=62,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=62,facing=west": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=63,facing=north": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=63,facing=east": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=63,facing=south": {
+   "model": "yishu:block/gua_board"
+  },
+  "gua=63,facing=west": {
+   "model": "yishu:block/gua_board"
+  }
+ }
+}

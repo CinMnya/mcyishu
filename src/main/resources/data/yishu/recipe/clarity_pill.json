@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": "yishu:mica",
+    "Y": "yishu:yarrow_stalks"
+  },
+  "pattern": [
+    " Y ",
+    "YMY",
+    " Y "
+  ],
+  "result": {
+    "id": "yishu:clarity_pill"
+  }
+}

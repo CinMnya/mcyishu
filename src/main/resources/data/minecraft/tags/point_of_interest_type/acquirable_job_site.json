@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "yishu:astrologer",
+    "yishu:fate_master",
+    "yishu:geomancer",
+    "yishu:surveyor",
+    "yishu:diviner",
+    "yishu:yarrow_master",
+    "yishu:star_master",
+    "yishu:lesson_master",
+    "yishu:array_master",
+    "yishu:dou_master",
+    "yishu:guiren_master",
+    "yishu:bamen_master"
+  ]
+}

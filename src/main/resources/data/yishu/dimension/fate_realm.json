@@ -1,0 +1,162 @@
+{
+  "type": "yishu:fate_realm",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "yishu:fate_isle",
+    "biome_source": {
+      "type": "minecraft:multi_noise",
+      "biomes": [
+        {
+          "biome": "yishu:astral_field",
+          "parameters": {
+            "temperature": [
+              -0.3,
+              0.4
+            ],
+            "humidity": [
+              -0.7,
+              0.6
+            ],
+            "continentalness": [
+              -2.0,
+              2.0
+            ],
+            "erosion": [
+              -2.0,
+              2.0
+            ],
+            "depth": [
+              -2.0,
+              2.0
+            ],
+            "weirdness": [
+              -2.0,
+              2.0
+            ],
+            "offset": 0
+          }
+        },
+        {
+          "biome": "yishu:astral_grove",
+          "parameters": {
+            "temperature": [
+              -0.3,
+              0.4
+            ],
+            "humidity": [
+              0.6,
+              2.0
+            ],
+            "continentalness": [
+              -2.0,
+              2.0
+            ],
+            "erosion": [
+              -2.0,
+              2.0
+            ],
+            "depth": [
+              -2.0,
+              2.0
+            ],
+            "weirdness": [
+              -2.0,
+              2.0
+            ],
+            "offset": 0
+          }
+        },
+        {
+          "biome": "yishu:astral_peaks",
+          "parameters": {
+            "temperature": [
+              0.4,
+              2.0
+            ],
+            "humidity": [
+              -0.7,
+              2.0
+            ],
+            "continentalness": [
+              -2.0,
+              2.0
+            ],
+            "erosion": [
+              -2.0,
+              2.0
+            ],
+            "depth": [
+              -2.0,
+              2.0
+            ],
+            "weirdness": [
+              -2.0,
+              2.0
+            ],
+            "offset": 0
+          }
+        },
+        {
+          "biome": "yishu:astral_marsh",
+          "parameters": {
+            "temperature": [
+              -2.0,
+              -0.3
+            ],
+            "humidity": [
+              -0.7,
+              2.0
+            ],
+            "continentalness": [
+              -2.0,
+              2.0
+            ],
+            "erosion": [
+              -2.0,
+              2.0
+            ],
+            "depth": [
+              -2.0,
+              2.0
+            ],
+            "weirdness": [
+              -2.0,
+              2.0
+            ],
+            "offset": 0
+          }
+        },
+        {
+          "biome": "yishu:astral_dunes",
+          "parameters": {
+            "temperature": [
+              -2.0,
+              2.0
+            ],
+            "humidity": [
+              -2.0,
+              -0.7
+            ],
+            "continentalness": [
+              -2.0,
+              2.0
+            ],
+            "erosion": [
+              -2.0,
+              2.0
+            ],
+            "depth": [
+              -2.0,
+              2.0
+            ],
+            "weirdness": [
+              -2.0,
+              2.0
+            ],
+            "offset": 0
+          }
+        }
+      ]
+    }
+  }
+}

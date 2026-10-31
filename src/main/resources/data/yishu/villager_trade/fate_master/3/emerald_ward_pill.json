@@ -1,0 +1,12 @@
+{
+  "gives": {
+    "id": "yishu:ward_pill",
+    "count": 1
+  },
+  "max_uses": 8.0,
+  "reputation_discount": 0.05,
+  "wants": {
+    "id": "minecraft:emerald",
+    "count": 10
+  }
+}

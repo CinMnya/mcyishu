@@ -1,0 +1,25 @@
+{
+  "parent": "yishu:main/first_gate",
+  "display": {
+    "icon": {
+      "id": "yishu:jade_stone"
+    },
+    "title": {
+      "text": "龙脉之约"
+    },
+    "description": {
+      "text": "初次踏入风水维度——幽谷里的每一道山脊都是龙的行踪。"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "enter": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "yishu:fengshui_realm"
+      }
+    }
+  }
+}

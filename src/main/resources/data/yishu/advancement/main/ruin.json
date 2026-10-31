@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "id": "yishu:ruin_core"
+    },
+    "title": {
+      "text": "深入地宫"
+    },
+    "description": {
+      "text": "找到一处遗迹的地下密室，并活着出来。"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "obtain": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:cinnabar"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "yishu:main/root"
+}

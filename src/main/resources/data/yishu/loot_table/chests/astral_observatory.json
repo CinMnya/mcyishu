@@ -1,0 +1,277 @@
+{
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 2.0,
+        "max": 4.0
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 14,
+          "name": "yishu:astral_bricks",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 4.0,
+                "max": 10.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "yishu:meteor_iron",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "yishu:star_sand",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 7,
+          "name": "yishu:star_crystal"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "yishu:astral_wood_sapling"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "yishu:meteor_wood_sapling"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "yishu:moon_wood_sapling"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "yishu:fate_wisp_spawn_egg"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "yishu:star_watcher_spawn_egg"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "yishu:star_fox_spawn_egg"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "yishu:star_slime_spawn_egg"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "yishu:astral_dew_bucket"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 12,
+          "name": "minecraft:amethyst_shard",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "yishu:peek_charm"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "yishu:yinyang_stone"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "yishu:fate_book"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "yishu:astral_key"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "yishu:star_fur",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "yishu:qi_pill"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "yishu:clarity_pill"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "yishu:vein_map"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 3,
+          "name": "yishu:bagua_mirror"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "yishu:astral_seeds",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "yishu:astral_grain",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 12,
+          "name": "yishu:bronze_coins",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 5.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "minecraft:lapis_lazuli",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "minecraft:cinnabar",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "yishu:ziwei_star_dust"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "yishu:ziwei_token"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "yishu:tianfu_token"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "yishu:qisha_token"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 3,
+          "name": "yishu:ziwei_chart"
+        }
+      ]
+    }
+  ]
+}

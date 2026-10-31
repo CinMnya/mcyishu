@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": "yishu:yinyang_stone",
+    "Y": "yishu:yarrow_stalks"
+  },
+  "pattern": [
+    " Y ",
+    "YSY",
+    " Y "
+  ],
+  "result": {
+    "id": "yishu:calm_pill"
+  }
+}

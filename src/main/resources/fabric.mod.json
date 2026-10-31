@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "yishu",
+  "version": "${version}",
+  "name": "易枢",
+  "description": "易枢 —— 把命理、风水、六爻三套东方术数完整搬进 Minecraft。同一个世界种子下，所有结果完全一致、可复现、可分享；全部通过物品、方块与界面交互，不需要任何指令。",
+  "authors": [ "辰辰", "小辰辰" ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/yishu/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [ "com.chenchen.yishu.YishuMod" ],
+    "client": [ "com.chenchen.yishu.client.YishuClient" ]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_dependency}",
+    "java": "${java_dependency}"
+  }
+}

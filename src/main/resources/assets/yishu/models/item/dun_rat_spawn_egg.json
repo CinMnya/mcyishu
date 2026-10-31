@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:item/generated",
+ "textures": {
+  "layer0": "yishu:item/dun_rat_spawn_egg"
+ }
+}

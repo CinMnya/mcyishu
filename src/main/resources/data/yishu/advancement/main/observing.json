@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "id": "yishu:qi_observatory"
+    },
+    "title": {
+      "text": "格物观气"
+    },
+    "description": {
+      "text": "放置一座观气台，读懂你家的户型。"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "obtain": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:qi_observatory"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "yishu:main/compass"
+}

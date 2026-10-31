@@ -1,0 +1,12 @@
+{
+  "gives": {
+    "id": "minecraft:emerald",
+    "count": 1
+  },
+  "max_uses": 16.0,
+  "reputation_discount": 0.05,
+  "wants": {
+    "id": "yishu:yao_pod",
+    "count": 6
+  }
+}

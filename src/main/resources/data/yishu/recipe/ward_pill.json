@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "yishu:flame_fragment",
+    "Y": "yishu:yarrow_stalks"
+  },
+  "pattern": [
+    " Y ",
+    "YFY",
+    " Y "
+  ],
+  "result": {
+    "id": "yishu:ward_pill"
+  }
+}

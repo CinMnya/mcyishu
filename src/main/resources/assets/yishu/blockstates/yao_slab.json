@@ -1,0 +1,13 @@
+{
+ "variants": {
+  "type=bottom": {
+   "model": "yishu:block/yao_slab"
+  },
+  "type=double": {
+   "model": "yishu:block/yao_bricks"
+  },
+  "type=top": {
+   "model": "yishu:block/yao_slab_top"
+  }
+ }
+}

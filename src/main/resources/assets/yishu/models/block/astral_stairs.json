@@ -1,0 +1,8 @@
+{
+ "parent": "minecraft:block/stairs",
+ "textures": {
+  "bottom": "yishu:block/astral_bricks",
+  "side": "yishu:block/astral_bricks",
+  "top": "yishu:block/astral_bricks"
+ }
+}

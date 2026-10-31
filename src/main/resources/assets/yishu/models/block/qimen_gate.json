@@ -1,0 +1,9 @@
+{
+ "parent": "minecraft:block/cube_all",
+ "textures": {
+  "all": {
+   "sprite": "yishu:block/qimen_gate",
+   "force_translucent": true
+  }
+ }
+}

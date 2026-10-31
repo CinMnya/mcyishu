@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "id": "yishu:bronze_coins"
+    },
+    "title": {
+      "text": "掷地有声"
+    },
+    "description": {
+      "text": "获得三枚铜钱，六爻问天的开端。"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "obtain": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:bronze_coins"
+          }
+        ]
+      }
+    }
+  },
+  "parent": "yishu:main/root"
+}

@@ -1,0 +1,18 @@
+pluginManagement {
+    repositories {
+        mavenCentral()
+        // 国内镜像（代理 maven.fabricmc.net，官方源被墙时的兜底）
+        maven {
+            name = 'FabricMirrorCN'
+            url = uri('https://repository.hanbings.io/proxy/')
+        }
+        maven {
+            name = 'Fabric'
+            url = uri('https://maven.fabricmc.net/')
+            content { includeGroupByRegex 'net\\.fabricmc.*' }
+        }
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'yishu'

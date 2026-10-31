@@ -1,0 +1,277 @@
+{
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 2.0,
+        "max": 4.0
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 14,
+          "name": "yishu:jade_bricks",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 4.0,
+                "max": 10.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "yishu:verdant_gem",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "yishu:mica",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 7,
+          "name": "yishu:vein_crystal"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "yishu:jade_wood_sapling"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "yishu:cloud_wood_sapling"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "yishu:peach_wood_sapling"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "yishu:jade_spirit_spawn_egg"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "yishu:jade_rabbit_spawn_egg"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "yishu:jade_goat_spawn_egg"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "yishu:vein_turtle_spawn_egg"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "yishu:jade_ichor_bucket"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 12,
+          "name": "minecraft:emerald",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 5.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "yishu:ward_talisman"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "yishu:fortune_talisman"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "yishu:feng_shui_compass"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "yishu:jade_key"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "yishu:jade_wool",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "yishu:calm_pill"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "yishu:swift_pill"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "yishu:talisman_paper"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "yishu:vein_map"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "yishu:jade_seeds",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "yishu:jade_grain",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 12,
+          "name": "yishu:bronze_coins",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 5.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "minecraft:melon_slice",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 5.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "minecraft:cinnabar",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "yishu:liuren_shell"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "yishu:guiren_talisman"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "yishu:qinglong_talisman"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "yishu:baihu_talisman"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 3,
+          "name": "yishu:liuren_plate"
+        }
+      ]
+    }
+  ]
+}

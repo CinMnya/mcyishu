@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": "yishu:ink_iron",
+    "G": "yishu:verdant_gem",
+    "M": "yishu:mica"
+  },
+  "pattern": [
+    "IGI",
+    "GMG",
+    "IGI"
+  ],
+  "result": {
+    "id": "yishu:bagua_mirror"
+  }
+}

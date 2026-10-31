@@ -1,0 +1,13 @@
+{
+ "variants": {
+  "type=bottom": {
+   "model": "yishu:block/astral_slab"
+  },
+  "type=double": {
+   "model": "yishu:block/astral_bricks"
+  },
+  "type=top": {
+   "model": "yishu:block/astral_slab_top"
+  }
+ }
+}

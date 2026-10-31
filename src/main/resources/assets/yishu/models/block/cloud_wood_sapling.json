@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:block/cross",
+ "textures": {
+  "cross": "yishu:block/cloud_wood_sapling"
+ }
+}

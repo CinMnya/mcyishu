@@ -1,0 +1,10 @@
+{
+ "variants": {
+  "lit=false": {
+   "model": "yishu:block/ruin_core"
+  },
+  "lit=true": {
+   "model": "yishu:block/ruin_core"
+  }
+ }
+}

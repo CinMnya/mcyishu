@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "yishu:star_sand",
+    "Y": "yishu:yarrow_stalks"
+  },
+  "pattern": [
+    " Y ",
+    "YGY",
+    " Y "
+  ],
+  "result": {
+    "id": "yishu:swift_pill"
+  }
+}

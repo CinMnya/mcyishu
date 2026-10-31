@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:block/crop",
+ "textures": {
+  "crop": "yishu:block/liuren_rice_stage1"
+ }
+}

@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:block/crop",
+ "textures": {
+  "crop": "yishu:block/ziwei_wheat_stage2"
+ }
+}

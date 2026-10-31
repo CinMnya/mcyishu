@@ -1,0 +1,20 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "yishu:block/qimen_array",
+   "y": 0
+  },
+  "facing=east": {
+   "model": "yishu:block/qimen_array",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "yishu:block/qimen_array",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "yishu:block/qimen_array",
+   "y": 270
+  }
+ }
+}

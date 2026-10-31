@@ -1,0 +1,7 @@
+{
+ "parent": "minecraft:block/cube_column",
+ "textures": {
+  "side": "yishu:block/astral_wood_log_side",
+  "end": "yishu:block/astral_wood_log_top"
+ }
+}

@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:block/crop",
+ "textures": {
+  "crop": "yishu:block/qimen_bean_stage1"
+ }
+}

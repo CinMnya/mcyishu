@@ -1,0 +1,70 @@
+/*
+ * 易枢：命理 · 风水 · 六爻  /  Yishu —— Minecraft 26.2 Fabric 模组
+ *
+ * ⚠️ 26.x 关键差异（照抄 1.21.x 模板必崩）：
+ *   1. 官方 jar 自 26.1 起「不再混淆」→ 没有 mappings 行、没有 yarn。
+ *   2. Loom 插件 ID 换为 `net.fabricmc.fabric-loom`（未混淆线）；
+ *      `-remap` 那个只给 1.21.11 及更早用。
+ *   3. 依赖配置从 `modImplementation` 换成普通 `implementation`。
+ *   4. Java 25（类文件 major 69）；产物就是 `jar`，没有 `remapJar`。
+ */
+plugins {
+    // 只为把 Loom 实现 jar 拉上构建脚本类路径；未混淆那个 ID 在 maven 上没有 marker，不能直接声明
+    id 'net.fabricmc.fabric-loom-remap' version "${loom_version}" apply false
+}
+
+apply plugin: 'net.fabricmc.fabric-loom'   // ← MC 26.x 未混淆线
+
+version = "${mod_version}+${minecraft_version}"
+group = maven_group
+base { archivesName = archives_base_name }
+
+repositories {
+    // 顺序很关键：Central 必须在最前，否则 org.lwjgl / io.netty 会被导向不可达的官方源
+    mavenCentral()
+    maven {
+        name = 'FabricMirrorCN'
+        url = uri('https://repository.hanbings.io/proxy/')
+    }
+    maven {
+        name = 'Fabric'
+        url = uri('https://maven.fabricmc.net/')
+        content { includeGroupByRegex 'net\\.fabricmc.*' }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    // 26.x：删掉 mappings 行；mod* 配置全部换成普通配置
+    implementation "net.fabricmc:fabric-loader:${loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion(25)
+    targetCompatibility = JavaVersion.toVersion(25)
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 25
+    it.options.encoding = 'UTF-8'   // 源码含大量中文注释与文案
+}
+
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') {
+        expand 'version': project.version,
+               'minecraft_dependency': minecraft_dependency,
+               'java_dependency': java_dependency
+    }
+}
+
+// 26.x 没有 remapJar，`jar` 本身就是成品；把它收集到 Gradle 不管辖的 dist/ 目录，
+// 免得下一次构建把它当 stale output 删掉。
+tasks.register('collectArtifact', Copy) {
+    dependsOn tasks.named('jar')
+    from tasks.named('jar').flatMap { it.archiveFile }
+    into layout.projectDirectory.dir('dist')
+}
+
+tasks.named('build').configure { dependsOn 'collectArtifact' }

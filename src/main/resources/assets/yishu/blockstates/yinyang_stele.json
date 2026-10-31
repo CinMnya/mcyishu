@@ -1,0 +1,28 @@
+{
+ "variants": {
+  "yin=false,yang=false,lit=false": {
+   "model": "yishu:block/yinyang_stele"
+  },
+  "yin=false,yang=false,lit=true": {
+   "model": "yishu:block/yinyang_stele"
+  },
+  "yin=false,yang=true,lit=false": {
+   "model": "yishu:block/yinyang_stele"
+  },
+  "yin=false,yang=true,lit=true": {
+   "model": "yishu:block/yinyang_stele"
+  },
+  "yin=true,yang=false,lit=false": {
+   "model": "yishu:block/yinyang_stele"
+  },
+  "yin=true,yang=false,lit=true": {
+   "model": "yishu:block/yinyang_stele"
+  },
+  "yin=true,yang=true,lit=false": {
+   "model": "yishu:block/yinyang_stele"
+  },
+  "yin=true,yang=true,lit=true": {
+   "model": "yishu:block/yinyang_stele"
+  }
+ }
+}

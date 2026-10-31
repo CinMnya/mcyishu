@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "yishu:astral_dust",
+    "Y": "yishu:yarrow_stalks"
+  },
+  "pattern": [
+    " Y ",
+    "YAY",
+    " Y "
+  ],
+  "result": {
+    "id": "yishu:qi_pill"
+  }
+}

@@ -1,0 +1,52 @@
+{
+ "variants": {
+  "incense=0,lit=false": {
+   "model": "yishu:block/censer"
+  },
+  "incense=0,lit=true": {
+   "model": "yishu:block/censer"
+  },
+  "incense=1,lit=false": {
+   "model": "yishu:block/censer"
+  },
+  "incense=1,lit=true": {
+   "model": "yishu:block/censer"
+  },
+  "incense=2,lit=false": {
+   "model": "yishu:block/censer"
+  },
+  "incense=2,lit=true": {
+   "model": "yishu:block/censer"
+  },
+  "incense=3,lit=false": {
+   "model": "yishu:block/censer"
+  },
+  "incense=3,lit=true": {
+   "model": "yishu:block/censer"
+  },
+  "incense=4,lit=false": {
+   "model": "yishu:block/censer"
+  },
+  "incense=4,lit=true": {
+   "model": "yishu:block/censer"
+  },
+  "incense=5,lit=false": {
+   "model": "yishu:block/censer"
+  },
+  "incense=5,lit=true": {
+   "model": "yishu:block/censer"
+  },
+  "incense=6,lit=false": {
+   "model": "yishu:block/censer"
+  },
+  "incense=6,lit=true": {
+   "model": "yishu:block/censer"
+  },
+  "incense=7,lit=false": {
+   "model": "yishu:block/censer"
+  },
+  "incense=7,lit=true": {
+   "model": "yishu:block/censer"
+  }
+ }
+}

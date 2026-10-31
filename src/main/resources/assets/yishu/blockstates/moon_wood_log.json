@@ -1,0 +1,16 @@
+{
+ "variants": {
+  "axis=y": {
+   "model": "yishu:block/moon_wood_log"
+  },
+  "axis=z": {
+   "model": "yishu:block/moon_wood_log",
+   "x": 90
+  },
+  "axis=x": {
+   "model": "yishu:block/moon_wood_log",
+   "x": 90,
+   "y": 90
+  }
+ }
+}

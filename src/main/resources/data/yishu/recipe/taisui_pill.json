@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "T": "yishu:taisui_talisman",
+    "O": "yishu:onyx",
+    "V": "yishu:vein_crystal",
+    "B": "yishu:oracle_bone"
+  },
+  "pattern": [
+    "TOT",
+    "OVO",
+    "TBT"
+  ],
+  "result": {
+    "id": "yishu:taisui_pill"
+  }
+}

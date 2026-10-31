@@ -1,0 +1,22 @@
+{
+  "parent": "yishu:main/key",
+  "display": {
+    "icon": {
+      "id": "yishu:jade_key"
+    },
+    "title": {
+      "text": "破界之门"
+    },
+    "description": {
+      "text": "用灵引立起第一扇门——走进去，就是另一个世界。"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "gate": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

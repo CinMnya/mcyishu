@@ -1,0 +1,25 @@
+{
+  "parent": "yishu:main/first_gate",
+  "display": {
+    "icon": {
+      "id": "yishu:yao_stone"
+    },
+    "title": {
+      "text": "卦象之约"
+    },
+    "description": {
+      "text": "初次踏入六爻维度——平野如盘，一昼夜就是一卦的呼吸。"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "enter": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "yishu:liuyao_realm"
+      }
+    }
+  }
+}

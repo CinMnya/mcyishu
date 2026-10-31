@@ -1,0 +1,89 @@
+{
+  "parent": "yishu:main/first_gate",
+  "display": {
+    "icon": {
+      "id": "yishu:astral_dust"
+    },
+    "title": {
+      "text": "界外奇珍"
+    },
+    "description": {
+      "text": "带回一份异界的矿物——星辉尘、青玉砂、爻纹砾，或三术界的紫微晶、壬水珠、八门金。"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:astral_dust"
+          }
+        ]
+      }
+    },
+    "grit": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:jade_grit"
+          }
+        ]
+      }
+    },
+    "shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:yao_shard"
+          }
+        ]
+      }
+    },
+    "ziwei": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:ziwei_crystal"
+          }
+        ]
+      }
+    },
+    "liuren": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:liuren_crystal"
+          }
+        ]
+      }
+    },
+    "qimen": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:qimen_crystal"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "dust",
+      "grit",
+      "shard",
+      "ziwei",
+      "liuren",
+      "qimen"
+    ]
+  ]
+}

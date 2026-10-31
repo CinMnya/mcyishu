@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "yishu:fate_slip"
+    },
+    "title": {
+      "text": "易枢 · 天机初现"
+    },
+    "description": {
+      "text": "获得命盘玉简——你的命数，从这一刻开始记录。"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "obtain": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:fate_slip"
+          }
+        ]
+      }
+    }
+  }
+}

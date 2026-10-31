@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "P": "minecraft:paper",
+    "Y": "yishu:yarrow_stalks"
+  },
+  "pattern": [
+    "PPP",
+    "PYP",
+    "PPP"
+  ],
+  "result": {
+    "id": "yishu:talisman_paper",
+    "count": 4
+  }
+}

@@ -1,0 +1,13 @@
+{
+ "variants": {
+  "type=bottom": {
+   "model": "yishu:block/jade_slab"
+  },
+  "type=double": {
+   "model": "yishu:block/jade_bricks"
+  },
+  "type=top": {
+   "model": "yishu:block/jade_slab_top"
+  }
+ }
+}
