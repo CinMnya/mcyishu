@@ -8,6 +8,9 @@ import com.chenchen.yishu.core.YsReg;
 import com.chenchen.yishu.fate.GanZhi.WuXing;
 import com.chenchen.yishu.fluid.YsFluids;
 import com.chenchen.yishu.spirit.YsMobs;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
@@ -24,9 +27,15 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.vehicle.boat.Boat;
+import net.minecraft.world.entity.vehicle.boat.ChestBoat;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.DoubleHighBlockItem;
+import net.minecraft.world.item.SignItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -36,20 +45,36 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.component.TypedEntityData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StandingSignBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.UntintedParticleLeavesBlock;
+import net.minecraft.world.level.block.WallSignBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -90,6 +115,10 @@ public final class YsRegistry {
     /** 奇门界 —— 奇门遁甲的九宫大地，赤金与炉火。 */
     public static final ResourceKey<Level> QIMEN_REALM_KEY =
             ResourceKey.create(Registries.DIMENSION, YishuMod.id("qimen_realm"));
+
+    /** 太乙界 —— 三式之三，浮空九宫星台。 */
+    public static final ResourceKey<Level> TAIYI_REALM_KEY =
+            ResourceKey.create(Registries.DIMENSION, YishuMod.id("taiyi_realm"));
 
     // ==================================================================== 物品
 
@@ -387,6 +416,13 @@ public final class YsRegistry {
     public static final Item ZIWEI_SEEDS = item("ziwei_seeds",
             new BlockItem(ZIWEI_WHEAT, props("ziwei_seeds")));
 
+    public static final Block TAIYI_WHEAT = blockOnly("taiyi_wheat",
+            properties -> new YsBlockContent.YsCrop(properties, () -> YsRegistry.TAIYI_SEEDS),
+            blockProps("taiyi_wheat", MapColor.COLOR_LIGHT_BLUE)
+                    .noCollision().randomTicks().instabreak().sound(SoundType.CROP));
+    public static final Item TAIYI_SEEDS = item("taiyi_seeds",
+            new BlockItem(TAIYI_WHEAT, props("taiyi_seeds")));
+
     public static final Block LIUREN_RICE = blockOnly("liuren_rice",
             properties -> new YsBlockContent.YsCrop(properties, () -> YsRegistry.LIUREN_SEEDS),
             blockProps("liuren_rice", MapColor.COLOR_CYAN)
@@ -482,6 +518,10 @@ public final class YsRegistry {
             blockProps("dou_altar", MapColor.COLOR_PURPLE).strength(3.5F, 9.0F)
                     .requiresCorrectToolForDrops().sound(SoundType.STONE)
                     .lightLevel(state -> 11));
+
+    /** 太乙星台 / 文昌台 —— 太乙界的观星工位。 */
+    public static final Block TAIYI_TERRACE = dimensionStone("taiyi_terrace", MapColor.COLOR_LIGHT_BLUE, 3.0F, 9.0F);
+    public static final Block WENCHANG_ALTAR = dimensionStone("wenchang_altar", MapColor.COLOR_CYAN, 3.0F, 9.0F);
 
     /** 贵人台 —— 六壬界的第二工位，贵人师认领它。 */
     public static final Block GUIREN_ALTAR = block("guiren_altar",
@@ -583,6 +623,12 @@ public final class YsRegistry {
     public static final Block QIMEN_BRICKS = dimensionStone("qimen_bricks", MapColor.COLOR_ORANGE, 1.8F, 6.0F);
     public static final Block QIMEN_LAMP = dimensionLamp("qimen_lamp", MapColor.COLOR_YELLOW);
 
+    // ---- 第 19 轮：太乙界建材 ----
+
+    public static final Block TAIYI_STONE = dimensionStone("taiyi_stone", MapColor.COLOR_LIGHT_BLUE, 1.5F, 6.0F);
+    public static final Block TAIYI_BRICKS = dimensionStone("taiyi_bricks", MapColor.COLOR_LIGHT_BLUE, 1.8F, 6.0F);
+    public static final Block TAIYI_LAMP = dimensionLamp("taiyi_lamp", MapColor.COLOR_CYAN);
+
     // ==================================================================== 维度矿石与灵植
     //
     // 每个维度的地下埋着它自己的矿脉，地表长着它自己的花与草。
@@ -659,6 +705,19 @@ public final class YsRegistry {
     public static final Item QIMEN_ESSENCE = materialItem("qimen_essence", Rarity.UNCOMMON);
     public static final Block QIMEN_BLOOM = flower("qimen_bloom", MobEffects.STRENGTH, MapColor.COLOR_ORANGE);
     public static final Block QIMEN_GRASS = grass("qimen_grass", MapColor.COLOR_YELLOW);
+
+    // ---- 第 19 轮 · 太乙界矿脉（四矿）----
+
+    public static final Block TAIYI_ORE = oreBlock("taiyi_ore", MapColor.COLOR_LIGHT_BLUE);
+    public static final Block WENCHANG_ORE = oreBlock("wenchang_ore", MapColor.COLOR_CYAN);
+    public static final Block SHIJI_ORE = oreBlock("shiji_ore", MapColor.COLOR_BLUE);
+    public static final Block ZHUKE_ORE = oreBlock("zhuke_ore", MapColor.COLOR_YELLOW);
+    public static final Item TAIYI_CRYSTAL = materialItem("taiyi_crystal", Rarity.COMMON);
+    public static final Item TAIYI_ESSENCE = materialItem("taiyi_essence", Rarity.UNCOMMON);
+    public static final Item TAIYI_SHARD = materialItem("taiyi_shard", Rarity.COMMON);
+    public static final Item TAIYI_GRAIN = materialItem("taiyi_grain", Rarity.COMMON);
+    public static final Block TAIYI_BLOOM = flower("taiyi_bloom", MobEffects.NIGHT_VISION, MapColor.COLOR_LIGHT_BLUE);
+    public static final Block TAIYI_GRASS = grass("taiyi_grass", MapColor.COLOR_LIGHT_BLUE);
 
     // ==================================================================== 维度林木
     //
@@ -767,6 +826,23 @@ public final class YsRegistry {
             leaves("dun_wood_leaves", MapColor.COLOR_RED, ParticleTypes.ASH);
     public static final Block DUN_WOOD_SAPLING = sapling("dun_wood", MapColor.COLOR_RED);
 
+    // ---- 第 19 轮 · 太乙界林木（太乙 / 文昌 / 计神）----
+
+    public static final Block TAIYI_WOOD_LOG = woodLog("taiyi_wood_log", MapColor.COLOR_LIGHT_BLUE);
+    public static final Block TAIYI_WOOD_LEAVES =
+            leaves("taiyi_wood_leaves", MapColor.COLOR_LIGHT_BLUE, ParticleTypes.END_ROD);
+    public static final Block TAIYI_WOOD_SAPLING = sapling("taiyi_wood", MapColor.COLOR_LIGHT_BLUE);
+
+    public static final Block WENCHANG_WOOD_LOG = woodLog("wenchang_wood_log", MapColor.COLOR_CYAN);
+    public static final Block WENCHANG_WOOD_LEAVES =
+            leaves("wenchang_wood_leaves", MapColor.COLOR_CYAN, ParticleTypes.END_ROD);
+    public static final Block WENCHANG_WOOD_SAPLING = sapling("wenchang_wood", MapColor.COLOR_CYAN);
+
+    public static final Block JISHEN_WOOD_LOG = woodLog("jishen_wood_log", MapColor.COLOR_BLUE);
+    public static final Block JISHEN_WOOD_LEAVES =
+            leaves("jishen_wood_leaves", MapColor.COLOR_BLUE, ParticleTypes.END_ROD);
+    public static final Block JISHEN_WOOD_SAPLING = sapling("jishen_wood", MapColor.COLOR_BLUE);
+
     // ==================================================================== 维度液体
     //
     // 三个维度各有一片自己的水：星辉露、玉髓浆、玄墨水。
@@ -798,6 +874,72 @@ public final class YsRegistry {
             bucket("liuren_water_bucket", YsFluids.LIUREN_WATER);
     public static final Item QIMEN_MERCURY_BUCKET =
             bucket("qimen_mercury_bucket", YsFluids.QIMEN_MERCURY);
+
+    /** 第 19 轮：太乙玄泉。 */
+    public static final Block TAIYI_SPRING_BLOCK =
+            liquidBlock("taiyi_spring", YsFluids.TAIYI_SPRING, MapColor.COLOR_LIGHT_BLUE, 10, 1.0F);
+    public static final Item TAIYI_SPRING_BUCKET =
+            bucket("taiyi_spring_bucket", YsFluids.TAIYI_SPRING);
+
+    // ---- 第 21 轮：七界凶液 —— 与界域液体同源，但入液即伤 ----
+
+    public static final Block ASTRAL_SLAG_BLOCK =
+            liquidBlock("astral_slag", YsFluids.ASTRAL_SLAG, MapColor.COLOR_ORANGE, 9, 0.6F);
+    public static final Item ASTRAL_SLAG_BUCKET = bucket("astral_slag_bucket", YsFluids.ASTRAL_SLAG);
+
+    public static final Block JADE_ACID_BLOCK =
+            liquidBlock("jade_acid", YsFluids.JADE_ACID, MapColor.COLOR_GREEN, 6, 0.9F);
+    public static final Item JADE_ACID_BUCKET = bucket("jade_acid_bucket", YsFluids.JADE_ACID);
+
+    public static final Block YAO_MIASMA_BLOCK =
+            liquidBlock("yao_miasma", YsFluids.YAO_MIASMA, MapColor.COLOR_MAGENTA, 2, 0.5F);
+    public static final Item YAO_MIASMA_BUCKET = bucket("yao_miasma_bucket", YsFluids.YAO_MIASMA);
+
+    public static final Block ZIWEI_BANE_BLOCK =
+            liquidBlock("ziwei_bane", YsFluids.ZIWEI_BANE, MapColor.COLOR_MAGENTA, 5, 0.8F);
+    public static final Item ZIWEI_BANE_BUCKET = bucket("ziwei_bane_bucket", YsFluids.ZIWEI_BANE);
+
+    public static final Block LIUREN_ABYSS_BLOCK =
+            liquidBlock("liuren_abyss", YsFluids.LIUREN_ABYSS, MapColor.COLOR_BLUE, 0, 0.7F);
+    public static final Item LIUREN_ABYSS_BUCKET =
+            bucket("liuren_abyss_bucket", YsFluids.LIUREN_ABYSS);
+
+    public static final Block QIMEN_HELLFIRE_BLOCK =
+            liquidBlock("qimen_hellfire", YsFluids.QIMEN_HELLFIRE, MapColor.COLOR_RED, 13, 0.7F);
+    public static final Item QIMEN_HELLFIRE_BUCKET =
+            bucket("qimen_hellfire_bucket", YsFluids.QIMEN_HELLFIRE);
+
+    public static final Block TAIYI_FROST_BLOCK =
+            liquidBlock("taiyi_frost", YsFluids.TAIYI_FROST, MapColor.COLOR_BLUE, 4, 0.9F);
+    public static final Item TAIYI_FROST_BUCKET = bucket("taiyi_frost_bucket", YsFluids.TAIYI_FROST);
+
+    // ---- 第 21 轮：矿物原矿 —— 挖矿先得原矿，回炉才有成品 ----
+
+    public static final Item ASTRAL_RAW = materialItem("astral_raw", Rarity.COMMON);
+    public static final Item JADE_RAW = materialItem("jade_raw", Rarity.COMMON);
+    public static final Item YAO_RAW = materialItem("yao_raw", Rarity.COMMON);
+    public static final Item METEOR_RAW = materialItem("meteor_raw", Rarity.COMMON);
+    public static final Item INK_IRON_RAW = materialItem("ink_iron_raw", Rarity.COMMON);
+    public static final Item MICA_RAW = materialItem("mica_raw", Rarity.COMMON);
+    public static final Item ONYX_RAW = materialItem("onyx_raw", Rarity.COMMON);
+    public static final Item STAR_SAND_RAW = materialItem("star_sand_raw", Rarity.COMMON);
+    public static final Item VEIN_RAW = materialItem("vein_raw", Rarity.COMMON);
+    public static final Item VERDANT_RAW = materialItem("verdant_raw", Rarity.COMMON);
+    public static final Item ORACLE_RAW = materialItem("oracle_raw", Rarity.COMMON);
+    public static final Item CRYSTAL_RAW = materialItem("crystal_raw", Rarity.COMMON);
+    public static final Item ZIWEI_CRYSTAL_RAW = materialItem("ziwei_crystal_raw", Rarity.COMMON);
+    public static final Item REN_RAW = materialItem("ren_raw", Rarity.COMMON);
+    public static final Item GUI_RAW = materialItem("gui_raw", Rarity.COMMON);
+    public static final Item SHE_RAW = materialItem("she_raw", Rarity.COMMON);
+    public static final Item XUAN_RAW = materialItem("xuan_raw", Rarity.COMMON);
+    public static final Item MEN_RAW = materialItem("men_raw", Rarity.COMMON);
+    public static final Item XING_RAW = materialItem("xing_raw", Rarity.COMMON);
+    public static final Item DUN_RAW = materialItem("dun_raw", Rarity.COMMON);
+    public static final Item JIA_RAW = materialItem("jia_raw", Rarity.COMMON);
+    public static final Item TAIYI_RAW = materialItem("taiyi_raw", Rarity.COMMON);
+    public static final Item WENCHANG_RAW = materialItem("wenchang_raw", Rarity.COMMON);
+    public static final Item SHIJI_RAW = materialItem("shiji_raw", Rarity.COMMON);
+    public static final Item ZHUKE_RAW = materialItem("zhuke_raw", Rarity.COMMON);
 
     // ==================================================================== 维度门户
     //
@@ -840,6 +982,43 @@ public final class YsRegistry {
             new YsPortalContent.RealmKeyItem(QIMEN_GATE, QIMEN_BRICKS, "奇门界", "八门",
                     YsPortalContent.keyProps("qimen_key")));
 
+    // ---- 第 19 轮：太乙门 ----
+
+    public static final YsPortalContent.RealmGateBlock TAIYI_GATE = gate("taiyi_gate",
+            TAIYI_REALM_KEY, "太乙界", "太乙门", MapColor.COLOR_LIGHT_BLUE,
+            YsPortalContent.taiyiParticle());
+    public static final Item TAIYI_KEY = item("taiyi_key",
+            new YsPortalContent.RealmKeyItem(TAIYI_GATE, TAIYI_BRICKS, "太乙界", "太乙门",
+                    YsPortalContent.keyProps("taiyi_key")));
+
+    // ---- 第 20 轮：相面 · 阵盘 · 镇物 ----
+
+    /** 相面镜：照村民面相，贵相可招募（走好感度的官方通道）。 */
+    public static final Item FACE_MIRROR = item("face_mirror",
+            new Item(props("face_mirror").stacksTo(1).rarity(Rarity.UNCOMMON)));
+    /** 八卦阵盘：阵内抗性回血，邪祟受抑。 */
+    public static final Item BAGUA_ARRAY_DISC = item("bagua_array_disc",
+            new YsItemContent.FormationDisc(
+                    props("bagua_array_disc").stacksTo(4).rarity(Rarity.UNCOMMON), "bagua"));
+    /** 北斗阵盘：阵内夜视疾行。 */
+    public static final Item BEIDOU_ARRAY_DISC = item("beidou_array_disc",
+            new YsItemContent.FormationDisc(
+                    props("beidou_array_disc").stacksTo(4).rarity(Rarity.UNCOMMON), "beidou"));
+    /** 招财阵盘：阵内幸运（招财一条归它管）。 */
+    public static final Item ZHAOCAI_ARRAY_DISC = item("zhaocai_array_disc",
+            new YsItemContent.FormationDisc(
+                    props("zhaocai_array_disc").stacksTo(4).rarity(Rarity.UNCOMMON), "zhaocai"));
+    /** 镇宅石：镇宅避邪，半径内邪祟受抑。 */
+    public static final Block ZHENZHAI_STONE = block("zhenzhai_stone", Block::new,
+            BlockBehaviour.Properties.of().setId(YsReg.blockKey("zhenzhai_stone"))
+                    .mapColor(MapColor.COLOR_GRAY).strength(3.0F, 9.0F)
+                    .requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE));
+    /** 化煞碑：化煞，半径内凶地上抬一档。 */
+    public static final Block HUASHA_STONE = block("huasha_stone", Block::new,
+            BlockBehaviour.Properties.of().setId(YsReg.blockKey("huasha_stone"))
+                    .mapColor(MapColor.COLOR_BLACK).strength(3.0F, 9.0F)
+                    .requiresCorrectToolForDrops().sound(SoundType.DEEPSLATE));
+
     // ==================================================================== 灵兽刷怪蛋
 
     public static final Item FATE_WISP_SPAWN_EGG = spawnEgg("fate_wisp_spawn_egg", YsMobs.FATE_WISP);
@@ -871,6 +1050,253 @@ public final class YsRegistry {
     public static final Item XING_FOX_SPAWN_EGG = spawnEgg("xing_fox_spawn_egg", YsMobs.XING_FOX);
     public static final Item DUN_RAT_SPAWN_EGG = spawnEgg("dun_rat_spawn_egg", YsMobs.DUN_RAT);
     public static final Item JIA_BIRD_SPAWN_EGG = spawnEgg("jia_bird_spawn_egg", YsMobs.JIA_BIRD);
+
+    // ==================================================================== 木板三件套（第 22 轮）
+
+    /** 各树种 → 木板。 */
+    public static final Map<String, Block> WOOD_PLANKS = new LinkedHashMap<>();
+    /** 各树种 → 台阶。 */
+    public static final Map<String, Block> WOOD_SLABS = new LinkedHashMap<>();
+    /** 各树种 → 楼梯。 */
+    public static final Map<String, Block> WOOD_STAIRS = new LinkedHashMap<>();
+
+    /** 一组木三件套：木板 + 台阶 + 楼梯，返回木板。 */
+    private static Block plankSet(String species, MapColor color) {
+        Block planks = block(species + "_planks", Block::new,
+                blockProps(species + "_planks", color).strength(2.0F, 3.0F)
+                        .sound(SoundType.WOOD).ignitedByLava());
+        Block slab = block(species + "_slab", SlabBlock::new,
+                blockProps(species + "_slab", color).strength(2.0F, 3.0F)
+                        .sound(SoundType.WOOD).ignitedByLava());
+        Block stairs = block(species + "_stairs",
+                p -> new YsBlockContent.YsStairs(planks.defaultBlockState(), p),
+                blockProps(species + "_stairs", color).strength(2.0F, 3.0F)
+                        .sound(SoundType.WOOD).ignitedByLava());
+        WOOD_PLANKS.put(species, planks);
+        WOOD_SLABS.put(species, slab);
+        WOOD_STAIRS.put(species, stairs);
+        return planks;
+    }
+
+    /** 二十一种树的三件套，配色与原木一致。 */
+    public static final Block ASTRAL_WOOD_PLANKS = plankSet("astral_wood", MapColor.COLOR_PURPLE);
+    public static final Block METEOR_WOOD_PLANKS = plankSet("meteor_wood", MapColor.COLOR_BLUE);
+    public static final Block MOON_WOOD_PLANKS = plankSet("moon_wood", MapColor.COLOR_LIGHT_BLUE);
+    public static final Block JADE_WOOD_PLANKS = plankSet("jade_wood", MapColor.COLOR_GREEN);
+    public static final Block CLOUD_WOOD_PLANKS = plankSet("cloud_wood", MapColor.COLOR_CYAN);
+    public static final Block PEACH_WOOD_PLANKS = plankSet("peach_wood", MapColor.COLOR_PINK);
+    public static final Block HEXA_WOOD_PLANKS = plankSet("hexa_wood", MapColor.COLOR_GRAY);
+    public static final Block INK_WOOD_PLANKS = plankSet("ink_wood", MapColor.COLOR_BLACK);
+    public static final Block MYSTERY_WOOD_PLANKS = plankSet("mystery_wood", MapColor.COLOR_BLUE);
+    public static final Block ZIWEI_WOOD_PLANKS = plankSet("ziwei_wood", MapColor.COLOR_PURPLE);
+    public static final Block DOU_WOOD_PLANKS = plankSet("dou_wood", MapColor.COLOR_BLUE);
+    public static final Block TIANJI_WOOD_PLANKS = plankSet("tianji_wood", MapColor.COLOR_MAGENTA);
+    public static final Block REN_WOOD_PLANKS = plankSet("ren_wood", MapColor.COLOR_CYAN);
+    public static final Block GUI_WOOD_PLANKS = plankSet("gui_wood", MapColor.COLOR_LIGHT_BLUE);
+    public static final Block SHE_WOOD_PLANKS = plankSet("she_wood", MapColor.COLOR_RED);
+    public static final Block MEN_WOOD_PLANKS = plankSet("men_wood", MapColor.COLOR_ORANGE);
+    public static final Block XING_WOOD_PLANKS = plankSet("xing_wood", MapColor.COLOR_YELLOW);
+    public static final Block TAIYI_WOOD_PLANKS = plankSet("taiyi_wood", MapColor.COLOR_LIGHT_BLUE);
+    public static final Block WENCHANG_WOOD_PLANKS = plankSet("wenchang_wood", MapColor.COLOR_CYAN);
+    public static final Block JISHEN_WOOD_PLANKS = plankSet("jishen_wood", MapColor.COLOR_BLUE);
+    public static final Block DUN_WOOD_PLANKS = plankSet("dun_wood", MapColor.COLOR_RED);
+
+    // ==================================================================== 木船（第 23 轮）
+
+    /** 各树种 → 船物品。 */
+    public static final Map<String, Item> WOOD_BOATS = new LinkedHashMap<>();
+    /** 各树种 → 船实体类型（客户端渲染注册用）。 */
+    public static final Map<String, EntityType<Boat>> WOOD_BOAT_TYPES = new LinkedHashMap<>();
+
+    /**
+     * 一条船：船实体 + 船物品。
+     *
+     * <p>掉落物走 {@code Supplier<Item>} 惰性解析 —— 原版也是这么绕开
+     * 「实体要物品做掉落物、物品要实体做放置」这对循环引用的。
+     */
+    private static Item boatSet(String species) {
+        EntityType<Boat> type = EntityType.Builder
+                .<Boat>of((t, level) -> new Boat(t, level, () -> WOOD_BOATS.get(species)),
+                        MobCategory.MISC)
+                .sized(1.375F, 0.5625F).eyeHeight(0.4375F).clientTrackingRange(10)
+                .build(ResourceKey.create(Registries.ENTITY_TYPE, YishuMod.id(species + "_boat")));
+        Registry.register(BuiltInRegistries.ENTITY_TYPE, YishuMod.id(species + "_boat"), type);
+        WOOD_BOAT_TYPES.put(species, type);
+        Item boat = item(species + "_boat",
+                new BoatItem(type, props(species + "_boat").stacksTo(1)));
+        WOOD_BOATS.put(species, boat);
+        return boat;
+    }
+
+    /** 二十一种树各一条船 —— 过河要用本界的木头，才不虚水里的煞。 */
+    public static final Item ASTRAL_WOOD_BOAT = boatSet("astral_wood");
+    public static final Item METEOR_WOOD_BOAT = boatSet("meteor_wood");
+    public static final Item MOON_WOOD_BOAT = boatSet("moon_wood");
+    public static final Item JADE_WOOD_BOAT = boatSet("jade_wood");
+    public static final Item CLOUD_WOOD_BOAT = boatSet("cloud_wood");
+    public static final Item PEACH_WOOD_BOAT = boatSet("peach_wood");
+    public static final Item HEXA_WOOD_BOAT = boatSet("hexa_wood");
+    public static final Item INK_WOOD_BOAT = boatSet("ink_wood");
+    public static final Item MYSTERY_WOOD_BOAT = boatSet("mystery_wood");
+    public static final Item ZIWEI_WOOD_BOAT = boatSet("ziwei_wood");
+    public static final Item DOU_WOOD_BOAT = boatSet("dou_wood");
+    public static final Item TIANJI_WOOD_BOAT = boatSet("tianji_wood");
+    public static final Item REN_WOOD_BOAT = boatSet("ren_wood");
+    public static final Item GUI_WOOD_BOAT = boatSet("gui_wood");
+    public static final Item SHE_WOOD_BOAT = boatSet("she_wood");
+    public static final Item MEN_WOOD_BOAT = boatSet("men_wood");
+    public static final Item XING_WOOD_BOAT = boatSet("xing_wood");
+    public static final Item TAIYI_WOOD_BOAT = boatSet("taiyi_wood");
+    public static final Item WENCHANG_WOOD_BOAT = boatSet("wenchang_wood");
+    public static final Item JISHEN_WOOD_BOAT = boatSet("jishen_wood");
+    public static final Item DUN_WOOD_BOAT = boatSet("dun_wood");
+
+    // ==================================================================== 木变体家族（第 25 轮）
+
+    /** 各树种 → 栅栏 / 栅栏门 / 门 / 活板门 / 按钮 / 压力板 / 立牌 / 挂牌。 */
+    public static final Map<String, Block> WOOD_FENCES = new LinkedHashMap<>();
+    public static final Map<String, Block> WOOD_FENCE_GATES = new LinkedHashMap<>();
+    public static final Map<String, Block> WOOD_DOORS = new LinkedHashMap<>();
+    public static final Map<String, Block> WOOD_TRAPDOORS = new LinkedHashMap<>();
+    public static final Map<String, Block> WOOD_BUTTONS = new LinkedHashMap<>();
+    public static final Map<String, Block> WOOD_PLATES = new LinkedHashMap<>();
+    public static final Map<String, Block> WOOD_STANDING_SIGNS = new LinkedHashMap<>();
+    public static final Map<String, Block> WOOD_WALL_SIGNS = new LinkedHashMap<>();
+    /** 各树种 → 告示牌物品（挂牌与立牌共用一件物品）。 */
+    public static final Map<String, Item> WOOD_SIGN_ITEMS = new LinkedHashMap<>();
+    /** 各树种 → 运输船物品。 */
+    public static final Map<String, Item> WOOD_CHEST_BOATS = new LinkedHashMap<>();
+    /** 各树种 → 运输船实体类型（客户端渲染注册用）。 */
+    public static final Map<String, EntityType<ChestBoat>> WOOD_CHEST_BOAT_TYPES = new LinkedHashMap<>();
+    /** 告示牌方块清单（挂到模组告示牌方块实体类型上）。 */
+    private static final List<Block> SIGN_BLOCKS = new ArrayList<>();
+
+    /**
+     * 一组木变体：栅栏、栅栏门、门、活板门、按钮、压力板、立式告示牌 + 挂墙告示牌。
+     *
+     * <p>门/活板门/按钮/压力板/告示牌的原版构造器是 protected，用本类底部的壳子类接住；
+     * BlockSetType 与 WoodType 直接复用原版 OAK —— 26.2 的 register 方法是 private
+     * 没法注册自定义木种，而音效与贴图本来就不由它决定（贴图走我们自己的模型）。
+     *
+     * <p>门与告示牌没有默认 BlockItem（门要 DoubleHighBlockItem 才能正确放置上半格，
+     * 告示牌是立牌/挂牌两方块共用一件物品），所以走 blockOnly + 手动注册物品。
+     */
+    private static Block variantSet(String species, MapColor color) {
+        Block fence = block(species + "_fence", FenceBlock::new,
+                blockProps(species + "_fence", color).strength(2.0F, 3.0F)
+                        .sound(SoundType.WOOD).ignitedByLava());
+        WOOD_FENCES.put(species, fence);
+        Block gate = block(species + "_fence_gate", p -> new FenceGateBlock(WoodType.OAK, p),
+                blockProps(species + "_fence_gate", color).strength(2.0F, 3.0F)
+                        .sound(SoundType.WOOD).ignitedByLava());
+        WOOD_FENCE_GATES.put(species, gate);
+        Block door = blockOnly(species + "_door", p -> new YsDoor(BlockSetType.OAK, p),
+                blockProps(species + "_door", color).strength(3.0F)
+                        .sound(SoundType.WOOD).ignitedByLava().noOcclusion());
+        WOOD_DOORS.put(species, door);
+        item(species + "_door", new DoubleHighBlockItem(door, props(species + "_door").stacksTo(16)));
+        Block trapdoor = block(species + "_trapdoor", p -> new YsTrapdoor(BlockSetType.OAK, p),
+                blockProps(species + "_trapdoor", color).strength(3.0F)
+                        .sound(SoundType.WOOD).ignitedByLava().noOcclusion());
+        WOOD_TRAPDOORS.put(species, trapdoor);
+        Block button = block(species + "_button", p -> new YsWoodButton(BlockSetType.OAK, 30, p),
+                blockProps(species + "_button", color).noCollision().strength(0.5F)
+                        .sound(SoundType.WOOD));
+        WOOD_BUTTONS.put(species, button);
+        Block plate = block(species + "_pressure_plate", p -> new YsWoodPlate(BlockSetType.OAK, p),
+                blockProps(species + "_pressure_plate", color).noCollision().strength(0.5F)
+                        .sound(SoundType.WOOD).ignitedByLava());
+        WOOD_PLATES.put(species, plate);
+        Block standingSign = blockOnly(species + "_standing_sign", YsStandingSign::new,
+                blockProps(species + "_standing_sign", color).strength(1.0F)
+                        .sound(SoundType.WOOD).ignitedByLava());
+        WOOD_STANDING_SIGNS.put(species, standingSign);
+        SIGN_BLOCKS.add(standingSign);
+        Block wallSign = blockOnly(species + "_wall_sign", YsWallSign::new,
+                blockProps(species + "_wall_sign", color).strength(1.0F)
+                        .sound(SoundType.WOOD).ignitedByLava());
+        WOOD_WALL_SIGNS.put(species, wallSign);
+        SIGN_BLOCKS.add(wallSign);
+        Item signItem = item(species + "_sign",
+                new SignItem(standingSign, wallSign, props(species + "_sign").stacksTo(16)));
+        WOOD_SIGN_ITEMS.put(species, signItem);
+        return fence;
+    }
+
+    /** 二十一种树各一组变体（返回值是栅栏，仅作类加载锚点）。 */
+    public static final Block ASTRAL_WOOD_VARIANTS = variantSet("astral_wood", MapColor.COLOR_PURPLE);
+    public static final Block METEOR_WOOD_VARIANTS = variantSet("meteor_wood", MapColor.COLOR_BLUE);
+    public static final Block MOON_WOOD_VARIANTS = variantSet("moon_wood", MapColor.COLOR_LIGHT_BLUE);
+    public static final Block JADE_WOOD_VARIANTS = variantSet("jade_wood", MapColor.COLOR_GREEN);
+    public static final Block CLOUD_WOOD_VARIANTS = variantSet("cloud_wood", MapColor.COLOR_CYAN);
+    public static final Block PEACH_WOOD_VARIANTS = variantSet("peach_wood", MapColor.COLOR_PINK);
+    public static final Block HEXA_WOOD_VARIANTS = variantSet("hexa_wood", MapColor.COLOR_GRAY);
+    public static final Block INK_WOOD_VARIANTS = variantSet("ink_wood", MapColor.COLOR_BLACK);
+    public static final Block MYSTERY_WOOD_VARIANTS = variantSet("mystery_wood", MapColor.COLOR_BLUE);
+    public static final Block ZIWEI_WOOD_VARIANTS = variantSet("ziwei_wood", MapColor.COLOR_PURPLE);
+    public static final Block DOU_WOOD_VARIANTS = variantSet("dou_wood", MapColor.COLOR_BLUE);
+    public static final Block TIANJI_WOOD_VARIANTS = variantSet("tianji_wood", MapColor.COLOR_MAGENTA);
+    public static final Block REN_WOOD_VARIANTS = variantSet("ren_wood", MapColor.COLOR_CYAN);
+    public static final Block GUI_WOOD_VARIANTS = variantSet("gui_wood", MapColor.COLOR_LIGHT_BLUE);
+    public static final Block SHE_WOOD_VARIANTS = variantSet("she_wood", MapColor.COLOR_RED);
+    public static final Block MEN_WOOD_VARIANTS = variantSet("men_wood", MapColor.COLOR_ORANGE);
+    public static final Block XING_WOOD_VARIANTS = variantSet("xing_wood", MapColor.COLOR_YELLOW);
+    public static final Block TAIYI_WOOD_VARIANTS = variantSet("taiyi_wood", MapColor.COLOR_LIGHT_BLUE);
+    public static final Block WENCHANG_WOOD_VARIANTS = variantSet("wenchang_wood", MapColor.COLOR_CYAN);
+    public static final Block JISHEN_WOOD_VARIANTS = variantSet("jishen_wood", MapColor.COLOR_BLUE);
+    public static final Block DUN_WOOD_VARIANTS = variantSet("dun_wood", MapColor.COLOR_RED);
+
+    /** 一条运输船：实体 + 物品（掉落物走 Supplier 惰性解析，与普通船同构）。 */
+    private static Item chestBoatSet(String species) {
+        EntityType<ChestBoat> type = EntityType.Builder
+                .<ChestBoat>of((t, level) -> new ChestBoat(t, level, () -> WOOD_CHEST_BOATS.get(species)),
+                        MobCategory.MISC)
+                .sized(1.375F, 0.5625F).eyeHeight(0.4375F).clientTrackingRange(10)
+                .build(ResourceKey.create(Registries.ENTITY_TYPE, YishuMod.id(species + "_chest_boat")));
+        Registry.register(BuiltInRegistries.ENTITY_TYPE, YishuMod.id(species + "_chest_boat"), type);
+        WOOD_CHEST_BOAT_TYPES.put(species, type);
+        Item boat = item(species + "_chest_boat",
+                new BoatItem(type, props(species + "_chest_boat").stacksTo(1)));
+        WOOD_CHEST_BOATS.put(species, boat);
+        return boat;
+    }
+
+    /** 二十一种树各一条运输船。 */
+    public static final Item ASTRAL_WOOD_CHEST_BOAT = chestBoatSet("astral_wood");
+    public static final Item METEOR_WOOD_CHEST_BOAT = chestBoatSet("meteor_wood");
+    public static final Item MOON_WOOD_CHEST_BOAT = chestBoatSet("moon_wood");
+    public static final Item JADE_WOOD_CHEST_BOAT = chestBoatSet("jade_wood");
+    public static final Item CLOUD_WOOD_CHEST_BOAT = chestBoatSet("cloud_wood");
+    public static final Item PEACH_WOOD_CHEST_BOAT = chestBoatSet("peach_wood");
+    public static final Item HEXA_WOOD_CHEST_BOAT = chestBoatSet("hexa_wood");
+    public static final Item INK_WOOD_CHEST_BOAT = chestBoatSet("ink_wood");
+    public static final Item MYSTERY_WOOD_CHEST_BOAT = chestBoatSet("mystery_wood");
+    public static final Item ZIWEI_WOOD_CHEST_BOAT = chestBoatSet("ziwei_wood");
+    public static final Item DOU_WOOD_CHEST_BOAT = chestBoatSet("dou_wood");
+    public static final Item TIANJI_WOOD_CHEST_BOAT = chestBoatSet("tianji_wood");
+    public static final Item REN_WOOD_CHEST_BOAT = chestBoatSet("ren_wood");
+    public static final Item GUI_WOOD_CHEST_BOAT = chestBoatSet("gui_wood");
+    public static final Item SHE_WOOD_CHEST_BOAT = chestBoatSet("she_wood");
+    public static final Item MEN_WOOD_CHEST_BOAT = chestBoatSet("men_wood");
+    public static final Item XING_WOOD_CHEST_BOAT = chestBoatSet("xing_wood");
+    public static final Item TAIYI_WOOD_CHEST_BOAT = chestBoatSet("taiyi_wood");
+    public static final Item WENCHANG_WOOD_CHEST_BOAT = chestBoatSet("wenchang_wood");
+    public static final Item JISHEN_WOOD_CHEST_BOAT = chestBoatSet("jishen_wood");
+    public static final Item DUN_WOOD_CHEST_BOAT = chestBoatSet("dun_wood");
+
+    /** 模组告示牌方块实体类型：42 个告示牌方块共用，客户端用原版 StandingSignRenderer 画字。 */
+    private static BlockEntityType<YsSignBlockEntity> signBeHolder;
+
+    public static final BlockEntityType<YsSignBlockEntity> YISHU_SIGN_BE = makeSignBe();
+
+    private static BlockEntityType<YsSignBlockEntity> makeSignBe() {
+        BlockEntityType<YsSignBlockEntity> type = FabricBlockEntityTypeBuilder
+                .create((pos, state) -> new YsSignBlockEntity(signBeHolder, pos, state),
+                        SIGN_BLOCKS.toArray(new Block[0]))
+                .build();
+        signBeHolder = type;
+        return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, YishuMod.id("sign"), type);
+    }
 
     // ==================================================================== 创造物品栏
 
@@ -1159,6 +1585,113 @@ public final class YsRegistry {
                         output.accept(XING_FOX_SPAWN_EGG);
                         output.accept(DUN_RAT_SPAWN_EGG);
                         output.accept(JIA_BIRD_SPAWN_EGG);
+                        // ---- 第 19 轮：太乙界 ----
+                        output.accept(TAIYI_STONE);
+                        output.accept(TAIYI_BRICKS);
+                        output.accept(TAIYI_LAMP);
+                        output.accept(TAIYI_TERRACE);
+                        output.accept(WENCHANG_ALTAR);
+                        output.accept(TAIYI_ORE);
+                        output.accept(WENCHANG_ORE);
+                        output.accept(SHIJI_ORE);
+                        output.accept(ZHUKE_ORE);
+                        output.accept(TAIYI_CRYSTAL);
+                        output.accept(TAIYI_ESSENCE);
+                        output.accept(TAIYI_SHARD);
+                        output.accept(TAIYI_GRAIN);
+                        output.accept(TAIYI_BLOOM);
+                        output.accept(TAIYI_GRASS);
+                        output.accept(TAIYI_WOOD_LOG);
+                        output.accept(TAIYI_WOOD_LEAVES);
+                        output.accept(TAIYI_WOOD_SAPLING);
+                        output.accept(WENCHANG_WOOD_LOG);
+                        output.accept(WENCHANG_WOOD_LEAVES);
+                        output.accept(WENCHANG_WOOD_SAPLING);
+                        output.accept(JISHEN_WOOD_LOG);
+                        output.accept(JISHEN_WOOD_LEAVES);
+                        output.accept(JISHEN_WOOD_SAPLING);
+                        output.accept(TAIYI_SEEDS);
+                        output.accept(TAIYI_SPRING_BUCKET);
+                        // 十一、七界凶液 · 矿物原矿（第 21 轮）
+                        output.accept(ASTRAL_SLAG_BUCKET);
+                        output.accept(JADE_ACID_BUCKET);
+                        output.accept(YAO_MIASMA_BUCKET);
+                        output.accept(ZIWEI_BANE_BUCKET);
+                        output.accept(LIUREN_ABYSS_BUCKET);
+                        output.accept(QIMEN_HELLFIRE_BUCKET);
+                        output.accept(TAIYI_FROST_BUCKET);
+                        output.accept(ASTRAL_RAW);
+                        output.accept(JADE_RAW);
+                        output.accept(YAO_RAW);
+                        output.accept(METEOR_RAW);
+                        output.accept(INK_IRON_RAW);
+                        output.accept(MICA_RAW);
+                        output.accept(ONYX_RAW);
+                        output.accept(STAR_SAND_RAW);
+                        output.accept(VEIN_RAW);
+                        output.accept(VERDANT_RAW);
+                        output.accept(ORACLE_RAW);
+                        output.accept(CRYSTAL_RAW);
+                        output.accept(ZIWEI_CRYSTAL_RAW);
+                        output.accept(REN_RAW);
+                        output.accept(GUI_RAW);
+                        output.accept(SHE_RAW);
+                        output.accept(XUAN_RAW);
+                        output.accept(MEN_RAW);
+                        output.accept(XING_RAW);
+                        output.accept(DUN_RAW);
+                        output.accept(JIA_RAW);
+                        output.accept(TAIYI_RAW);
+                        output.accept(WENCHANG_RAW);
+                        output.accept(SHIJI_RAW);
+                        output.accept(ZHUKE_RAW);
+                        output.accept(TAIYI_KEY);
+                        // 十一、木三件套（第 22 轮）
+                        for (Block planks : WOOD_PLANKS.values()) {
+                            output.accept(planks);
+                        }
+                        for (Block slab : WOOD_SLABS.values()) {
+                            output.accept(slab);
+                        }
+                        for (Block stairs : WOOD_STAIRS.values()) {
+                            output.accept(stairs);
+                        }
+                        // 十二、木船（第 23 轮）
+                        for (Item boat : WOOD_BOATS.values()) {
+                            output.accept(boat);
+                        }
+                        // 十三、运输船与木变体家族（第 25 轮）
+                        for (Item chestBoat : WOOD_CHEST_BOATS.values()) {
+                            output.accept(chestBoat);
+                        }
+                        for (Block fence : WOOD_FENCES.values()) {
+                            output.accept(fence);
+                        }
+                        for (Block gate : WOOD_FENCE_GATES.values()) {
+                            output.accept(gate);
+                        }
+                        for (Block door : WOOD_DOORS.values()) {
+                            output.accept(door);
+                        }
+                        for (Block trapdoor : WOOD_TRAPDOORS.values()) {
+                            output.accept(trapdoor);
+                        }
+                        for (Block button : WOOD_BUTTONS.values()) {
+                            output.accept(button);
+                        }
+                        for (Block plate : WOOD_PLATES.values()) {
+                            output.accept(plate);
+                        }
+                        for (Item signItem : WOOD_SIGN_ITEMS.values()) {
+                            output.accept(signItem);
+                        }
+                        // 十、相面 · 阵盘 · 镇物（第 20 轮）
+                        output.accept(FACE_MIRROR);
+                        output.accept(BAGUA_ARRAY_DISC);
+                        output.accept(BEIDOU_ARRAY_DISC);
+                        output.accept(ZHAOCAI_ARRAY_DISC);
+                        output.accept(ZHENZHAI_STONE);
+                        output.accept(HUASHA_STONE);
                     })
                     .build());
 
@@ -1365,6 +1898,46 @@ public final class YsRegistry {
     /** 触发类加载。 */
     public static void bootstrap() {
         // 静态字段初始化即完成注册
+        registerWoodFlammability();
+    }
+
+    /**
+     * 木头进原版火焰体系（第 24 轮）。
+     *
+     * <p>原版的可燃表（FireBlock.bootStrap）是逐方块硬编码的，模组方块天生点不着 ——
+     * 走 Fabric 的 FlammableBlockRegistry 把易枢木头补录进去，数值与原版对齐：
+     * 原木 5/5、板材 20/5、树叶与树苗 30/60（燃烧概率 / 引燃概率）。
+     * 石质台阶楼梯不在列（只认 WOOD_* 三张表，不会误伤维度建材）。
+     */
+    private static void registerWoodFlammability() {
+        FlammableBlockRegistry fire = FlammableBlockRegistry.getDefaultInstance();
+        for (var entry : BuiltInRegistries.BLOCK.entrySet()) {
+            if (!entry.getKey().identifier().getNamespace().equals(YishuMod.MOD_ID)) {
+                continue;
+            }
+            String path = entry.getKey().identifier().getPath();
+            if (path.endsWith("_log")) {
+                fire.add(entry.getValue(), 5, 5);
+            } else if (path.endsWith("_leaves") || path.endsWith("_sapling")) {
+                fire.add(entry.getValue(), 30, 60);
+            }
+        }
+        for (Block planks : WOOD_PLANKS.values()) {
+            fire.add(planks, 20, 5);
+        }
+        for (Block slab : WOOD_SLABS.values()) {
+            fire.add(slab, 20, 5);
+        }
+        for (Block stairs : WOOD_STAIRS.values()) {
+            fire.add(stairs, 20, 5);
+        }
+        // 第 25 轮：变体家族也照原版数值可燃（栅栏/门/活板门/按钮/压力板/告示牌）
+        for (Map<String, Block> set : List.of(WOOD_FENCES, WOOD_FENCE_GATES, WOOD_DOORS,
+                WOOD_TRAPDOORS, WOOD_BUTTONS, WOOD_PLATES, WOOD_STANDING_SIGNS, WOOD_WALL_SIGNS)) {
+            for (Block variant : set.values()) {
+                fire.add(variant, 20, 5);
+            }
+        }
     }
 
     /** 供界面与文档列出全部内容。 */
@@ -1381,5 +1954,68 @@ public final class YsRegistry {
     /** 一份「这是什么吃的」测试用食物（保留接口以便扩展）。 */
     public static FoodProperties simpleFood(int nutrition, float saturation) {
         return new FoodProperties(nutrition, saturation, Boolean.FALSE);
+    }
+
+    // ==================================================================== 壳子类（第 25 轮）
+
+    /** 木门：原版 DoorBlock 构造是 protected，接个 public 的。 */
+    public static final class YsDoor extends DoorBlock {
+        public YsDoor(BlockSetType type, BlockBehaviour.Properties properties) {
+            super(type, properties);
+        }
+    }
+
+    /** 木活板门。 */
+    public static final class YsTrapdoor extends TrapDoorBlock {
+        public YsTrapdoor(BlockSetType type, BlockBehaviour.Properties properties) {
+            super(type, properties);
+        }
+    }
+
+    /** 木按钮（30 刻 = 原版木按钮按压时长）。 */
+    public static final class YsWoodButton extends ButtonBlock {
+        public YsWoodButton(BlockSetType type, int pressDuration,
+                            BlockBehaviour.Properties properties) {
+            super(type, pressDuration, properties);
+        }
+    }
+
+    /** 木压力板。 */
+    public static final class YsWoodPlate extends PressurePlateBlock {
+        public YsWoodPlate(BlockSetType type, BlockBehaviour.Properties properties) {
+            super(type, properties);
+        }
+    }
+
+    /** 立式告示牌：方块实体用模组自己的类型（这样原版渲染器照画，无需 mixin）。 */
+    public static final class YsStandingSign extends StandingSignBlock {
+        public YsStandingSign(BlockBehaviour.Properties properties) {
+            super(WoodType.OAK, properties);
+        }
+
+        @Override
+        public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+            return new YsSignBlockEntity(YISHU_SIGN_BE, pos, state);
+        }
+    }
+
+    /** 挂墙告示牌。 */
+    public static final class YsWallSign extends WallSignBlock {
+        public YsWallSign(BlockBehaviour.Properties properties) {
+            super(WoodType.OAK, properties);
+        }
+
+        @Override
+        public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+            return new YsSignBlockEntity(YISHU_SIGN_BE, pos, state);
+        }
+    }
+
+    /** 模组告示牌方块实体：本体就是原版 SignBlockEntity，换个类型挂我们的方块。 */
+    public static final class YsSignBlockEntity extends SignBlockEntity {
+        public YsSignBlockEntity(BlockEntityType<? extends SignBlockEntity> type,
+                                 BlockPos pos, BlockState state) {
+            super(type, pos, state);
+        }
     }
 }

@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:item/generated",
+ "textures": {
+  "layer0": "yishu:item/dun_wood_chest_boat"
+ }
+}

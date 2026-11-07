@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:item/generated",
+ "textures": {
+  "layer0": "yishu:item/taiyi_spring_bucket"
+ }
+}

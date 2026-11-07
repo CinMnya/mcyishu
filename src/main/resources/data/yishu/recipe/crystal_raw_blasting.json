@@ -1,0 +1,11 @@
+{
+ "type": "minecraft:blasting",
+ "category": "misc",
+ "ingredient": "yishu:crystal_raw",
+ "result": {
+  "id": "yishu:star_crystal",
+  "count": 1
+ },
+ "experience": 0.7,
+ "cookingtime": 100
+}

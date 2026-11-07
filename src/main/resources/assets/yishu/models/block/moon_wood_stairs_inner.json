@@ -1,0 +1,8 @@
+{
+ "parent": "minecraft:block/stairs_inner",
+ "textures": {
+  "bottom": "yishu:block/moon_wood_planks",
+  "side": "yishu:block/moon_wood_planks",
+  "top": "yishu:block/moon_wood_planks"
+ }
+}

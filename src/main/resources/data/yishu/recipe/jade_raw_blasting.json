@@ -1,0 +1,11 @@
+{
+ "type": "minecraft:blasting",
+ "category": "misc",
+ "ingredient": "yishu:jade_raw",
+ "result": {
+  "id": "yishu:jade_grit",
+  "count": 1
+ },
+ "experience": 0.7,
+ "cookingtime": 100
+}

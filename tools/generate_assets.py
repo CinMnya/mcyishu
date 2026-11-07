@@ -224,6 +224,13 @@ WOOD_COLORS = {
                      rgb("C09060"), rgb("906A40"), rgb("E8B888")),
     "xing_wood":    (rgb("B0A050"), rgb("807030"), rgb("D8C880"),
                      rgb("C8B060"), rgb("988038"), rgb("E8D898")),
+    # 第 19 轮：太乙界三树种
+    "taiyi_wood":   (rgb("5A86B8"), rgb("3A5C80"), rgb("88B0DC"),
+                     rgb("6E9CD0"), rgb("3E6088"), rgb("B4DCF8")),
+    "wenchang_wood": (rgb("4E96A8"), rgb("326874"), rgb("7AC0D0"),
+                     rgb("5AB0C0"), rgb("387C8A"), rgb("9CE0EC")),
+    "jishen_wood":  (rgb("6A72B0"), rgb("444A78"), rgb("9AA0DC"),
+                     rgb("7C86C8"), rgb("525AA0"), rgb("B8BEF0")),
     "dun_wood":     (rgb("A05A40"), rgb("703828"), rgb("C88868"),
                      rgb("B87050"), rgb("884830"), rgb("E89878")),
 }
@@ -248,6 +255,11 @@ ORE_TEX = {
     "she_ore": (rgb("F09090"), rgb("963838")),
     "xuan_ore": (rgb("6E6E88"), rgb("2A2A3A")),
     "men_ore": (rgb("F0B070"), rgb("9A5A28")),
+    # 第 19 轮：太乙界四矿
+    "taiyi_ore": (rgb("A8D0F8"), rgb("3E6A9C")),
+    "wenchang_ore": (rgb("88D8E8"), rgb("3A7A90")),
+    "shiji_ore": (rgb("C0B8F0"), rgb("5A4E96")),
+    "zhuke_ore": (rgb("F0D890"), rgb("9A7A38")),
     "xing_ore": (rgb("F8E080"), rgb("A08A28")),
     "dun_ore": (rgb("E08060"), rgb("8A4028")),
     "jia_ore": (rgb("D8D8C0"), rgb("8A8A70")),
@@ -296,6 +308,12 @@ ASTRAL_DEW_D = rgb("5E88B8")
 ASTRAL_DEW_L = rgb("E4F4FF")
 
 QM_HG = rgb("B4BAC8")
+# 第 19 轮：太乙界（星蓝，与紫微紫、壬水青都拉开）
+TY = rgb("6E9CD0")
+TY_D = rgb("3E6088")
+TY_L = rgb("B4DCF8")
+TY_KEY = rgb("4A80C0")
+TY_KEY_L = rgb("A8D0F0")
 QM_HG_D = rgb("787E8C")
 QM_HG_L = rgb("ECF2FA")
 
@@ -567,6 +585,27 @@ def tex_shard(kind):
     for x, y in pts:
         if 0 <= x < 16 and 0 <= y < 16:
             c.put(x, y, shade(base, 1.3))
+    return c
+
+
+def tex_raw_ore(base, ore_hi):
+    """矿物原矿（第 21 轮）：一块不规则的粗粝矿石，带矿色斑点。"""
+    c = Canvas()
+    rock = rgb("8A8A8A")
+    rock_d = rgb("5C5C5C")
+    # 主体：不规则团块（(x*y)%3 做确定性毛边）
+    c.mask(lambda x, y: (2 <= x <= 13 and 2 <= y <= 13
+                         and abs(x - 7.5) + abs(y - 7.5) + ((x * y) % 3) <= 10.5), rock)
+    c.mask(lambda x, y: (3 <= x <= 12 and 3 <= y <= 12
+                         and abs(x - 7.5) + abs(y - 7.5) <= 5.5), shade(rock, 1.15))
+    # 底部压暗
+    c.mask(lambda x, y: (y >= 11 and 2 <= x <= 13
+                         and abs(x - 7.5) + abs(y - 7.5) <= 11), rock_d)
+    # 矿色斑点：主色 + 高光
+    for sx, sy in [(4, 5), (6, 4), (9, 5), (11, 7), (5, 9), (8, 9), (10, 10), (7, 11), (4, 7)]:
+        c.put(sx, sy, base)
+        if 0 <= sy - 1:
+            c.put(sx, sy - 1, ore_hi)
     return c
 
 
@@ -1026,9 +1065,9 @@ def tex_icon():
 # ------------------------------------------------------------------ 第 9 轮：维度门户与灵植
 
 GATE_DEEP = {"astral": rgb("3A2E66"), "jade": rgb("2E5C4C"), "yao": rgb("33333A"),
-             "ziwei": rgb("2E2250"), "liuren": rgb("1E4A56"), "qimen": rgb("4A2A10")}
+             "ziwei": rgb("2E2250"), "liuren": rgb("1E4A56"), "qimen": rgb("4A2A10"), "taiyi": rgb("142C4C")}
 GATE_GLOW = {"astral": rgb("B9A8F0"), "jade": rgb("8FE0C0"), "yao": rgb("E09070"),
-             "ziwei": rgb("C8A8F0"), "liuren": rgb("8AD8E8"), "qimen": rgb("F0B870")}
+             "ziwei": rgb("C8A8F0"), "liuren": rgb("8AD8E8"), "qimen": rgb("F0B870"), "taiyi": rgb("9CC8F0")}
 
 
 def tex_ore(ore, ore_hi):
@@ -1357,6 +1396,127 @@ def tex_log_top(base, dark, light):
     return c
 
 
+def tex_planks(base, dark, light):
+    """木板：四条横板 + 错缝竖榫 + 浅色木纹（第 22 轮）。"""
+    c = Canvas()
+    c.rect(0, 0, 15, 15, base)
+    # 横板缝
+    for y in (3, 7, 11, 15):
+        c.hline(0, 15, y, dark)
+    # 错缝竖榫（每行一条，位置错开）
+    for row, x in enumerate((4, 12, 2, 9)):
+        top = row * 4
+        c.vline(x, top, top + 2, dark)
+    # 浅色木纹点
+    for y in range(16):
+        for x in range(16):
+            if (x * 3 + y * 5) % 13 == 0 and y % 4 != 3:
+                c.put(x, y, light)
+    return c
+
+
+def tex_boat_icon(base, dark, light):
+    """船：侧影平底船，两端上翘，船舷高光（第 23 轮）。"""
+    c = Canvas()
+    # 船头 / 船尾上翘
+    c.put(0, 8, dark)
+    c.put(1, 8, dark)
+    c.put(14, 8, dark)
+    c.put(15, 8, dark)
+    c.put(0, 9, base)
+    c.put(15, 9, base)
+    # 船舷（高光上沿）
+    c.rect(1, 9, 14, 9, light)
+    # 主船体
+    c.rect(2, 10, 13, 13, base)
+    # 舱内阴影
+    c.hline(4, 11, 11, dark)
+    # 底部收窄 + 暗色龙骨
+    c.hline(3, 12, 14, dark)
+    c.hline(5, 10, 15, dark)
+    return c
+
+
+def tex_door_half(base, dark, light, top):
+    """门板面（16×16）：上扇带窗，下扇双面板。"""
+    c = Canvas()
+    c.rect(1, 0, 14, 15, base)
+    c.frame(1, 0, 14, 15, dark)
+    if top:
+        c.rect(4, 2, 11, 5, light)
+        c.frame(4, 2, 11, 5, dark)
+    else:
+        c.frame(4, 2, 11, 6, dark)
+        c.frame(4, 9, 11, 13, dark)
+        c.put(5, 3, light)
+        c.put(5, 10, light)
+    return c
+
+
+def tex_trapdoor(base, dark, light):
+    """活板门：四格拼板 + 边框。"""
+    c = Canvas()
+    c.rect(0, 0, 15, 15, base)
+    c.frame(0, 0, 15, 15, dark)
+    for v in (5, 10):
+        c.hline(0, 15, v, dark)
+        c.vline(v, 0, 15, dark)
+    for (x, y) in ((2, 2), (12, 2), (2, 12), (12, 12), (7, 7)):
+        c.put(x, y, light)
+    return c
+
+
+def tex_sign_board(base, dark, light):
+    """告示牌板面（32×32）：模板 UV 的坐标 ×2 —— 上半是板面，右下是立柱。"""
+    c = Canvas(32)
+    c.rect(0, 0, 31, 31, base)
+    # 板面横纹
+    for y in (7, 15, 23, 31):
+        c.hline(0, 31, y, dark)
+    # 立柱区（UV x14..16 → px 28..31，y8..15 → px 16..31）
+    c.rect(28, 16, 31, 31, dark)
+    c.rect(29, 17, 30, 30, base)
+    # 板沿高光
+    for x in range(0, 28, 4):
+        c.put(x, 1, light)
+        c.put(x, 9, light)
+    return c
+
+
+def tex_door_icon(base, dark, light):
+    """门物品图标：整扇门。"""
+    c = Canvas()
+    c.rect(3, 1, 12, 15, base)
+    c.frame(3, 1, 12, 15, dark)
+    c.rect(5, 3, 10, 6, light)
+    c.frame(5, 3, 10, 6, dark)
+    c.frame(5, 9, 10, 13, dark)
+    c.put(11, 8, (40, 40, 40, 255))
+    return c
+
+
+def tex_sign_icon(base, dark, light):
+    """告示牌图标：小板 + 立柱。"""
+    c = Canvas()
+    c.vline(7, 10, 14, dark)
+    c.vline(8, 10, 14, base)
+    c.rect(2, 3, 13, 9, base)
+    c.frame(2, 3, 13, 9, dark)
+    c.hline(3, 12, 5, light)
+    return c
+
+
+def tex_chest_boat_icon(base, dark, light):
+    """运输船图标：普通船 + 船上的木箱。"""
+    c = tex_boat_icon(base, dark, light)
+    c.rect(4, 4, 11, 9, (110, 84, 50, 255))
+    c.frame(4, 4, 11, 9, (60, 42, 24, 255))
+    c.hline(4, 11, 6, (60, 42, 24, 255))
+    c.put(7, 6, (218, 170, 48, 255))
+    c.put(8, 6, (218, 170, 48, 255))
+    return c
+
+
 def tex_leaf(base, dark, light):
     """树叶：细碎斑驳 + 全透明镂空（走 cutout 渲染）。"""
     c = Canvas()
@@ -1458,6 +1618,14 @@ def gen_realm_assets():
         ("ziwei_ambrosia_bucket", lambda: tex_fluid_bucket(ZW_L, rgb("F0E4FF"))),
         ("liuren_water_bucket", lambda: tex_fluid_bucket(LR_L, rgb("E0FAFF"))),
         ("qimen_mercury_bucket", lambda: tex_fluid_bucket(QM_HG, QM_HG_L)),
+        # ---- 第 19 轮：太乙界材料 / 灵引 / 桶 ----
+        ("taiyi_crystal", lambda: tex_dust_ore(rgb("A8D0F8"), rgb("E0F0FF"), rgb("3E6A9C"))),
+        ("taiyi_essence", lambda: tex_dust_ore(rgb("88C0E8"), rgb("C8E8F8"), rgb("3A6A90"))),
+        ("taiyi_shard", lambda: tex_dust_ore(rgb("C0B8F0"), rgb("E0D8FF"), rgb("5A4E96"))),
+        ("taiyi_grain", lambda: tex_dust_ore(rgb("F0D890"), rgb("FFECC0"), rgb("9A7A38"))),
+        ("taiyi_seeds", lambda: tex_dust_ore(rgb("A8C8E0"), rgb("D8ECF8"), rgb("5A7A98"))),
+        ("taiyi_key", lambda: tex_key(GOLD, TY_KEY, TY_KEY_L)),
+        ("taiyi_spring_bucket", lambda: tex_fluid_bucket(TY, TY_L)),
     ]
     block_tex = [
         ("astral_ore", lambda: tex_ore(ASTRAL_L, ASTRAL_D)),
@@ -1500,6 +1668,27 @@ def gen_realm_assets():
         ("liuren_water_flow", lambda: fluid_flow_anim(LR, LR_L, LR_D)),
         ("qimen_mercury_still", lambda: fluid_still_anim(QM_HG, QM_HG_L, QM_HG_D)),
         ("qimen_mercury_flow", lambda: fluid_flow_anim(QM_HG, QM_HG_L, QM_HG_D)),
+        # ---- 第 19 轮：太乙界花 / 草 / 门 / 液体 ----
+        ("taiyi_bloom", lambda: tex_flower(rgb("D8ECFF"), TY, TY_D, rgb("4C9A5C"))),
+        ("taiyi_grass", lambda: tex_blade(TY_L, rgb("E8F4FF"), TY)),
+        ("taiyi_gate", lambda: tex_gate(GATE_DEEP["taiyi"], GATE_GLOW["taiyi"], rgb("FFFFFF"))),
+        ("taiyi_spring_still", lambda: fluid_still_anim(TY, TY_L, TY_D)),
+        ("taiyi_spring_flow", lambda: fluid_flow_anim(TY, TY_L, TY_D)),
+        # ---- 第 21 轮：七界凶液 ----
+        ("astral_slag_still", lambda: fluid_still_anim(rgb("D2622A"), rgb("FFB03A"), rgb("5C1F0A"))),
+        ("astral_slag_flow", lambda: fluid_flow_anim(rgb("D2622A"), rgb("FFB03A"), rgb("5C1F0A"))),
+        ("jade_acid_still", lambda: fluid_still_anim(rgb("7FD63C"), rgb("C8F06A"), rgb("2C5A12"))),
+        ("jade_acid_flow", lambda: fluid_flow_anim(rgb("7FD63C"), rgb("C8F06A"), rgb("2C5A12"))),
+        ("yao_miasma_still", lambda: fluid_still_anim(rgb("6A3A8C"), rgb("B07AD8"), rgb("241036"))),
+        ("yao_miasma_flow", lambda: fluid_flow_anim(rgb("6A3A8C"), rgb("B07AD8"), rgb("241036"))),
+        ("ziwei_bane_still", lambda: fluid_still_anim(rgb("A03A78"), rgb("E07AC0"), rgb("381030"))),
+        ("ziwei_bane_flow", lambda: fluid_flow_anim(rgb("A03A78"), rgb("E07AC0"), rgb("381030"))),
+        ("liuren_abyss_still", lambda: fluid_still_anim(rgb("1A3A7C"), rgb("4A7AC8"), rgb("081228"))),
+        ("liuren_abyss_flow", lambda: fluid_flow_anim(rgb("1A3A7C"), rgb("4A7AC8"), rgb("081228"))),
+        ("qimen_hellfire_still", lambda: fluid_still_anim(rgb("C83A1A"), rgb("FF9A4A"), rgb("4A1208"))),
+        ("qimen_hellfire_flow", lambda: fluid_flow_anim(rgb("C83A1A"), rgb("FF9A4A"), rgb("4A1208"))),
+        ("taiyi_frost_still", lambda: fluid_still_anim(rgb("9CC8E8"), rgb("E0F6FF"), rgb("3A6A94"))),
+        ("taiyi_frost_flow", lambda: fluid_flow_anim(rgb("9CC8E8"), rgb("E0F6FF"), rgb("3A6A94"))),
     ]
     for name, factory in item_tex:
         write_texture(os.path.join(ASSETS, "textures", "item", f"{name}.png"),
@@ -1526,6 +1715,61 @@ def gen_realm_assets():
                   canvas.to_pixels(), canvas.size, canvas.size)
         written += 1
 
+    # ---- 第 23 轮纹理：船实体贴图（128×64，BoatModel 全 UV 铺木板纹）----
+    # 原版 BoatRenderer 从模型层 id 推贴图路径：yishu:boat/<树种>
+    # → yishu:textures/entity/boat/<树种>.png
+    boat_dir = os.path.join(ASSETS, "textures", "entity", "boat")
+    os.makedirs(boat_dir, exist_ok=True)
+    for species, (lb, ld, ll, kb, kd, kl) in WOOD_COLORS.items():
+        px = []
+        for y in range(64):
+            for x in range(128):
+                if y % 16 == 0:
+                    px.append(shade(ld, 0.9))       # 横向板缝
+                elif (x // 8) % 2 == 0:
+                    px.append(lb)                    # 宽板面
+                else:
+                    px.append(shade(lb, 0.9))        # 竖向板缝
+        write_png(os.path.join(boat_dir, f"{species}.png"), px, 128, 64)
+        written += 1
+
+    # ---- 第 25 轮纹理：门/活板门/告示牌板面 + 图标 + 运输船实体贴图 ----
+    for species, (lb, ld, ll, kb, kd, kl) in WOOD_COLORS.items():
+        for suffix, canvas in (
+                ("door_bottom", tex_door_half(lb, ld, ll, False)),
+                ("door_top", tex_door_half(lb, ld, ll, True)),
+                ("trapdoor", tex_trapdoor(lb, ld, ll))):
+            write_png(os.path.join(ASSETS, "textures", "block", f"{species}_{suffix}.png"),
+                      canvas.to_pixels(), canvas.size, canvas.size)
+            written += 1
+        canvas = tex_sign_board(lb, ld, ll)
+        write_png(os.path.join(ASSETS, "textures", "block", f"{species}_sign.png"),
+                  canvas.to_pixels(), canvas.size, canvas.size)
+        written += 1
+        for suffix, canvas in (
+                ("door", tex_door_icon(lb, ld, ll)),
+                ("sign", tex_sign_icon(lb, ld, ll)),
+                ("chest_boat", tex_chest_boat_icon(lb, ld, ll))):
+            write_png(os.path.join(ASSETS, "textures", "item", f"{species}_{suffix}.png"),
+                      canvas.to_pixels(), canvas.size, canvas.size)
+            written += 1
+    # 运输船实体贴图：层 id yishu:boat/chest/<树种> → boat/chest/<树种>.png，
+    # 木箱几何体直接采样这张图的木板纹（与原版同尺寸 128×64）
+    chest_dir = os.path.join(ASSETS, "textures", "entity", "boat", "chest")
+    os.makedirs(chest_dir, exist_ok=True)
+    for species, (lb, ld, ll, kb, kd, kl) in WOOD_COLORS.items():
+        px = []
+        for y in range(64):
+            for x in range(128):
+                if y % 16 == 0:
+                    px.append(shade(ld, 0.9))
+                elif (x // 8) % 2 == 0:
+                    px.append(lb)
+                else:
+                    px.append(shade(lb, 0.9))
+        write_png(os.path.join(chest_dir, f"{species}.png"), px, 128, 64)
+        written += 1
+
     def put_json(rel, obj):
         path = os.path.join(ASSETS, rel)
         os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -1539,7 +1783,9 @@ def gen_realm_assets():
                  # 第 16 轮：三术界十二矿
                  "ziwei_crystal_ore", "dou_ore", "ji_ore", "yuan_ore",
                  "ren_ore", "gui_ore", "she_ore", "xuan_ore",
-                 "men_ore", "xing_ore", "dun_ore", "jia_ore"):
+                 "men_ore", "xing_ore", "dun_ore", "jia_ore",
+                 # 第 19 轮
+                 "taiyi_ore", "wenchang_ore", "shiji_ore", "zhuke_ore"):
         put_json(f"models/block/{name}.json", {
             "parent": "minecraft:block/cube_all",
             "textures": {"all": f"{NS}:block/{name}"},
@@ -1569,7 +1815,8 @@ def gen_realm_assets():
     for name in ("astral_bloom", "jade_lily", "yao_bloom",
                  "astral_grass", "jade_grass", "yao_grass",
                  "ziwei_bloom", "liuren_lily", "qimen_bloom",
-                 "ziwei_grass", "liuren_grass", "qimen_grass"):
+                 "ziwei_grass", "liuren_grass", "qimen_grass",
+                 "taiyi_bloom", "taiyi_grass"):
         put_json(f"models/block/{name}.json", {
             "parent": "minecraft:block/cross",
             "textures": {"cross": f"{NS}:block/{name}"},
@@ -1580,7 +1827,7 @@ def gen_realm_assets():
         written += 4
 
     # 门（没有物品形式，只需要世界渲染资源）
-    for realm in ("astral", "jade", "yao", "ziwei", "liuren", "qimen"):
+    for realm in ("astral", "jade", "yao", "ziwei", "liuren", "qimen", "taiyi"):
         name = f"{realm}_gate"
         put_json(f"models/block/{name}.json", {
             "parent": "minecraft:block/cube_all",
@@ -1623,6 +1870,218 @@ def gen_realm_assets():
         put_json(f"items/{name}.json", {"model": {"type": "minecraft:model", "model": f"{NS}:block/{name}"}})
         put_json(f"models/item/{name}.json", {"parent": f"{NS}:block/{name}"})
         written += 6
+
+    # 木三件套（第 22 轮）：木板 / 台阶 / 楼梯 ×21，台阶楼梯直接复用木板贴图
+    for species in WOOD_COLORS:
+        plank = f"{NS}:block/{species}_planks"
+        name = f"{species}_planks"
+        put_json(f"models/block/{name}.json", {
+            "parent": "minecraft:block/cube_all", "textures": {"all": plank}})
+        put_json(f"blockstates/{name}.json", {"variants": {"": {"model": f"{NS}:block/{name}"}}})
+        put_json(f"items/{name}.json", {"model": {"type": "minecraft:model", "model": f"{NS}:block/{name}"}})
+        put_json(f"models/item/{name}.json", {"parent": f"{NS}:block/{name}"})
+        written += 4
+
+        name = f"{species}_slab"
+        put_json(f"models/block/{name}.json", {
+            "parent": "minecraft:block/slab",
+            "textures": {"bottom": plank, "side": plank, "top": plank}})
+        put_json(f"models/block/{name}_top.json", {
+            "parent": "minecraft:block/slab_top",
+            "textures": {"bottom": plank, "side": plank, "top": plank}})
+        put_json(f"blockstates/{name}.json", {"variants": {
+            "type=bottom": {"model": f"{NS}:block/{name}"},
+            "type=double": {"model": f"{NS}:block/{species}_planks"},
+            "type=top": {"model": f"{NS}:block/{name}_top"},
+        }})
+        put_json(f"items/{name}.json", {"model": {"type": "minecraft:model", "model": f"{NS}:block/{name}"}})
+        put_json(f"models/item/{name}.json", {"parent": f"{NS}:block/{name}"})
+        written += 5
+
+        name = f"{species}_stairs"
+        for suffix, parent in (("", "stairs"), ("_inner", "stairs_inner"), ("_outer", "stairs_outer")):
+            put_json(f"models/block/{name}{suffix}.json", {
+                "parent": f"minecraft:block/{parent}",
+                "textures": {"bottom": plank, "side": plank, "top": plank}})
+        put_json(f"blockstates/{name}.json", stairs_blockstate(name))
+        put_json(f"items/{name}.json", {"model": {"type": "minecraft:model", "model": f"{NS}:block/{name}"}})
+        put_json(f"models/item/{name}.json", {"parent": f"{NS}:block/{name}"})
+        written += 6
+
+    # ---- 木变体家族（第 25 轮）：栅栏/栅栏门/门/活板门/按钮/压力板/告示牌 ×21 ----
+    # 方块状态结构照抄原版（换 id 前缀），保证转向/开合逻辑与原版一致
+    FACING_ROTS = {"south": 0, "west": 90, "north": 180, "east": 270}
+    for species in WOOD_COLORS:
+        plank = f"{NS}:block/{species}_planks"
+
+        # 栅栏：post + 四向 side 的 multipart
+        name = f"{species}_fence"
+        for part, parent in (("fence_post", "fence_post"), ("fence_side", "fence_side"),
+                             ("fence_inventory", "fence_inventory")):
+            put_json(f"models/block/{species}_{part}.json", {
+                "parent": f"minecraft:block/{parent}", "textures": {"texture": plank}})
+        multipart = [{"apply": {"model": f"{NS}:block/{name}_post"}}]
+        for facing, angle in (("north", None), ("east", 90), ("south", 180), ("west", 270)):
+            apply_ = {"model": f"{NS}:block/{name}_side", "uvlock": True}
+            if angle is not None:
+                apply_["y"] = angle
+            multipart.append({"apply": apply_, "when": {facing: "true"}})
+        put_json(f"blockstates/{name}.json", {"multipart": multipart})
+        put_json(f"items/{name}.json", {"model": {"type": "minecraft:model",
+                                                  "model": f"{NS}:block/{name}_inventory"}})
+        written += 5
+
+        # 栅栏门
+        name = f"{species}_fence_gate"
+        for suffix, parent in (("", "template_fence_gate"), ("_open", "template_fence_gate_open"),
+                               ("_wall", "template_fence_gate_wall"),
+                               ("_wall_open", "template_fence_gate_wall_open")):
+            put_json(f"models/block/{name}{suffix}.json", {
+                "parent": f"minecraft:block/{parent}", "textures": {"texture": plank}})
+        gate_variants = {}
+        for facing, y in FACING_ROTS.items():
+            for in_wall in ("false", "true"):
+                for open_ in ("false", "true"):
+                    suffix = "_wall" if in_wall == "true" else ""
+                    if open_ == "true":
+                        suffix += "_open"
+                    variant = {"model": f"{NS}:block/{name}{suffix}", "uvlock": True}
+                    if y:
+                        variant["y"] = y
+                    gate_variants[f"facing={facing},in_wall={in_wall},open={open_}"] = variant
+        put_json(f"blockstates/{name}.json", {"variants": gate_variants})
+        put_json(f"items/{name}.json", {"model": {"type": "minecraft:model",
+                                                  "model": f"{NS}:block/{name}"}})
+        written += 6
+
+        # 门：8 模型 + 32 变体（旋转公式 = 闭角 + 开角，与原版一致）
+        name = f"{species}_door"
+        for part in ("bottom_left", "bottom_left_open", "bottom_right", "bottom_right_open",
+                     "top_left", "top_left_open", "top_right", "top_right_open"):
+            put_json(f"models/block/{name}_{part}.json", {
+                "parent": f"minecraft:block/door_{part}",
+                "textures": {"bottom": f"{NS}:block/{species}_door_bottom",
+                             "top": f"{NS}:block/{species}_door_top"}})
+        door_variants = {}
+        for facing, closed_y in FACING_ROTS.items():
+            for half in ("lower", "upper"):
+                for hinge, open_off in (("left", 90), ("right", 270)):
+                    for open_ in ("false", "true"):
+                        key = f"facing={facing},half={half},hinge={hinge},open={open_}"
+                        model = f"{NS}:block/{name}_{half}_{hinge}"
+                        if open_ == "true":
+                            model += "_open"
+                            y = (closed_y + open_off) % 360
+                        else:
+                            y = closed_y
+                        variant = {"model": model}
+                        if y:
+                            variant["y"] = y
+                        door_variants[key] = variant
+        put_json(f"blockstates/{name}.json", {"variants": door_variants})
+        put_json(f"items/{name}.json", {"model": {"type": "minecraft:model",
+                                                  "model": f"{NS}:item/{name}"}})
+        put_json(f"models/item/{name}.json", {
+            "parent": "minecraft:item/generated",
+            "textures": {"layer0": f"{NS}:item/{name}"}})
+        written += 11
+
+        # 活板门
+        name = f"{species}_trapdoor"
+        for suffix, parent in (("bottom", "template_trapdoor_bottom"),
+                               ("top", "template_trapdoor_top"),
+                               ("open", "template_trapdoor_open")):
+            put_json(f"models/block/{name}_{suffix}.json", {
+                "parent": f"minecraft:block/{parent}", "textures": {"texture": f"{NS}:block/{name}"}})
+        trap_variants = {}
+        for facing, y in FACING_ROTS.items():
+            for half in ("bottom", "top"):
+                for open_ in ("false", "true"):
+                    key = f"facing={facing},half={half},open={open_}"
+                    if open_ == "true":
+                        variant = {"model": f"{NS}:block/{name}_open"}
+                        if y:
+                            variant["y"] = y
+                    else:
+                        variant = {"model": f"{NS}:block/{name}_{half}"}
+                    trap_variants[key] = variant
+        put_json(f"blockstates/{name}.json", {"variants": trap_variants})
+        put_json(f"items/{name}.json", {"model": {"type": "minecraft:model",
+                                                  "model": f"{NS}:block/{name}_bottom"}})
+        written += 5
+
+        # 按钮
+        name = f"{species}_button"
+        for suffix, parent in (("", "button"), ("_pressed", "button_pressed"),
+                               ("_inventory", "button_inventory")):
+            put_json(f"models/block/{name}{suffix}.json", {
+                "parent": f"minecraft:block/{parent}", "textures": {"texture": plank}})
+        button_variants = {}
+        for face, x in (("ceiling", 180), ("floor", None), ("wall", 90)):
+            for facing, y in FACING_ROTS.items():
+                for powered in ("false", "true"):
+                    key = f"face={face},facing={facing},powered={powered}"
+                    model = f"{NS}:block/{name}_pressed" if powered == "true" else f"{NS}:block/{name}"
+                    variant = {"model": model}
+                    if face == "wall":
+                        variant["uvlock"] = True
+                    if x is not None:
+                        variant["x"] = x
+                    if y:
+                        variant["y"] = y
+                    button_variants[key] = variant
+        put_json(f"blockstates/{name}.json", {"variants": button_variants})
+        put_json(f"items/{name}.json", {"model": {"type": "minecraft:model",
+                                                  "model": f"{NS}:block/{name}_inventory"}})
+        written += 5
+
+        # 压力板
+        name = f"{species}_pressure_plate"
+        put_json(f"models/block/{name}.json", {"parent": "minecraft:block/pressure_plate_up",
+                                               "textures": {"texture": plank}})
+        put_json(f"models/block/{name}_down.json", {"parent": "minecraft:block/pressure_plate_down",
+                                                    "textures": {"texture": plank}})
+        put_json(f"blockstates/{name}.json", {"variants": {
+            "powered=false": {"model": f"{NS}:block/{name}"},
+            "powered=true": {"model": f"{NS}:block/{name}_down"}}})
+        put_json(f"items/{name}.json", {"model": {"type": "minecraft:model",
+                                                  "model": f"{NS}:block/{name}"}})
+        written += 4
+
+        # 立式告示牌（板面是方块模型，文字由方块实体渲染器画）
+        sname = f"{species}_standing_sign"
+        for rot in range(4):
+            put_json(f"models/block/{sname}_rot_{rot}.json", {
+                "parent": f"minecraft:block/template_sign_rot_{rot}",
+                "textures": {"all": f"{NS}:block/{species}_sign", "particle": plank}})
+        sign_variants = {}
+        for rotation in range(16):
+            variant = {"model": f"{NS}:block/{sname}_rot_{rotation % 4}"}
+            y = (rotation // 4) * 90
+            if y:
+                variant["y"] = y
+            sign_variants[f"rotation={rotation}"] = variant
+        put_json(f"blockstates/{sname}.json", {"variants": sign_variants})
+
+        # 挂墙告示牌
+        wname = f"{species}_wall_sign"
+        put_json(f"models/block/{wname}.json", {
+            "parent": "minecraft:block/template_wall_sign",
+            "textures": {"all": f"{NS}:block/{species}_sign", "particle": plank}})
+        put_json(f"blockstates/{wname}.json", {"variants": {
+            "facing=east": {"model": f"{NS}:block/{wname}", "y": 270},
+            "facing=north": {"model": f"{NS}:block/{wname}", "y": 180},
+            "facing=south": {"model": f"{NS}:block/{wname}"},
+            "facing=west": {"model": f"{NS}:block/{wname}", "y": 90}}})
+
+        # 告示牌物品（立牌/挂牌共用）与运输船
+        for item_name in (f"{species}_sign", f"{species}_chest_boat"):
+            put_json(f"items/{item_name}.json", {"model": {"type": "minecraft:model",
+                                                           "model": f"{NS}:item/{item_name}"}})
+            put_json(f"models/item/{item_name}.json", {
+                "parent": "minecraft:item/generated",
+                "textures": {"layer0": f"{NS}:item/{item_name}"}})
+        written += 10
 
     # 原木（九种）
     for species in WOOD_COLORS:
@@ -1683,7 +2142,7 @@ def gen_realm_assets():
 
     # 液体方块：单变体 blockstate + 只管粒子的空模型（照原版 water.json 的样子）
     for name in ("astral_dew", "jade_ichor", "yao_ink",
-                 "ziwei_ambrosia", "liuren_water", "qimen_mercury"):
+                 "ziwei_ambrosia", "liuren_water", "qimen_mercury", "taiyi_spring"):
         put_json(f"blockstates/{name}.json", {"variants": {"": {"model": f"{NS}:block/{name}"}}})
         put_json(f"models/block/{name}.json", {
             "textures": {"particle": f"{NS}:block/{name}_still"},
@@ -2206,6 +2665,84 @@ def tex_block_oracle_altar(kind):
     return c
 
 
+# ---- 第 20 轮：相面 · 阵盘 · 镇物 ----
+
+def tex_face_mirror():
+    """相面镜：一面带柄的铜镜，镜心映一张人脸的轮廓。"""
+    c = Canvas()
+    c.mask(lambda x, y: 3 <= (x - 7.5) ** 2 + (y - 7.5) ** 2 <= 42, GOLD)
+    c.mask(lambda x, y: 3 <= (x - 7.5) ** 2 + (y - 7.5) ** 2 <= 30, GOLD_LIGHT)
+    c.mask(lambda x, y: (x - 7.5) ** 2 + (y - 7.5) ** 2 <= 10, PAPER)
+    # 镜中面相：两点眼、一竖鼻
+    c.put(6, 6, INK)
+    c.put(9, 6, INK)
+    c.vline(7, 8, 9, INK_LIGHT)
+    c.hline(6, 9, 10, INK_LIGHT)
+    # 柄
+    c.rect(7, 12, 8, 14, WOOD_DARK)
+    c.put(7, 15, GOLD)
+    c.put(8, 15, GOLD)
+    return c
+
+
+def tex_array_disc(kind):
+    """阵盘：玉盘刻阵纹。八卦刻爻、北斗刻七星、招财刻钱。"""
+    c = Canvas()
+    c.mask(lambda x, y: 3 <= (x - 7.5) ** 2 + (y - 7.5) ** 2 <= 42, JADE_DARK)
+    c.mask(lambda x, y: 3 <= (x - 7.5) ** 2 + (y - 7.5) ** 2 <= 30, JADE)
+    c.mask(lambda x, y: (x - 7.5) ** 2 + (y - 7.5) ** 2 <= 12, JADE_LIGHT)
+    if kind == "bagua":
+        # 内圈八卦：四条阴阳爻环绕
+        c.hline(5, 7, 5, INK)
+        c.hline(8, 10, 5, INK)
+        c.hline(5, 6, 10, INK)
+        c.hline(8, 10, 10, INK)
+        c.put(7, 7, INK)
+        c.put(8, 7, JADE_LIGHT)
+        c.put(7, 8, JADE_LIGHT)
+        c.put(8, 8, INK)
+    elif kind == "beidou":
+        # 北斗七星：勺形
+        for x, y in [(4, 9), (5, 8), (6, 7), (7, 7), (8, 6), (9, 5), (10, 4)]:
+            c.put(x, y, GOLD)
+        c.put(4, 8, GOLD_LIGHT)
+    else:
+        # 招财：一枚方孔钱
+        c.mask(lambda x, y: 2 <= (x - 7.5) ** 2 + (y - 7.5) ** 2 <= 9, GOLD)
+        c.rect(7, 7, 8, 8, JADE_LIGHT)
+    return c
+
+
+def tex_block_zhenzhai_stone():
+    """镇宅石：灰石上浮一枚金符。"""
+    c = Canvas()
+    c.rect(0, 0, 15, 15, STONE)
+    c.rect(1, 1, 14, 14, rgb("9A9A9A"))
+    c.frame(1, 1, 14, 14, STONE_DARK)
+    # 金色镇字纹：方框 + 中竖
+    c.frame(5, 4, 10, 11, GOLD)
+    c.vline(7, 6, 9, GOLD_LIGHT)
+    c.hline(6, 9, 7, GOLD_LIGHT)
+    c.put(5, 12, GOLD)
+    c.put(10, 12, GOLD)
+    return c
+
+
+def tex_block_huasha_stone():
+    """化煞碑：黑碑上一道朱砂符。"""
+    c = Canvas()
+    c.rect(0, 0, 15, 15, rgb("26262E"))
+    c.rect(1, 1, 14, 14, rgb("33333E"))
+    c.frame(1, 1, 14, 14, rgb("1A1A20"))
+    c.vline(7, 3, 12, CINNABAR)
+    c.vline(8, 3, 12, CINNABAR_LIGHT)
+    c.hline(5, 10, 5, CINNABAR)
+    c.hline(5, 10, 10, CINNABAR)
+    c.put(5, 3, CINNABAR_LIGHT)
+    c.put(10, 12, CINNABAR_LIGHT)
+    return c
+
+
 # ------------------------------------------------------------------ 资源清单
 
 # (id, 生成函数, 中文名, 英文名, 是否方块)
@@ -2341,6 +2878,45 @@ ITEM_TEXTURES = [
      "紫微星尘", "Zi Wei Star Dust"),
     ("liuren_shell", lambda: tex_shard("liuren_shell"), "课甲", "Divination Shell"),
     ("qimen_shard", lambda: tex_shard("qimen_shard"), "遁甲残片", "Qi Men Shard"),
+    # ---- 第 21 轮：矿物原矿（25 种）----
+    ("astral_raw", lambda: tex_raw_ore(rgb("8E7ED8"), rgb("C8B4FF")), "星辉原矿", "Raw Astral Ore"),
+    ("jade_raw", lambda: tex_raw_ore(rgb("4FAF7C"), rgb("8CE0AC")), "青玉原矿", "Raw Jade Ore"),
+    ("yao_raw", lambda: tex_raw_ore(rgb("7A5A9C"), rgb("B090CC")), "爻纹原矿", "Raw Hexagram Ore"),
+    ("meteor_raw", lambda: tex_raw_ore(rgb("B07040"), rgb("E0A070")), "陨星原矿", "Raw Meteor Ore"),
+    ("ink_iron_raw", lambda: tex_raw_ore(rgb("3A3A4A"), rgb("6A6A7C")), "玄铁原矿", "Raw Ink Iron"),
+    ("mica_raw", lambda: tex_raw_ore(rgb("C0C0D0"), rgb("EFEFF8")), "云母原矿", "Raw Mica"),
+    ("onyx_raw", lambda: tex_raw_ore(rgb("2E2E3A"), rgb("585868")), "墨玉原矿", "Raw Onyx"),
+    ("star_sand_raw", lambda: tex_raw_ore(rgb("D8C278"), rgb("F8E8B0")), "星砂原矿", "Raw Star Sand"),
+    ("vein_raw", lambda: tex_raw_ore(rgb("5AD0C8"), rgb("A0F0E8")), "灵脉原矿", "Raw Vein Ore"),
+    ("verdant_raw", lambda: tex_raw_ore(rgb("5AC86A"), rgb("A0F0A8")), "翠玉原矿", "Raw Verdant Ore"),
+    ("oracle_raw", lambda: tex_raw_ore(rgb("C0A878"), rgb("EAD8B0")), "卜骨原矿", "Raw Oracle Bone"),
+    ("crystal_raw", lambda: tex_raw_ore(rgb("7FB0D0"), rgb("C0E4F8")), "星晶原矿", "Raw Star Crystal"),
+    ("ziwei_crystal_raw", lambda: tex_raw_ore(rgb("A88BE0"), rgb("DCC8FF")), "紫微原矿", "Raw Zi Wei Crystal"),
+    ("ren_raw", lambda: tex_raw_ore(rgb("4AA890"), rgb("8ADCC4")), "壬水原矿", "Raw Ren Ore"),
+    ("gui_raw", lambda: tex_raw_ore(rgb("B8A878"), rgb("EAE0B8")), "贵人原矿", "Raw Gui Ore"),
+    ("she_raw", lambda: tex_raw_ore(rgb("B86A5A"), rgb("E8A090")), "螣蛇原矿", "Raw Teng She Ore"),
+    ("xuan_raw", lambda: tex_raw_ore(rgb("3A5A6A"), rgb("6A8C9C")), "玄武原矿", "Raw Xuan Wu Ore"),
+    ("men_raw", lambda: tex_raw_ore(rgb("B08030"), rgb("E8B860")), "八门原矿", "Raw Ba Men Ore"),
+    ("xing_raw", lambda: tex_raw_ore(rgb("C06030"), rgb("F0A070")), "九星原矿", "Raw Jiu Xing Ore"),
+    ("dun_raw", lambda: tex_raw_ore(rgb("6A6A80"), rgb("A0A0B8")), "遁甲原矿", "Raw Dun Jia Ore"),
+    ("jia_raw", lambda: tex_raw_ore(rgb("8A7A50"), rgb("C4B48A")), "甲子原矿", "Raw Jia Zi Ore"),
+    ("taiyi_raw", lambda: tex_raw_ore(rgb("6E9CD0"), rgb("B0D4F8")), "太乙原矿", "Raw Tai Yi Ore"),
+    ("wenchang_raw", lambda: tex_raw_ore(rgb("8A9AC0"), rgb("C0D0EE")), "文昌原矿", "Raw Wen Chang Ore"),
+    ("shiji_raw", lambda: tex_raw_ore(rgb("C0B090"), rgb("F0E8D0")), "始击原矿", "Raw Shi Ji Ore"),
+    ("zhuke_raw", lambda: tex_raw_ore(rgb("B09440"), rgb("E8CC7A")), "主客原矿", "Raw Zhu Ke Ore"),
+    # ---- 第 21 轮：七界凶液桶 ----
+    ("astral_slag_bucket", lambda: tex_fluid_bucket(rgb("D2622A"), rgb("FFB03A")), "星陨熔渣桶", "Astral Slag Bucket"),
+    ("jade_acid_bucket", lambda: tex_fluid_bucket(rgb("7FD63C"), rgb("C8F06A")), "玉蚀酸液桶", "Jade Acid Bucket"),
+    ("yao_miasma_bucket", lambda: tex_fluid_bucket(rgb("6A3A8C"), rgb("B07AD8")), "妖瘴浓雾桶", "Yao Miasma Bucket"),
+    ("ziwei_bane_bucket", lambda: tex_fluid_bucket(rgb("A03A78"), rgb("E07AC0")), "星煞玄露桶", "Zi Wei Bane Bucket"),
+    ("liuren_abyss_bucket", lambda: tex_fluid_bucket(rgb("1A3A7C"), rgb("4A7AC8")), "玄冥渊水桶", "Liu Ren Abyss Bucket"),
+    ("qimen_hellfire_bucket", lambda: tex_fluid_bucket(rgb("C83A1A"), rgb("FF9A4A")), "灼魂炎浆桶", "Qi Men Hellfire Bucket"),
+    ("taiyi_frost_bucket", lambda: tex_fluid_bucket(rgb("9CC8E8"), rgb("E0F6FF")), "太乙寒渊桶", "Tai Yi Frost Bucket"),
+    # ---- 第 20 轮：相面 · 阵盘 ----
+    ("face_mirror", tex_face_mirror, "相面镜", "Face Mirror"),
+    ("bagua_array_disc", lambda: tex_array_disc("bagua"), "八卦阵盘", "Bagua Array Disc"),
+    ("beidou_array_disc", lambda: tex_array_disc("beidou"), "北斗阵盘", "Beidou Array Disc"),
+    ("zhaocai_array_disc", lambda: tex_array_disc("zhaocai"), "招财阵盘", "Wealth Array Disc"),
 ]
 
 BLOCK_TEXTURES = [
@@ -2386,7 +2962,50 @@ BLOCK_TEXTURES = [
     ("dou_altar", lambda: tex_block_oracle_altar("ziwei"), "斗枢台", "Dou Shu Altar"),
     ("guiren_altar", lambda: tex_block_oracle_altar("liuren"), "贵人台", "Gui Ren Altar"),
     ("bamen_altar", lambda: tex_block_oracle_altar("qimen"), "八门台", "Ba Men Altar"),
+    # ---- 第 19 轮：太乙界建材与观星工位 ----
+    ("taiyi_stone", lambda: tex_dim_stone(TY, TY_D, TY_L, rgb("E8F4FF")), "太乙石", "Tai Yi Stone"),
+    ("taiyi_bricks", lambda: tex_dim_bricks(TY, TY_D, TY_L), "太乙砖", "Tai Yi Bricks"),
+    ("taiyi_lamp", lambda: tex_dim_lamp(rgb("E8F8FF"), rgb("8CC0E8"), TY_D), "太乙灯", "Tai Yi Lamp"),
+    ("taiyi_terrace", lambda: tex_block_oracle_altar("ziwei"), "太乙星台", "Tai Yi Terrace"),
+    ("wenchang_altar", lambda: tex_block_oracle_altar("liuren"), "文昌台", "Wen Chang Altar"),
+    # ---- 第 22 轮：二十一树种的木板 ----
+    ("astral_wood_planks", lambda: tex_planks(*WOOD_COLORS["astral_wood"][:3]), "星辉木板", "Astral Planks"),
+    ("meteor_wood_planks", lambda: tex_planks(*WOOD_COLORS["meteor_wood"][:3]), "陨枝木板", "Meteor Planks"),
+    ("moon_wood_planks", lambda: tex_planks(*WOOD_COLORS["moon_wood"][:3]), "月华木板", "Moonlit Planks"),
+    ("jade_wood_planks", lambda: tex_planks(*WOOD_COLORS["jade_wood"][:3]), "青玉木板", "Jade Planks"),
+    ("cloud_wood_planks", lambda: tex_planks(*WOOD_COLORS["cloud_wood"][:3]), "云松木板", "Cloud Pine Planks"),
+    ("peach_wood_planks", lambda: tex_planks(*WOOD_COLORS["peach_wood"][:3]), "灵桃木板", "Spirit Peach Planks"),
+    ("hexa_wood_planks", lambda: tex_planks(*WOOD_COLORS["hexa_wood"][:3]), "爻纹木板", "Hexagram Planks"),
+    ("ink_wood_planks", lambda: tex_planks(*WOOD_COLORS["ink_wood"][:3]), "玄墨木板", "Inkwood Planks"),
+    ("mystery_wood_planks", lambda: tex_planks(*WOOD_COLORS["mystery_wood"][:3]), "幽玄木板", "Mystic Planks"),
+    ("ziwei_wood_planks", lambda: tex_planks(*WOOD_COLORS["ziwei_wood"][:3]), "紫微木板", "Zi Wei Planks"),
+    ("dou_wood_planks", lambda: tex_planks(*WOOD_COLORS["dou_wood"][:3]), "斗枢木板", "Dou Shu Planks"),
+    ("tianji_wood_planks", lambda: tex_planks(*WOOD_COLORS["tianji_wood"][:3]), "天机木板", "Tian Ji Planks"),
+    ("ren_wood_planks", lambda: tex_planks(*WOOD_COLORS["ren_wood"][:3]), "壬水木板", "Ren Water Planks"),
+    ("gui_wood_planks", lambda: tex_planks(*WOOD_COLORS["gui_wood"][:3]), "贵人木板", "Gui Ren Planks"),
+    ("she_wood_planks", lambda: tex_planks(*WOOD_COLORS["she_wood"][:3]), "螣蛇木板", "Teng She Planks"),
+    ("men_wood_planks", lambda: tex_planks(*WOOD_COLORS["men_wood"][:3]), "八门木板", "Ba Men Planks"),
+    ("xing_wood_planks", lambda: tex_planks(*WOOD_COLORS["xing_wood"][:3]), "九星木板", "Jiu Xing Planks"),
+    ("taiyi_wood_planks", lambda: tex_planks(*WOOD_COLORS["taiyi_wood"][:3]), "太乙木板", "Tai Yi Planks"),
+    ("wenchang_wood_planks", lambda: tex_planks(*WOOD_COLORS["wenchang_wood"][:3]), "文昌木板", "Wen Chang Planks"),
+    ("jishen_wood_planks", lambda: tex_planks(*WOOD_COLORS["jishen_wood"][:3]), "计神木板", "Ji Shen Planks"),
+    ("dun_wood_planks", lambda: tex_planks(*WOOD_COLORS["dun_wood"][:3]), "遁甲木板", "Dun Jia Planks"),
+    # ---- 第 20 轮：镇物 ----
+    ("zhenzhai_stone", tex_block_zhenzhai_stone, "镇宅石", "Ward Stone"),
+    ("huasha_stone", tex_block_huasha_stone, "化煞碑", "Sha-Neutralizing Stele"),
 ]
+
+# ---- 第 23 轮：二十一树种的船 —— 从木板条目派生，贴图/模型/语言全自动 ----
+for _species, _f, _zh, _en in BLOCK_TEXTURES:
+    if not _species.endswith("_planks"):
+        continue
+    _wood = _species[:-7]  # 去掉 "_planks"
+    ITEM_TEXTURES.append((
+        f"{_wood}_boat",
+        lambda _wood=_wood: tex_boat_icon(*WOOD_COLORS[_wood][:3]),
+        _zh[:-2] + "木船",
+        _en.replace(" Planks", " Boat"),
+    ))
 
 
 # ------------------------------------------------------------------ 方块状态
@@ -2450,6 +3069,8 @@ CROP_COLORS = {
     "ziwei_wheat": (rgb("4A3A6E"), rgb("8A72C8"), rgb("C0A8F0"), rgb("F0E4B8")),
     "liuren_rice": (rgb("2E5A62"), rgb("5A9AA8"), rgb("9AD8E4"), rgb("E4FAFF")),
     "qimen_bean": (rgb("5A3A1E"), rgb("946A38"), rgb("C89A60"), rgb("F0C070")),
+    # 第 19 轮
+    "taiyi_wheat": (rgb("2E4A70"), rgb("5A90C8"), rgb("A8D0F0"), rgb("E8F4FF")),
 }
 
 
@@ -2557,6 +3178,63 @@ def gen_crop_assets():
         count += 1
     print(f"  作物 {len(CROP_COLORS)} 种 × 4 阶段 = {count} 个文件")
     return count
+
+
+# ==================================================================== 第 19 轮：太乙界语言
+TAIYI_LANG_ZH = {
+        "block.yishu.taiyi_ore": "太乙晶矿",
+        "block.yishu.wenchang_ore": "文昌石矿",
+        "block.yishu.shiji_ore": "始击砂矿",
+        "block.yishu.zhuke_ore": "主客金矿",
+        "block.yishu.taiyi_bloom": "太乙花",
+        "block.yishu.taiyi_grass": "太乙草",
+        "block.yishu.taiyi_gate": "太乙门",
+        "block.yishu.taiyi_spring": "太乙玄泉",
+        "block.yishu.taiyi_wheat": "太乙穗",
+        "block.yishu.taiyi_wood_log": "太乙原木",
+        "block.yishu.taiyi_wood_leaves": "太乙树叶",
+        "block.yishu.taiyi_wood_sapling": "太乙树苗",
+        "block.yishu.wenchang_wood_log": "文昌原木",
+        "block.yishu.wenchang_wood_leaves": "文昌树叶",
+        "block.yishu.wenchang_wood_sapling": "文昌树苗",
+        "block.yishu.jishen_wood_log": "计神原木",
+        "block.yishu.jishen_wood_leaves": "计神树叶",
+        "block.yishu.jishen_wood_sapling": "计神树苗",
+        "item.yishu.taiyi_crystal": "太乙晶",
+        "item.yishu.taiyi_essence": "太乙精",
+        "item.yishu.taiyi_shard": "始击砂",
+        "item.yishu.taiyi_grain": "太乙穗粒",
+        "item.yishu.taiyi_seeds": "太乙穗种",
+        "item.yishu.taiyi_key": "太乙灵引",
+        "item.yishu.taiyi_spring_bucket": "太乙玄泉桶",
+    }
+TAIYI_LANG_EN = {
+        "block.yishu.taiyi_ore": "Tai Yi Crystal Ore",
+        "block.yishu.wenchang_ore": "Wen Chang Ore",
+        "block.yishu.shiji_ore": "Shi Ji Ore",
+        "block.yishu.zhuke_ore": "Zhu Ke Ore",
+        "block.yishu.taiyi_bloom": "Tai Yi Bloom",
+        "block.yishu.taiyi_grass": "Tai Yi Grass",
+        "block.yishu.taiyi_gate": "Tai Yi Gate",
+        "block.yishu.taiyi_spring": "Tai Yi Spring",
+        "block.yishu.taiyi_wheat": "Tai Yi Wheat",
+        "block.yishu.taiyi_wood_log": "Tai Yi Log",
+        "block.yishu.taiyi_wood_leaves": "Tai Yi Leaves",
+        "block.yishu.taiyi_wood_sapling": "Tai Yi Sapling",
+        "block.yishu.wenchang_wood_log": "Wen Chang Log",
+        "block.yishu.wenchang_wood_leaves": "Wen Chang Leaves",
+        "block.yishu.wenchang_wood_sapling": "Wen Chang Sapling",
+        "block.yishu.jishen_wood_log": "Ji Shen Log",
+        "block.yishu.jishen_wood_leaves": "Ji Shen Leaves",
+        "block.yishu.jishen_wood_sapling": "Ji Shen Sapling",
+        "item.yishu.taiyi_crystal": "Tai Yi Crystal",
+        "item.yishu.taiyi_essence": "Tai Yi Essence",
+        "item.yishu.taiyi_shard": "Shi Ji Sand",
+        "item.yishu.taiyi_grain": "Tai Yi Grain",
+        "item.yishu.taiyi_seeds": "Tai Yi Seeds",
+        "item.yishu.taiyi_key": "Tai Yi Key",
+        "item.yishu.taiyi_spring_bucket": "Tai Yi Spring Bucket",
+    }
 
 
 # ------------------------------------------------------------------ 生成主流程
@@ -2695,6 +3373,10 @@ def main():
         "ziwei_star_dust": "星辉矿石筛出的细粉，紫微盘就以它为骨。",
         "liuren_shell": "起课用的甲片，一片只够起一课。",
         "qimen_shard": "九宫格上崩下来的一角，纹路还在自己走。",
+        "face_mirror": "照人面相。贵相可潜行照镜为其传名，交易折价。",
+        "bagua_array_disc": "右键地面布八卦阵：阵内抗气回血，邪祟受抑，天明阵散。",
+        "beidou_array_disc": "右键地面布北斗阵：阵内夜视疾行，夜路如白昼。",
+        "zhaocai_array_disc": "右键地面布招财阵：阵内幸运 II，收获更丰。",
     }
     notes_en = {
         "dragon_core_shard": "Condensed dragon vein essence; used to claim a vein.",
@@ -2736,6 +3418,10 @@ def main():
         "ziwei_star_dust": "Fine powder sieved from astral ore; the bones of a Zi Wei chart.",
         "liuren_shell": "A divination plate; one piece serves one lesson.",
         "qimen_shard": "A corner broken off the nine palaces; the lines still move.",
+        "face_mirror": "Reads a villager's face. Sneak-read a noble face to spread their name for a trade discount.",
+        "bagua_array_disc": "Right-click the ground to set a Bagua array: resistance and healing inside, fiends suppressed, gone at dawn.",
+        "beidou_array_disc": "Right-click the ground to set a Big Dipper array: night vision and speed inside.",
+        "zhaocai_array_disc": "Right-click the ground to set a Wealth array: Luck II inside.",
     }
     for key, text in notes_zh.items():
         zh[f"item.{NS}.{key}.note"] = text
@@ -2747,6 +3433,69 @@ def main():
         zh[key] = text
     for key, text in REALM_LANG_EN.items():
         en[key] = text
+    # 第 19 轮：太乙界
+    for key, text in TAIYI_LANG_ZH.items():
+        zh[key] = text
+    for key, text in TAIYI_LANG_EN.items():
+        en[key] = text
+    # 第 22 轮：木台阶/楼梯 —— 从木板命名派生（木板本体走 BLOCK_TEXTURES 表）
+    for name, _, zh_name, en_name in BLOCK_TEXTURES:
+        if not name.endswith("_planks"):
+            continue
+        zh[f"block.{NS}.{name}"] = zh_name  # 兜底（上面循环已写过，等值无害）
+        zh[f"block.{NS}.{name[:-7]}_slab"] = zh_name[:-2] + "台阶"
+        zh[f"block.{NS}.{name[:-7]}_stairs"] = zh_name[:-2] + "楼梯"
+        en[f"block.{NS}.{name}"] = en_name
+        en[f"block.{NS}.{name[:-7]}_slab"] = en_name.replace(" Planks", " Slab")
+        en[f"block.{NS}.{name[:-7]}_stairs"] = en_name.replace(" Planks", " Stairs")
+
+    # 第 25 轮：木变体家族 + 运输船 —— 从木板命名派生（门/告示牌/运输船是纯物品键）
+    R25_ZH = {"_fence": "木栅栏", "_fence_gate": "木栅栏门", "_door": "木门",
+              "_trapdoor": "木活板门", "_button": "木按钮",
+              "_pressure_plate": "木压力板", "_sign": "木告示牌", "_chest_boat": "木运输船"}
+    R25_EN = {"_fence": " Fence", "_fence_gate": " Fence Gate", "_door": " Door",
+              "_trapdoor": " Trapdoor", "_button": " Button",
+              "_pressure_plate": " Pressure Plate", "_sign": " Sign",
+              "_chest_boat": " Chest Boat"}
+    for name, _factory, zh_name, en_name in BLOCK_TEXTURES:
+        if not name.endswith("_planks"):
+            continue
+        species = name[:-7]
+        zh_base = zh_name[:-2]                     # 「紫微木板」→「紫微」
+        en_base = en_name.replace(" Planks", "")   # "Zi Wei Planks" -> "Zi Wei"
+        for suffix, zh_tail in R25_ZH.items():
+            key_kind = "item" if suffix in ("_door", "_sign", "_chest_boat") else "block"
+            zh[f"{key_kind}.{NS}.{species}{suffix}"] = zh_base + zh_tail
+            en[f"{key_kind}.{NS}.{species}{suffix}"] = en_base + R25_EN[suffix]
+        for suffix in ("_standing_sign", "_wall_sign"):
+            zh[f"block.{NS}.{species}{suffix}"] = zh_base + "木告示牌"
+            en[f"block.{NS}.{species}{suffix}"] = en_base + " Sign"
+
+    # 第 21 轮：七界凶液方块名 + 矿物原矿注释
+    R21_BANES = {
+        "astral_slag": ("星陨熔渣", "Astral Slag"),
+        "jade_acid": ("玉蚀酸液", "Jade Acid"),
+        "yao_miasma": ("妖瘴浓雾", "Yao Miasma"),
+        "ziwei_bane": ("星煞玄露", "Zi Wei Bane"),
+        "liuren_abyss": ("玄冥渊水", "Liu Ren Abyss"),
+        "qimen_hellfire": ("灼魂炎浆", "Qi Men Hellfire"),
+        "taiyi_frost": ("太乙寒渊", "Tai Yi Frost"),
+    }
+    R21_RAW_NOTE_ZH = "沉甸甸的一块原矿，回炉炼一炼才知道成色。"
+    R21_RAW_NOTE_EN = "A heavy raw chunk; smelt it to see what it is really made of."
+    R21_RAWS = [
+        "astral_raw", "jade_raw", "yao_raw", "meteor_raw", "ink_iron_raw",
+        "mica_raw", "onyx_raw", "star_sand_raw", "vein_raw", "verdant_raw",
+        "oracle_raw", "crystal_raw", "ziwei_crystal_raw", "ren_raw", "gui_raw",
+        "she_raw", "xuan_raw", "men_raw", "xing_raw", "dun_raw", "jia_raw",
+        "taiyi_raw", "wenchang_raw", "shiji_raw", "zhuke_raw",
+    ]
+    for fluid, (text_zh, text_en) in R21_BANES.items():
+        zh[f"block.{NS}.{fluid}"] = text_zh
+        en[f"block.{NS}.{fluid}"] = text_en
+    for raw in R21_RAWS:
+        zh[f"item.{NS}.{raw}.note"] = R21_RAW_NOTE_ZH
+        en[f"item.{NS}.{raw}.note"] = R21_RAW_NOTE_EN
 
     # 界面用不到本地化键，但保留一份「术数名词表」方便玩家查
     for key, text in {

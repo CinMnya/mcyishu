@@ -233,6 +233,7 @@ REALM_KITS = {
     "ziwei": ("ziwei_stone", "ziwei_bricks", "ziwei_lamp", "ruin_core"),
     "liuren": ("liuren_stone", "liuren_bricks", "liuren_lamp", "ruin_core"),
     "qimen": ("qimen_stone", "qimen_bricks", "qimen_lamp", "ruin_core"),
+    "taiyi": ("taiyi_stone", "taiyi_bricks", "taiyi_lamp", "ruin_core"),
 }
 
 
@@ -266,6 +267,7 @@ REALM_FLOWERS = {
     "ziwei": "yishu:ziwei_bloom",
     "liuren": "yishu:liuren_lily",
     "qimen": "yishu:qimen_bloom",
+    "taiyi": "yishu:taiyi_bloom",
 }
 
 # 界域 → 村床颜色
@@ -276,6 +278,7 @@ REALM_BEDS = {
     "ziwei": "minecraft:magenta_bed",
     "liuren": "minecraft:blue_bed",
     "qimen": "minecraft:orange_bed",
+    "taiyi": "minecraft:light_blue_bed",
 }
 
 # 界域 → (作物, [(工作方块, 职业 id), ...], 箱子战利品表)
@@ -305,6 +308,11 @@ VILLAGE_KIT = {
               [("yishu:qimen_array", "yishu:array_master"),
                ("yishu:bamen_altar", "yishu:bamen_master")],
               "yishu:chests/qimen_array"),
+    # —— 第 18 轮：太乙界 ——
+    "taiyi": ("yishu:taiyi_wheat",
+              [("yishu:ziwei_terrace", "yishu:star_master"),
+               ("yishu:dou_altar", "yishu:dou_master")],
+              "yishu:chests/taiyi_terrace"),
 }
 
 
@@ -574,6 +582,7 @@ VILLAGE_STRUCTURES = [
     ("ziwei_village", "ziwei", "#yishu:ziwei_field", 44, 15, 20261034),
     ("liuren_village", "liuren", "#yishu:liuren_field", 44, 15, 20261035),
     ("qimen_village", "qimen", "#yishu:qimen_field", 44, 15, 20261036),
+    ("taiyi_village", "taiyi", "#yishu:taiyi_field", 44, 15, 20261037),
 ]
 
 
@@ -588,6 +597,7 @@ RIFT_STRUCTURES = [
     ("ziwei_rift", "ziwei", "#minecraft:is_overworld", 30, 9, 20261044),
     ("liuren_rift", "liuren", "#minecraft:is_overworld", 30, 9, 20261045),
     ("qimen_rift", "qimen", "#minecraft:is_overworld", 30, 9, 20261046),
+    ("taiyi_rift", "taiyi", "#minecraft:is_overworld", 30, 9, 20261047),
 ]
 
 # 界域 → (液体, 花)
@@ -598,6 +608,7 @@ RIFT_KIT = {
     "ziwei": ("yishu:ziwei_ambrosia", "yishu:ziwei_bloom"),
     "liuren": ("yishu:liuren_water", "yishu:liuren_lily"),
     "qimen": ("yishu:qimen_mercury", "yishu:qimen_grass"),
+    "taiyi": ("yishu:taiyi_spring", "yishu:taiyi_bloom"),
 }
 
 
@@ -678,7 +689,7 @@ def gen_trades():
     write_json("yishu/villager_trade/wandering_trader/emerald_bronze_coins.json",
                trade_json("yishu:bronze_coins", 4, "minecraft:emerald"))
     write_json("yishu/villager_trade/wandering_trader/emerald_yarrow_stalks.json",
-               trade_json("yishu:yarrow_stalks", 2, "minecraft:emerald"))
+               trade_json("yishu:yarrow_stalks", 1, "minecraft:emerald"))
     write_json("yishu/villager_trade/wandering_trader/bronze_coins_emerald.json",
                trade_json("minecraft:emerald", 1, "yishu:bronze_coins", 6))
     write_json("yishu/villager_trade/wandering_trader/emerald_peek_charm.json",
@@ -736,7 +747,7 @@ def gen_villager_trades():
         ("cleric", 1, "emerald_talisman_paper", "yishu:talisman_paper", 4, "minecraft:emerald", 2, 12.0, 0.05),
         ("cleric", 2, "emerald_clarity_pill", "yishu:clarity_pill", 1, "minecraft:emerald", 6, 6.0, 0.05),
         # 农民：蓍草（六爻起卦的本草）
-        ("farmer", 1, "emerald_yarrow_stalks", "yishu:yarrow_stalks", 2, "minecraft:emerald", 3, 12.0, 0.05),
+        ("farmer", 1, "emerald_yarrow_stalks", "yishu:yarrow_stalks", 1, "minecraft:emerald", 3, 12.0, 0.05),
         # 石匠：界域建材
         ("mason", 1, "emerald_astral_bricks", "yishu:astral_bricks", 8, "minecraft:emerald", 4, 8.0, 0.05),
         ("mason", 2, "emerald_jade_bricks", "yishu:jade_bricks", 8, "minecraft:emerald", 4, 8.0, 0.05),
@@ -778,7 +789,7 @@ def gen_realm_jobs():
     jobs = {
         # 星象师 · 观气台 —— 观星者的草木与命书
         "astrologer": [
-            (1, "emerald_yarrow_stalks", "yishu:yarrow_stalks", 2, "minecraft:emerald", 3, 12.0, 0.05),
+            (1, "emerald_yarrow_stalks", "yishu:yarrow_stalks", 1, "minecraft:emerald", 3, 12.0, 0.05),
             (1, "astral_grain_emerald", "minecraft:emerald", 1, "yishu:astral_grain", 6, 16.0, 0.05),
             (2, "emerald_fate_slip", "yishu:fate_slip", 1, "minecraft:emerald", 12, 4.0, 0.10),
             (2, "emerald_astral_dust", "yishu:astral_dust", 4, "minecraft:emerald", 4, 8.0, 0.05),
@@ -824,7 +835,7 @@ def gen_realm_jobs():
         # 蓍师 · 祭坛 —— 蓍草与通灵法器
         "yarrow_master": [
             (1, "yao_pod_emerald", "minecraft:emerald", 1, "yishu:yao_pod", 6, 16.0, 0.05),
-            (1, "emerald_yarrow_stalks", "yishu:yarrow_stalks", 3, "minecraft:emerald", 3, 12.0, 0.05),
+            (1, "emerald_yarrow_stalks", "yishu:yarrow_stalks", 1, "minecraft:emerald", 3, 12.0, 0.05),
             (2, "yao_shard_emerald", "minecraft:emerald", 1, "yishu:yao_shard", 3, 10.0, 0.05),
             (2, "emerald_bagua_mirror", "yishu:bagua_mirror", 1, "minecraft:emerald", 16, 3.0, 0.10),
             (3, "turtle_shell_emerald", "minecraft:emerald", 1, "yishu:turtle_shell", 2, 8.0, 0.10),
@@ -918,6 +929,12 @@ def gen_mineable_tags():
         "dou_altar", "guiren_altar", "bamen_altar",
         # 三术界门户
         "ziwei_gate", "liuren_gate", "qimen_gate",
+        # ---- 第 19 轮：太乙界 ----
+        "taiyi_ore", "wenchang_ore", "shiji_ore", "zhuke_ore",
+        "taiyi_stone", "taiyi_bricks", "taiyi_lamp",
+        "taiyi_gate", "taiyi_terrace", "wenchang_altar",
+        # ---- 第 20 轮：镇物 ----
+        "zhenzhai_stone", "huasha_stone",
     ]
     axe = [
         # 九种界域原木
@@ -958,7 +975,9 @@ def gen_wood_tags():
              # 第 16 轮
              "ziwei_wood", "dou_wood", "tianji_wood",
              "ren_wood", "gui_wood", "she_wood",
-             "men_wood", "xing_wood", "dun_wood"]
+             "men_wood", "xing_wood", "dun_wood",
+             # 第 19 轮
+             "taiyi_wood", "wenchang_wood", "jishen_wood"]
     write_json("minecraft/tags/block/leaves.json", {
         "replace": False,
         "values": sorted(f"yishu:{w}_leaves" for w in woods),
@@ -1122,6 +1141,13 @@ def gen_key_recipes():
             ("_essence", "yishu:liuren_essence"),
             ("_shell", "yishu:liuren_shell"),
             ("_grain", "yishu:liuren_grain"),
+        ],
+        # ---- 第 19 轮：太乙界灵引 ----
+        "taiyi_key": [
+            ("", "yishu:taiyi_crystal"),
+            ("_essence", "yishu:taiyi_essence"),
+            ("_shard", "yishu:taiyi_shard"),
+            ("_grain", "yishu:taiyi_grain"),
         ],
         "qimen_key": [
             ("", "yishu:qimen_crystal"),

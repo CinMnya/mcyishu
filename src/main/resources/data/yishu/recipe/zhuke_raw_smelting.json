@@ -1,0 +1,11 @@
+{
+ "type": "minecraft:smelting",
+ "category": "misc",
+ "ingredient": "yishu:zhuke_raw",
+ "result": {
+  "id": "yishu:taiyi_grain",
+  "count": 1
+ },
+ "experience": 0.7,
+ "cookingtime": 200
+}

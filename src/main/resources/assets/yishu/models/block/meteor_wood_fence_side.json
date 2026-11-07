@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:block/fence_side",
+ "textures": {
+  "texture": "yishu:block/meteor_wood_planks"
+ }
+}

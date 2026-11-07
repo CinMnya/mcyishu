@@ -1,0 +1,13 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "misc",
+ "group": "chest_boat",
+ "ingredients": [
+  "yishu:ink_wood_boat",
+  "minecraft:chest"
+ ],
+ "result": {
+  "count": 1,
+  "id": "yishu:ink_wood_chest_boat"
+ }
+}

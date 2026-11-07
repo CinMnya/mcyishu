@@ -1,0 +1,12 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "building",
+ "group": "planks",
+ "ingredients": [
+  "yishu:dun_wood_log"
+ ],
+ "result": {
+  "count": 4,
+  "id": "yishu:dun_wood_planks"
+ }
+}

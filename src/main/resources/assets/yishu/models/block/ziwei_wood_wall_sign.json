@@ -1,0 +1,7 @@
+{
+ "parent": "minecraft:block/template_wall_sign",
+ "textures": {
+  "all": "yishu:block/ziwei_wood_sign",
+  "particle": "yishu:block/ziwei_wood_planks"
+ }
+}

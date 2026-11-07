@@ -1,8 +1,12 @@
 package com.chenchen.yishu.client;
 
 import com.chenchen.yishu.YishuMod;
+import com.chenchen.yishu.registry.YsRegistry;
 import com.chenchen.yishu.spirit.YsMobs;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.object.boat.BoatModel;
 import net.minecraft.client.renderer.entity.AllayRenderer;
 import net.minecraft.client.renderer.entity.BatRenderer;
 import net.minecraft.client.renderer.entity.EndermanRenderer;
@@ -16,6 +20,9 @@ import net.minecraft.client.renderer.entity.SlimeRenderer;
 import net.minecraft.client.renderer.entity.TurtleRenderer;
 import net.minecraft.client.renderer.entity.VexRenderer;
 import net.minecraft.client.renderer.entity.WolfRenderer;
+import net.minecraft.client.renderer.entity.BoatRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.blockentity.StandingSignRenderer;
 import net.minecraft.client.renderer.entity.state.AllayRenderState;
 import net.minecraft.client.renderer.entity.state.BatRenderState;
 import net.minecraft.client.renderer.entity.state.EndermanRenderState;
@@ -29,6 +36,7 @@ import net.minecraft.client.renderer.entity.state.TurtleRenderState;
 import net.minecraft.client.renderer.entity.state.VexRenderState;
 import net.minecraft.client.renderer.entity.state.WolfRenderState;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.animal.allay.Allay;
 import net.minecraft.world.entity.animal.fox.Fox;
@@ -41,6 +49,11 @@ import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.monster.Vex;
 import net.minecraft.world.entity.monster.cubemob.Slime;
+import net.minecraft.world.entity.vehicle.boat.AbstractBoat;
+import net.minecraft.world.entity.vehicle.boat.ChestBoat;
+import net.minecraft.world.entity.vehicle.boat.Boat;
+
+import java.util.Map;
 
 /**
  * 易枢 · 灵兽渲染。
@@ -88,6 +101,33 @@ public final class YsEntityRenderers {
         EntityRendererRegistry.<Fox>register(YsMobs.XING_FOX, XingFoxRenderer::new);
         EntityRendererRegistry.<Rabbit>register(YsMobs.DUN_RAT, DunRatRenderer::new);
         EntityRendererRegistry.<Bat>register(YsMobs.JIA_BIRD, JiaBirdRenderer::new);
+
+        // —— 第 23 轮：二十一木船 ——
+        // 每条船一个专属模型层，层 id = yishu:boat/<树种>。原版 BoatRenderer 的贴图
+        // 是从模型层 id 推导的：boat/<树种> → textures/entity/boat/<树种>.png，
+        // 所以直接复用原版渲染器（含水花补丁），一行贴图代码都不用写。
+        for (Map.Entry<String, EntityType<Boat>> entry : YsRegistry.WOOD_BOAT_TYPES.entrySet()) {
+            ModelLayerLocation layer =
+                    new ModelLayerLocation(YishuMod.id("boat/" + entry.getKey()), "main");
+            ModelLayerRegistry.registerModelLayer(layer, BoatModel::createBoatModel);
+            EntityRendererRegistry.<AbstractBoat>register(
+                    entry.getValue(), context -> new BoatRenderer(context, layer));
+        }
+
+        // —— 第 25 轮：二十一运输船 ——
+        // 层 id = yishu:boat/chest/<树种>，贴图路径 BoatRenderer 会拼成
+        // textures/entity/boat/chest/<树种>.png；木箱几何体直接采样同一张贴图的木板纹。
+        for (Map.Entry<String, EntityType<ChestBoat>> entry
+                : YsRegistry.WOOD_CHEST_BOAT_TYPES.entrySet()) {
+            ModelLayerLocation layer = new ModelLayerLocation(
+                    YishuMod.id("boat/chest/" + entry.getKey()), "main");
+            ModelLayerRegistry.registerModelLayer(layer, BoatModel::createChestBoatModel);
+            EntityRendererRegistry.<AbstractBoat>register(
+                    entry.getValue(), context -> new BoatRenderer(context, layer));
+        }
+
+        // —— 第 25 轮：模组告示牌方块实体 → 原版立牌渲染器（26.2 里它只负责画字） ——
+        BlockEntityRenderers.register(YsRegistry.YISHU_SIGN_BE, StandingSignRenderer::new);
     }
 
 

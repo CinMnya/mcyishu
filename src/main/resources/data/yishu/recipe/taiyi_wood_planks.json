@@ -1,0 +1,12 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "building",
+ "group": "planks",
+ "ingredients": [
+  "yishu:taiyi_wood_log"
+ ],
+ "result": {
+  "count": 4,
+  "id": "yishu:taiyi_wood_planks"
+ }
+}

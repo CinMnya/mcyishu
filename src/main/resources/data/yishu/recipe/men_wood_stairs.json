@@ -1,0 +1,17 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "group": "wooden_stairs",
+ "pattern": [
+  "#  ",
+  "## ",
+  "###"
+ ],
+ "key": {
+  "#": "yishu:men_wood_planks"
+ },
+ "result": {
+  "count": 4,
+  "id": "yishu:men_wood_stairs"
+ }
+}

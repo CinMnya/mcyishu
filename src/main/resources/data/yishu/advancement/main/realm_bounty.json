@@ -8,7 +8,7 @@
       "text": "界外奇珍"
     },
     "description": {
-      "text": "带回一份异界的矿物——星辉尘、青玉砂、爻纹砾，或三术界的紫微晶、壬水珠、八门金。"
+      "text": "带回一份异界的矿物——星辉尘、青玉砂、爻纹砾，或三术界与太乙界的晶石。"
     },
     "frame": "task",
     "show_toast": true,
@@ -74,6 +74,16 @@
           }
         ]
       }
+    },
+    "taiyi": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "yishu:taiyi_crystal"
+          }
+        ]
+      }
     }
   },
   "requirements": [
@@ -83,7 +93,8 @@
       "shard",
       "ziwei",
       "liuren",
-      "qimen"
+      "qimen",
+      "taiyi"
     ]
   ]
 }

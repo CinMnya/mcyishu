@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:block/cube_all",
+ "textures": {
+  "all": "yishu:block/meteor_wood_planks"
+ }
+}

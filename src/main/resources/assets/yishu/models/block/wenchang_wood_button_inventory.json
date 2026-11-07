@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:block/button_inventory",
+ "textures": {
+  "texture": "yishu:block/wenchang_wood_planks"
+ }
+}

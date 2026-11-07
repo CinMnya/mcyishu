@@ -21,6 +21,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -88,6 +89,50 @@ public final class YsFluids {
     public static final RealmFluid QIMEN_MERCURY = register("qimen_mercury", new QimenMercury(true));
     public static final RealmFluid FLOWING_QIMEN_MERCURY =
             register("flowing_qimen_mercury", new QimenMercury.Flowing());
+
+    /** 太乙玄泉 —— 太乙界的星泉，饮之明目、入之澄神。 */
+    public static final RealmFluid TAIYI_SPRING = register("taiyi_spring", new TaiyiSpring(true));
+    public static final RealmFluid FLOWING_TAIYI_SPRING =
+            register("flowing_taiyi_spring", new TaiyiSpring.Flowing());
+
+    // ---- 第 21 轮：七界凶液 —— 界域的另一副面孔，泡进去要付代价 ----
+
+    /** 星陨熔渣 —— 星轨界的残星余温，滚烫。 */
+    public static final RealmFluid ASTRAL_SLAG = register("astral_slag", new AstralSlag(true));
+    public static final RealmFluid FLOWING_ASTRAL_SLAG =
+            register("flowing_astral_slag", new AstralSlag.Flowing());
+
+    /** 玉蚀酸液 —— 风水界的玉浆腐汁，蚀骨。 */
+    public static final RealmFluid JADE_ACID = register("jade_acid", new JadeAcid(true));
+    public static final RealmFluid FLOWING_JADE_ACID =
+            register("flowing_jade_acid", new JadeAcid.Flowing());
+
+    /** 妖瘴浓雾 —— 六爻界的瘴气沉液，蚀魂。 */
+    public static final RealmFluid YAO_MIASMA = register("yao_miasma", new YaoMiasma(true));
+    public static final RealmFluid FLOWING_YAO_MIASMA =
+            register("flowing_yao_miasma", new YaoMiasma.Flowing());
+
+    /** 星煞玄露 —— 紫微界的煞气凝露，侵神。 */
+    public static final RealmFluid ZIWEI_BANE = register("ziwei_bane", new ZiweiBane(true));
+    public static final RealmFluid FLOWING_ZIWEI_BANE =
+            register("flowing_ziwei_bane", new ZiweiBane.Flowing());
+
+    /** 玄冥渊水 —— 六壬界的深渊死水，缚身。 */
+    public static final RealmFluid LIUREN_ABYSS = register("liuren_abyss", new LiurenAbyss(true));
+    public static final RealmFluid FLOWING_LIUREN_ABYSS =
+            register("flowing_liuren_abyss", new LiurenAbyss.Flowing());
+
+    /** 灼魂炎浆 —— 奇门界的死门阴火，焚身。 */
+    public static final RealmFluid QIMEN_HELLFIRE =
+            register("qimen_hellfire", new QimenHellfire(true));
+    public static final RealmFluid FLOWING_QIMEN_HELLFIRE =
+            register("flowing_qimen_hellfire", new QimenHellfire.Flowing());
+
+    /** 太乙寒渊 —— 太乙界的星渊寒水，彻骨。 */
+    public static final RealmFluid TAIYI_FROST = register("taiyi_frost", new TaiyiFrost(true));
+    public static final RealmFluid FLOWING_TAIYI_FROST =
+            register("flowing_taiyi_frost", new TaiyiFrost.Flowing());
+
     // ================================================================ 共用骨架
 
     /**
@@ -402,6 +447,78 @@ public final class YsFluids {
 
 
     /** 紫微露 —— 洗眼也洗命：夜视 + 伤害吸收。 */
+    public static class TaiyiSpring extends RealmFluid {
+
+        private final boolean source;
+
+        private TaiyiSpring(boolean source) {
+            this.source = source;
+        }
+
+        @Override
+        public Fluid getSource() {
+            return TAIYI_SPRING;
+        }
+
+        @Override
+        public Fluid getFlowing() {
+            return FLOWING_TAIYI_SPRING;
+        }
+
+        @Override
+        public boolean isSource(FluidState state) {
+            return this.source;
+        }
+
+        @Override
+        public int getAmount(FluidState state) {
+            return this.source ? FluidState.AMOUNT_FULL : state.getValue(LEVEL);
+        }
+
+        @Override
+        public Item getBucket() {
+            return YsRegistry.TAIYI_SPRING_BUCKET;
+        }
+
+        @Override
+        public BlockState createLegacyBlock(FluidState state) {
+            return YsRegistry.TAIYI_SPRING_BLOCK.defaultBlockState()
+                    .setValue(LiquidBlock.LEVEL, getLegacyLevel(state));
+        }
+
+        @Override
+        public boolean isSame(Fluid fluid) {
+            return fluid == TAIYI_SPRING || fluid == FLOWING_TAIYI_SPRING;
+        }
+
+        @Override
+        protected ParticleOptions particle() {
+            return ParticleTypes.END_ROD;
+        }
+
+        @Override
+        protected void realmTouch(LivingEntity living) {
+            living.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 320, 0, true, false, true));
+            living.addEffect(new MobEffectInstance(MobEffects.JUMP_BOOST, 200, 0, true, false, true));
+        }
+
+        /** 流水变体：状态定义里补上液位（与其它界域液体同理）。 */
+        private static final class Flowing extends TaiyiSpring {
+
+            private Flowing() {
+                super(false);
+            }
+
+            @Override
+            protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder) {
+                super.createFluidStateDefinition(builder);
+                builder.add(LEVEL);
+            }
+        }
+    }
+
+    /** 壬水 —— 沉进去像回了母胎：水下呼吸 + 迅捷。 */
+    /** 紫微露 —— 洗眼也洗命：夜视 + 伤害吸收。 */
     public static class ZiweiAmbrosia extends RealmFluid {
 
         private final boolean source;
@@ -622,5 +739,468 @@ public final class YsFluids {
     /** 触发类加载。 */
     public static void bootstrap() {
         // 静态字段初始化即完成注册
+    }
+
+    // ================================================================ 凶液骨架（第 21 轮）
+
+    /**
+     * 凶液骨架：与界域液体同一套骨架，只是 {@link #realmTouch} 全是恶意。
+     *
+     * <p>每秒结算一次接触效果：灼烧、酸蚀、中毒、凋零、缚身、焚身、冻伤 ——
+     * 七界各有一个「劝退点」，让玩家用桶舀水时多想一秒。
+     */
+    public abstract static class BaneFluid extends RealmFluid {
+
+        private final boolean source;
+
+        protected BaneFluid(boolean source) {
+            this.source = source;
+        }
+
+        /** 源头实例。 */
+        protected abstract Fluid still();
+
+        /** 流水实例。 */
+        protected abstract Fluid flowing();
+
+        /** 对应的桶。 */
+        protected abstract Item bucketItem();
+
+        /** 对应的液体方块。 */
+        protected abstract Block block();
+
+        @Override
+        public Fluid getSource() {
+            return still();
+        }
+
+        @Override
+        public Fluid getFlowing() {
+            return flowing();
+        }
+
+        @Override
+        public boolean isSource(FluidState state) {
+            return this.source;
+        }
+
+        @Override
+        public int getAmount(FluidState state) {
+            return this.source ? FluidState.AMOUNT_FULL : state.getValue(LEVEL);
+        }
+
+        @Override
+        public Item getBucket() {
+            return bucketItem();
+        }
+
+        @Override
+        public BlockState createLegacyBlock(FluidState state) {
+            return block().defaultBlockState()
+                    .setValue(LiquidBlock.LEVEL, getLegacyLevel(state));
+        }
+
+        @Override
+        public boolean isSame(Fluid fluid) {
+            return fluid == still() || fluid == flowing();
+        }
+
+        /** 流水变体：状态定义里补上液位。 */
+        public abstract static class Flowing extends BaneFluid {
+
+            protected Flowing() {
+                super(false);
+            }
+
+            @Override
+            protected void createFluidStateDefinition(
+                    StateDefinition.Builder<Fluid, FluidState> builder) {
+                super.createFluidStateDefinition(builder);
+                builder.add(LEVEL);
+            }
+        }
+    }
+
+    /** 星陨熔渣：残星余温 —— 着火 + 灼伤。 */
+    public static class AstralSlag extends BaneFluid {
+
+        public AstralSlag(boolean source) {
+            super(source);
+        }
+
+        @Override
+        protected Fluid still() {
+            return ASTRAL_SLAG;
+        }
+
+        @Override
+        protected Fluid flowing() {
+            return FLOWING_ASTRAL_SLAG;
+        }
+
+        @Override
+        protected Item bucketItem() {
+            return YsRegistry.ASTRAL_SLAG_BUCKET;
+        }
+
+        @Override
+        protected Block block() {
+            return YsRegistry.ASTRAL_SLAG_BLOCK;
+        }
+
+        @Override
+        protected ParticleOptions particle() {
+            return ParticleTypes.FLAME;
+        }
+
+        @Override
+        protected void realmTouch(LivingEntity living) {
+            living.igniteForSeconds(4.0F);
+            living.hurt(living.damageSources().magic(), 1.0F);
+        }
+
+        /** 流水变体。 */
+        public static final class Flowing extends AstralSlag {
+
+            public Flowing() {
+                super(false);
+            }
+
+            @Override
+            protected void createFluidStateDefinition(
+                    StateDefinition.Builder<Fluid, FluidState> builder) {
+                super.createFluidStateDefinition(builder);
+                builder.add(LEVEL);
+            }
+        }
+    }
+
+    /** 玉蚀酸液：蚀骨之浆 —— 酸蚀 + 挖掘疲劳。 */
+    public static class JadeAcid extends BaneFluid {
+
+        public JadeAcid(boolean source) {
+            super(source);
+        }
+
+        @Override
+        protected Fluid still() {
+            return JADE_ACID;
+        }
+
+        @Override
+        protected Fluid flowing() {
+            return FLOWING_JADE_ACID;
+        }
+
+        @Override
+        protected Item bucketItem() {
+            return YsRegistry.JADE_ACID_BUCKET;
+        }
+
+        @Override
+        protected Block block() {
+            return YsRegistry.JADE_ACID_BLOCK;
+        }
+
+        @Override
+        protected ParticleOptions particle() {
+            return ParticleTypes.COMPOSTER;
+        }
+
+        @Override
+        protected void realmTouch(LivingEntity living) {
+            living.hurt(living.damageSources().magic(), 2.0F);
+            living.addEffect(new MobEffectInstance(
+                    MobEffects.MINING_FATIGUE, 120, 0, true, false, true));
+        }
+
+        /** 流水变体。 */
+        public static final class Flowing extends JadeAcid {
+
+            public Flowing() {
+                super(false);
+            }
+
+            @Override
+            protected void createFluidStateDefinition(
+                    StateDefinition.Builder<Fluid, FluidState> builder) {
+                super.createFluidStateDefinition(builder);
+                builder.add(LEVEL);
+            }
+        }
+    }
+
+    /** 妖瘴浓雾：瘴气沉液 —— 中毒。 */
+    public static class YaoMiasma extends BaneFluid {
+
+        public YaoMiasma(boolean source) {
+            super(source);
+        }
+
+        @Override
+        protected Fluid still() {
+            return YAO_MIASMA;
+        }
+
+        @Override
+        protected Fluid flowing() {
+            return FLOWING_YAO_MIASMA;
+        }
+
+        @Override
+        protected Item bucketItem() {
+            return YsRegistry.YAO_MIASMA_BUCKET;
+        }
+
+        @Override
+        protected Block block() {
+            return YsRegistry.YAO_MIASMA_BLOCK;
+        }
+
+        @Override
+        protected ParticleOptions particle() {
+            return ParticleTypes.SMOKE;
+        }
+
+        @Override
+        protected void realmTouch(LivingEntity living) {
+            living.addEffect(new MobEffectInstance(
+                    MobEffects.POISON, 140, 0, true, false, true));
+        }
+
+        /** 流水变体。 */
+        public static final class Flowing extends YaoMiasma {
+
+            public Flowing() {
+                super(false);
+            }
+
+            @Override
+            protected void createFluidStateDefinition(
+                    StateDefinition.Builder<Fluid, FluidState> builder) {
+                super.createFluidStateDefinition(builder);
+                builder.add(LEVEL);
+            }
+        }
+    }
+
+    /** 星煞玄露：煞气凝露 —— 凋零。 */
+    public static class ZiweiBane extends BaneFluid {
+
+        public ZiweiBane(boolean source) {
+            super(source);
+        }
+
+        @Override
+        protected Fluid still() {
+            return ZIWEI_BANE;
+        }
+
+        @Override
+        protected Fluid flowing() {
+            return FLOWING_ZIWEI_BANE;
+        }
+
+        @Override
+        protected Item bucketItem() {
+            return YsRegistry.ZIWEI_BANE_BUCKET;
+        }
+
+        @Override
+        protected Block block() {
+            return YsRegistry.ZIWEI_BANE_BLOCK;
+        }
+
+        @Override
+        protected ParticleOptions particle() {
+            return ParticleTypes.WITCH;
+        }
+
+        @Override
+        protected void realmTouch(LivingEntity living) {
+            living.addEffect(new MobEffectInstance(
+                    MobEffects.WITHER, 90, 0, true, false, true));
+        }
+
+        /** 流水变体。 */
+        public static final class Flowing extends ZiweiBane {
+
+            public Flowing() {
+                super(false);
+            }
+
+            @Override
+            protected void createFluidStateDefinition(
+                    StateDefinition.Builder<Fluid, FluidState> builder) {
+                super.createFluidStateDefinition(builder);
+                builder.add(LEVEL);
+            }
+        }
+    }
+
+    /** 玄冥渊水：深渊死水 —— 缚身（重缓 + 虚弱）。 */
+    public static class LiurenAbyss extends BaneFluid {
+
+        public LiurenAbyss(boolean source) {
+            super(source);
+        }
+
+        @Override
+        protected Fluid still() {
+            return LIUREN_ABYSS;
+        }
+
+        @Override
+        protected Fluid flowing() {
+            return FLOWING_LIUREN_ABYSS;
+        }
+
+        @Override
+        protected Item bucketItem() {
+            return YsRegistry.LIUREN_ABYSS_BUCKET;
+        }
+
+        @Override
+        protected Block block() {
+            return YsRegistry.LIUREN_ABYSS_BLOCK;
+        }
+
+        @Override
+        protected ParticleOptions particle() {
+            return ParticleTypes.BUBBLE;
+        }
+
+        @Override
+        protected void realmTouch(LivingEntity living) {
+            living.hurt(living.damageSources().magic(), 1.0F);
+            living.addEffect(new MobEffectInstance(
+                    MobEffects.SLOWNESS, 140, 2, true, false, true));
+            living.addEffect(new MobEffectInstance(
+                    MobEffects.WEAKNESS, 140, 0, true, false, true));
+        }
+
+        /** 流水变体。 */
+        public static final class Flowing extends LiurenAbyss {
+
+            public Flowing() {
+                super(false);
+            }
+
+            @Override
+            protected void createFluidStateDefinition(
+                    StateDefinition.Builder<Fluid, FluidState> builder) {
+                super.createFluidStateDefinition(builder);
+                builder.add(LEVEL);
+            }
+        }
+    }
+
+    /** 灼魂炎浆：死门阴火 —— 焚身。 */
+    public static class QimenHellfire extends BaneFluid {
+
+        public QimenHellfire(boolean source) {
+            super(source);
+        }
+
+        @Override
+        protected Fluid still() {
+            return QIMEN_HELLFIRE;
+        }
+
+        @Override
+        protected Fluid flowing() {
+            return FLOWING_QIMEN_HELLFIRE;
+        }
+
+        @Override
+        protected Item bucketItem() {
+            return YsRegistry.QIMEN_HELLFIRE_BUCKET;
+        }
+
+        @Override
+        protected Block block() {
+            return YsRegistry.QIMEN_HELLFIRE_BLOCK;
+        }
+
+        @Override
+        protected ParticleOptions particle() {
+            return ParticleTypes.FLAME;
+        }
+
+        @Override
+        protected void realmTouch(LivingEntity living) {
+            living.igniteForSeconds(6.0F);
+            living.hurt(living.damageSources().magic(), 2.0F);
+        }
+
+        /** 流水变体。 */
+        public static final class Flowing extends QimenHellfire {
+
+            public Flowing() {
+                super(false);
+            }
+
+            @Override
+            protected void createFluidStateDefinition(
+                    StateDefinition.Builder<Fluid, FluidState> builder) {
+                super.createFluidStateDefinition(builder);
+                builder.add(LEVEL);
+            }
+        }
+    }
+
+    /** 太乙寒渊：星渊寒水 —— 冻彻骨髓（重缓 + 冻伤）。 */
+    public static class TaiyiFrost extends BaneFluid {
+
+        public TaiyiFrost(boolean source) {
+            super(source);
+        }
+
+        @Override
+        protected Fluid still() {
+            return TAIYI_FROST;
+        }
+
+        @Override
+        protected Fluid flowing() {
+            return FLOWING_TAIYI_FROST;
+        }
+
+        @Override
+        protected Item bucketItem() {
+            return YsRegistry.TAIYI_FROST_BUCKET;
+        }
+
+        @Override
+        protected Block block() {
+            return YsRegistry.TAIYI_FROST_BLOCK;
+        }
+
+        @Override
+        protected ParticleOptions particle() {
+            return ParticleTypes.SNOWFLAKE;
+        }
+
+        @Override
+        protected void realmTouch(LivingEntity living) {
+            living.hurt(living.damageSources().freeze(), 1.0F);
+            living.addEffect(new MobEffectInstance(
+                    MobEffects.SLOWNESS, 200, 2, true, false, true));
+        }
+
+        /** 流水变体。 */
+        public static final class Flowing extends TaiyiFrost {
+
+            public Flowing() {
+                super(false);
+            }
+
+            @Override
+            protected void createFluidStateDefinition(
+                    StateDefinition.Builder<Fluid, FluidState> builder) {
+                super.createFluidStateDefinition(builder);
+                builder.add(LEVEL);
+            }
+        }
     }
 }

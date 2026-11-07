@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:block/pressure_plate_down",
+ "textures": {
+  "texture": "yishu:block/cloud_wood_planks"
+ }
+}

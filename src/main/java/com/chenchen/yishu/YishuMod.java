@@ -3,6 +3,7 @@ package com.chenchen.yishu;
 import com.chenchen.yishu.building.BuildingFate;
 import com.chenchen.yishu.dimension.DimensionProfile;
 import com.chenchen.yishu.fengshui.FengShuiField;
+import com.chenchen.yishu.fengshui.TerrainQi;
 import com.chenchen.yishu.fengshui.FengShuiSystems;
 import com.chenchen.yishu.network.YsNetworking;
 import com.chenchen.yishu.registry.YsRegistry;
@@ -74,7 +75,16 @@ public class YishuMod implements ModInitializer {
         attempt("新手引导", TutorialSystem::register);
         attempt("原版整合", com.chenchen.yishu.integration.VanillaIntegration::register);
         attempt("指令", com.chenchen.yishu.command.YishuCommand::register);
+        attempt("时钟黄历", com.chenchen.yishu.system.ClockSystem::register);
         attempt("主题变种", com.chenchen.yishu.integration.ThemedVariants::register);
+        // 第 20 轮：相面 · 阵盘 · 镇物 · 功德 · 梦境 · 节气 · 动土吉凶
+        attempt("因果功德", com.chenchen.yishu.system.MeritSystem::register);
+        attempt("相面招募", com.chenchen.yishu.system.Physiognomy::register);
+        attempt("阵盘", com.chenchen.yishu.system.FormationSystem::register);
+        attempt("镇物", com.chenchen.yishu.system.GuardianStoneSystem::register);
+        attempt("梦境", com.chenchen.yishu.system.DreamSystem::register);
+        attempt("节气事件", com.chenchen.yishu.system.SolarTermSystem::register);
+        attempt("动土吉凶", com.chenchen.yishu.system.DayActionHook::register);
 
         LOGGER.info("[Yishu] 加载完成。同一个种子下的每一卦、每一张命盘、每一处风水，都将是唯一的。");
     }
@@ -144,6 +154,8 @@ public class YishuMod implements ModInitializer {
         private static final Identifier SPEED_ID = id("liuyao/speed");
         private static final Identifier ATTACK_ID = id("liuyao/attack");
         private static final Identifier RANGE_ID = id("liuyao/range");
+        private static final Identifier QI_SPEED_ID = id("fengshui/qi_speed");
+        private static final Identifier QI_ATTACK_ID = id("fengshui/qi_attack");
 
         private MobFateSystem() {
         }
@@ -213,6 +225,22 @@ public class YishuMod implements ModInitializer {
             // 护甲：父母旺则厚
             damageOrNull(mob.getAttribute(Attributes.ARMOR), id("liuyao/armor"),
                     clamp(resilience * 0.30D, 0.0D, 0.45D));
+
+            // ---- 风水气场（第 18 轮）----
+            // 地形一改，这里的怪就跟着改：吉地气顺，怪物稍弱；
+            // 凶地煞重，怪物更凶。走 TerrainQi 的区块缓存，
+            // 所以「搬走一座山」最多 3 秒就能在刷出来的怪身上看出来。
+            com.chenchen.yishu.dimension.DimensionProfile dim =
+                    com.chenchen.yishu.dimension.DimensionProfile.of(
+                            level.dimension().identifier().toString());
+            FengShuiField.Sample field = TerrainQi.sample(level, dim,
+                    mob.blockPosition().getX(), mob.blockPosition().getZ());
+            double qi = (field.score(dim) - 50) / 50.0D;   // -1 凶 ~ +1 吉
+            setModifier(mob.getAttribute(Attributes.MOVEMENT_SPEED), QI_SPEED_ID,
+                    clamp(-qi * 0.10D, -0.12D, 0.12D),
+                    AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+            damageOrNull(mob.getAttribute(Attributes.ATTACK_DAMAGE), QI_ATTACK_ID,
+                    clamp(-qi * 0.14D, -0.16D, 0.16D));
         }
 
         private static void damageOrNull(AttributeInstance instance, Identifier id, double amount) {
@@ -282,13 +310,19 @@ public class YishuMod implements ModInitializer {
                 if (player.isSpectator() || !player.isAlive()) {
                     continue;
                 }
-                FengShuiField.Sample sample = FengShuiField.sample(seed, dimension,
+                FengShuiField.Sample sample = TerrainQi.sample(level, dimension,
                         player.blockPosition().getX(), player.blockPosition().getZ());
                 FengShuiField.Grade grade = sample.grade(dimension);
                 FengShuiSystems.Effects effects = FengShuiSystems.Effects.of(grade);
 
                 // 香炉净化：附近有燃香则把评级往上抬一档
                 if (IncenseBonus.isIncensed(level, player.blockPosition())) {
+                    effects = FengShuiSystems.Effects.of(IncenseBonus.upgrade(grade));
+                }
+
+                // 化煞碑（第 20 轮）：香炉之后再化一层，凶地可解
+                else if (com.chenchen.yishu.system.GuardianStoneSystem.neutralized(
+                        level, player.blockPosition())) {
                     effects = FengShuiSystems.Effects.of(IncenseBonus.upgrade(grade));
                 }
 

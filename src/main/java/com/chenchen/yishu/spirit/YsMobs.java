@@ -633,6 +633,12 @@ public final class YsMobs {
     }
     // ==================================================================== 小工具
 
+    /** 是否为模组灵兽（易枢自己注册的生物）—— 灵兽通灵性，滥杀损阴德。 */
+    public static boolean isModdedSpirit(net.minecraft.world.entity.LivingEntity entity) {
+        return BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).getNamespace()
+                .equals(YishuMod.MOD_ID);
+    }
+
     private static void attempt(String name, Runnable action) {
         try {
             action.run();

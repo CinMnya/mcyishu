@@ -1,0 +1,16 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "misc",
+ "group": "boat",
+ "pattern": [
+  "# #",
+  "###"
+ ],
+ "key": {
+  "#": "yishu:meteor_wood_planks"
+ },
+ "result": {
+  "count": 1,
+  "id": "yishu:meteor_wood_boat"
+ }
+}

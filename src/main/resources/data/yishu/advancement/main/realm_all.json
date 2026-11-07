@@ -5,10 +5,10 @@
       "id": "yishu:fate_slip"
     },
     "title": {
-      "text": "六界巡游"
+      "text": "七界巡游"
     },
     "description": {
-      "text": "命理、风水、六爻、紫微、六壬、奇门——六个界域，都留下一串脚印。"
+      "text": "命理、风水、六爻、紫微、六壬、奇门、太乙——七个界域，都留下一串脚印。"
     },
     "frame": "challenge",
     "show_toast": true,
@@ -50,6 +50,12 @@
       "conditions": {
         "to": "yishu:qimen_realm"
       }
+    },
+    "taiyi": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "yishu:taiyi_realm"
+      }
     }
   },
   "requirements": [
@@ -70,6 +76,9 @@
     ],
     [
       "qimen"
+    ],
+    [
+      "taiyi"
     ]
   ]
 }

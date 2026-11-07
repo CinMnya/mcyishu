@@ -1,0 +1,7 @@
+{
+ "parent": "minecraft:block/template_sign_rot_1",
+ "textures": {
+  "all": "yishu:block/men_wood_sign",
+  "particle": "yishu:block/men_wood_planks"
+ }
+}

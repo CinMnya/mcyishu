@@ -1,0 +1,15 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "group": "wooden_slab",
+ "pattern": [
+  "###"
+ ],
+ "key": {
+  "#": "yishu:jade_wood_planks"
+ },
+ "result": {
+  "count": 6,
+  "id": "yishu:jade_wood_slab"
+ }
+}

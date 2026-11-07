@@ -1,0 +1,25 @@
+{
+  "parent": "yishu:main/first_gate",
+  "display": {
+    "icon": {
+      "id": "yishu:taiyi_stone"
+    },
+    "title": {
+      "text": "太乙之约"
+    },
+    "description": {
+      "text": "初次踏入太乙界——浮空九宫悬在星海里，太乙行宫不入中五。"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "enter": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "yishu:taiyi_realm"
+      }
+    }
+  }
+}

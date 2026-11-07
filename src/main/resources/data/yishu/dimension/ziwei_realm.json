@@ -15,7 +15,7 @@
             ],
             "humidity": [
               -0.7,
-              0.6
+              0.0
             ],
             "continentalness": [
               -2.0,
@@ -38,6 +38,36 @@
         },
         {
           "biome": "yishu:ziwei_grove",
+          "parameters": {
+            "temperature": [
+              -0.3,
+              0.4
+            ],
+            "humidity": [
+              0.0,
+              0.6
+            ],
+            "continentalness": [
+              -2.0,
+              2.0
+            ],
+            "erosion": [
+              -2.0,
+              2.0
+            ],
+            "depth": [
+              -2.0,
+              2.0
+            ],
+            "weirdness": [
+              -2.0,
+              2.0
+            ],
+            "offset": 0
+          }
+        },
+        {
+          "biome": "yishu:ziwei_peaks",
           "parameters": {
             "temperature": [
               -0.3,
@@ -67,7 +97,7 @@
           }
         },
         {
-          "biome": "yishu:ziwei_peaks",
+          "biome": "yishu:ziwei_marsh",
           "parameters": {
             "temperature": [
               0.4,
@@ -97,7 +127,7 @@
           }
         },
         {
-          "biome": "yishu:ziwei_marsh",
+          "biome": "yishu:ziwei_dunes",
           "parameters": {
             "temperature": [
               -2.0,
@@ -127,7 +157,7 @@
           }
         },
         {
-          "biome": "yishu:ziwei_dunes",
+          "biome": "yishu:ziwei_ocean",
           "parameters": {
             "temperature": [
               -2.0,

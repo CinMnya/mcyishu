@@ -175,17 +175,77 @@ REALMS = [
             "monster": [("men_guard", 3, 1, 1), ("jia_bird", 10, 2, 3)],
         },
     ),
+    # —— 第 18 轮：太乙神数（三式之三，补齐「三式」）——
+    dict(
+        id="taiyi_realm",
+        zh="太乙界",
+        # 第 19 轮：方块 / 矿 / 树 / 液体 / 门户全部独立注册
+        prefix="taiyi",
+        kit=("taiyi_stone", "taiyi_bricks", "taiyi_lamp"),
+        core="ruin_core",
+        fluid="taiyi_spring",
+        noise="taiyi_sky",
+        base_noise="floating_islands",
+        sea_level=-64,
+        biomes=["taiyi_field", "taiyi_grove", "taiyi_peaks", "taiyi_marsh", "taiyi_dunes"],
+        biome_zh=["太乙原", "九宫林", "太一崖", "五将泽", "十六神沙"],
+        trees=[("taiyi_wood", "oak"), ("wenchang_wood", "tall"), ("jishen_wood", "fancy")],
+        ores=["taiyi_ore", "wenchang_ore", "shiji_ore", "zhuke_ore"],
+        ores_per_biome={
+            "taiyi_field": ["taiyi_ore", "wenchang_ore"],
+            "taiyi_grove": ["shiji_ore", "taiyi_ore"],
+            "taiyi_peaks": ["zhuke_ore", "wenchang_ore", "taiyi_ore"],
+            "taiyi_marsh": ["shiji_ore"],
+            "taiyi_dunes": ["zhuke_ore", "shiji_ore"],
+        },
+        flower="taiyi_bloom",
+        grass="taiyi_grass",
+        mobs=["ziwei_star", "jia_bird", "dou_beast", "tianji_fox"],  # 复用已注册灵兽，避免一次性新增实体注册表连锁
+        village="taiyi_village",
+        temple="taiyi_tower",
+        temple_src="astral_observatory",
+        temple_zh="太乙观星台",
+        rift="taiyi_rift",
+        chest="taiyi_terrace",
+        sky=dict(
+            ambient_light=0.16,
+            sky="#0d1c34", fog="#1b3358", cloud="#b0c8e8ff",
+            star=1.00, sky_light="#a8c8ff", sky_light_factor=0.95,
+            sunrise="#66e0ffaa", water_fog="#122744",
+            fog_start=18.0, fog_end=210.0, sky_fog_end=250.0, cloud_h=220.0,
+            ambient_light_color="#0a1426",
+            particle=("minecraft:end_rod", 0.024),
+        ),
+        effect=dict(water_color="#2c4f86", grass_color="#8fb4e8", foliage_color="#6f9ad8"),
+        grasses=["#8fb4e8"],
+        mob_profile={
+            "creature": [("tianji_fox", 8, 1, 3), ("dou_beast", 5, 1, 2)],
+            "monster": [("ziwei_star", 6, 1, 2), ("jia_bird", 10, 2, 4)],
+        },
+    ),
 ]
 
-# 群系五分区（与既有三界一致的铺满方案）
+# 群系六分区（与既有三界一致的铺满方案；第 21 轮把核心湿度带劈出海洋）
 ZONE_PARAMS = [
     # (温度区间, 湿度区间)
-    ([-0.3, 0.4], [-0.7, 0.6]),    # 核心
+    ([-0.3, 0.4], [-0.7, 0.0]),    # 核心（原野）
+    ([-0.3, 0.4], [0.0, 0.6]),     # 海洋（第 21 轮）
     ([-0.3, 0.4], [0.6, 2.0]),     # 湿润
     ([0.4, 2.0], [-0.7, 2.0]),     # 炎热
     ([-2.0, -0.3], [-0.7, 2.0]),   # 寒冷
     ([-2.0, 2.0], [-2.0, -0.7]),   # 干燥
 ]
+
+# 第 21 轮：每界一座海洋群系 + 一汪凶液
+OCEAN_ZH = {"ziwei": "紫微海", "liuren": "玄冥海", "qimen": "炎海", "taiyi": "星汉海"}
+BANE_FLUIDS = {"ziwei": "ziwei_bane", "liuren": "liuren_abyss",
+               "qimen": "qimen_hellfire", "taiyi": "taiyi_frost"}
+for _realm in REALMS:
+    _ocean = _realm["prefix"] + "_ocean"
+    _field = _realm["biomes"][0]
+    _realm["biomes"].append(_ocean)
+    _realm["biome_zh"].append(OCEAN_ZH[_realm["prefix"]])
+    _realm["ores_per_biome"][_ocean] = list(_realm["ores_per_biome"][_field])
 
 FULL = [-2.0, 2.0]
 
@@ -310,11 +370,12 @@ NOISE_SRC = {
     "ziwei_realm": ("fate_isle", None),          # 浮空岛：独特地貌
     "liuren_realm": ("hex_expanse", (1, 2)),     # 常规山地：起伏最深
     "qimen_realm": ("hex_expanse", (2, 1)),      # 开阔平缓：大尺度台地
+    "taiyi_realm": ("fate_isle", None),          # 太乙：浮空九宫星台
 }
 
 
 def gen_noise_settings():
-    print("== 噪声设置（3 份：default_fluid 换成界域液体）==")
+    print("== 噪声设置（4 份：default_fluid 换成界域液体）==")
     for realm in REALMS:
         src, tweak = NOISE_SRC[realm["id"]]
         with open(os.path.join(DATA, "yishu", "worldgen", "noise_settings", src + ".json"),
@@ -325,6 +386,24 @@ def gen_noise_settings():
         if tweak:
             d["noise"]["size_horizontal"] = tweak[0]
             d["noise"]["size_vertical"] = tweak[1]
+        # 第 21 轮：克隆源若把气候路由写成常数 0（floating_islands 系），接回真实气候，
+        # 否则 multi_noise 只会命中一个群系，grove/peaks/ocean 全是死数据
+        router = d["noise_router"]
+        if all(router.get(k) == 0.0 for k in ("temperature", "vegetation")):
+            router["temperature"] = {"type": "minecraft:shifted_noise",
+                                     "noise": "minecraft:temperature",
+                                     "shift_x": "minecraft:shift_x", "shift_y": 0.0,
+                                     "shift_z": "minecraft:shift_z",
+                                     "xz_scale": 0.25, "y_scale": 0.0}
+            router["vegetation"] = {"type": "minecraft:shifted_noise",
+                                    "noise": "minecraft:vegetation",
+                                    "shift_x": "minecraft:shift_x", "shift_y": 0.0,
+                                    "shift_z": "minecraft:shift_z",
+                                    "xz_scale": 0.25, "y_scale": 0.0}
+            router["continents"] = "minecraft:overworld/continents"
+            router["erosion"] = "minecraft:overworld/erosion"
+            router["depth"] = "minecraft:overworld/depth"
+            router["ridges"] = "minecraft:overworld/ridges"
         write_json("yishu/worldgen/noise_settings/%s.json" % realm["noise"], d)
 
 
@@ -397,12 +476,22 @@ def gen_tree_features():
 
 # ==================================================================== 矿石
 
+# 第 21 轮：主世界矿物入界（特征本体由 tools/patch_round21.py 写出，
+# 这里只引用 id —— 保持「谁的数据谁写表」的边界）
+OVERWORLD_ORE_IDS = [
+    "yishu:overworld_iron_ore",
+    "yishu:overworld_gold_ore",
+    "yishu:overworld_diamond_ore",
+]
+
 # 每种矿的 (每区块矿脉数, 最低高度, 最高高度, 矿脉大小)
+# 注意：维度 min_y = -64，高度一律用 above_bottom 正偏移（第 22 轮修正：
+# 旧值 above_bottom 负数落在世界底之下，导致矿脉几乎不生成）
 ORE_SHAPE = {
-    0: (5, -60, 60, 6),    # 主矿：多而浅
-    1: (3, -60, 20, 4),    # 次矿：中层
-    2: (4, -20, 110, 5),   # 地表矿
-    3: (2, -60, -10, 3),   # 深矿：稀少
+    0: (10, 4, 220, 10),   # 主矿：多而广
+    1: (7, 4, 110, 8),     # 次矿：中层
+    2: (7, 100, 260, 9),   # 地表矿
+    3: (4, 0, 60, 7),      # 深矿：底部富集
 }
 
 
@@ -415,7 +504,8 @@ def gen_ore_features():
             write_json("yishu/worldgen/configured_feature/%s.json" % ore, {
                 "type": "minecraft:ore",
                 "config": {
-                    "discard_chance_on_air_exposure": 0.3,
+                    # 0 = 洞穴壁上也保留矿石（要的就是裸露矿）
+                    "discard_chance_on_air_exposure": 0.0,
                     "size": size,
                     "targets": [
                         {"state": state, "target": {"predicate_type": "minecraft:tag_match",
@@ -443,7 +533,7 @@ def gen_ore_features():
 # ==================================================================== 液体湖 / 花 / 草
 
 def gen_fluid_and_flora():
-    print("== 液体湖 · 花 · 草（3 界各一套）==")
+    print("== 液体湖 · 花 · 草（4 界各一套）==")
     for realm in REALMS:
         stone = "yishu:" + realm["kit"][0]
         fluid = "yishu:" + realm["fluid"]
@@ -502,6 +592,30 @@ def gen_fluid_and_flora():
                 ],
             })
 
+        # 第 21 轮：凶液湖 —— 与界域湖同款骨架，换成凶液
+        bane = "yishu:" + BANE_FLUIDS[realm["prefix"]]
+        with open(os.path.join(DATA, "yishu", "worldgen", "configured_feature",
+                               "%s_lake.json" % realm["fluid"]), encoding="utf-8") as f:
+            bane_lake = json.load(f)
+        bane_lake["config"]["fluid"]["state"]["Name"] = bane
+        write_json("yishu/worldgen/configured_feature/%s_lake.json"
+                   % BANE_FLUIDS[realm["prefix"]], bane_lake)
+        write_json("yishu/worldgen/placed_feature/%s_lake.json"
+                   % BANE_FLUIDS[realm["prefix"]],
+                   {
+                       "feature": "yishu:%s_lake" % BANE_FLUIDS[realm["prefix"]],
+                       "placement": [
+                           {"type": "minecraft:count", "count": 1},
+                           {"type": "minecraft:in_square"},
+                           {"type": "minecraft:height_range", "height": {
+                               "type": "minecraft:trapezoid",
+                               "min_inclusive": {"above_bottom": 20},
+                               "max_inclusive": {"above_bottom": 90},
+                           }},
+                           {"type": "minecraft:biome"},
+                       ],
+                   })
+
 
 # ==================================================================== 生物群系
 
@@ -515,15 +629,21 @@ def gen_biomes():
         all_ores = ["yishu:" + o for o in realm["ores"]]
         all_trees = ["yishu:%s_trees" % w for w, _ in realm["trees"]]
         for name in realm["biomes"]:
+            is_ocean = "ocean" in name
             wanted_ores = {"yishu:" + o for o in realm["ores_per_biome"][name]}
             ores = [o for o in all_ores if o in wanted_ores]
             steps = [[] for _ in range(11)]
             steps[1] = ["yishu:%s_lake" % realm["fluid"]]
+            # 第 21 轮：泽 / 沙（以及海洋）里另有凶液湖 —— 界域的「劝退点」
+            if is_ocean or "marsh" in name or "dunes" in name:
+                steps[1].append("yishu:%s_lake" % BANE_FLUIDS[realm["prefix"]])
             steps[2] = ["minecraft:amethyst_geode"]
-            steps[6] = ores
-            steps[9] = ["minecraft:glow_lichen",
-                        "yishu:%s_patch" % realm["flower"],
-                        "yishu:%s_patch" % realm["grass"]] + list(all_trees)
+            # 第 21 轮：每界都有概率挖到主世界的铁 / 金 / 钻石
+            steps[6] = ores + OVERWORLD_ORE_IDS
+            steps[9] = [] if is_ocean else [
+                "minecraft:glow_lichen",
+                "yishu:%s_patch" % realm["flower"],
+                "yishu:%s_patch" % realm["grass"]] + list(all_trees)
             spawners = {
                 "ambient": [], "axolotls": [], "misc": [],
                 "underground_water_creature": [], "water_ambient": [], "water_creature": [],
@@ -552,7 +672,8 @@ def gen_biomes():
                 "has_precipitation": False,
                 "spawn_costs": {},
                 "spawners": spawners,
-                "temperature": 0.7 if "peaks" in name else (0.1 if "marsh" in name else 0.4),
+                "temperature": 0.7 if "peaks" in name else (
+                    0.1 if "marsh" in name else (0.5 if "ocean" in name else 0.4)),
             })
 
 
@@ -720,14 +841,77 @@ def gen_chests():
         })
 
 
+# ==================================================================== 太乙界矿石掉落（第 19 轮）
+
+ORE_DROPS = {
+    # 第 21 轮：矿石一律先掉原矿，回炉（smelting/blasting）才出成品
+    "taiyi_ore": "taiyi_raw",
+    "wenchang_ore": "wenchang_raw",
+    "shiji_ore": "shiji_raw",
+    "zhuke_ore": "zhuke_raw",
+}
+
+
+def gen_taiyi_ore_loot():
+    """太乙界四矿的掉落表：精准采集掉方块本体，否则掉界域材料 + 时运加成。"""
+    print("== 太乙界矿石掉落表（4 张）==")
+    for ore, drop in ORE_DROPS.items():
+        write_json("yishu/loot_table/blocks/%s.json" % ore, {
+            "type": "minecraft:block",
+            "pools": [{
+                "rolls": 1.0,
+                "entries": [{
+                    "type": "minecraft:alternatives",
+                    "children": [
+                        {
+                            "type": "minecraft:item",
+                            "name": "yishu:" + ore,
+                            "conditions": [{
+                                "condition": "minecraft:match_tool",
+                                "predicate": {"predicates": {
+                                    "minecraft:enchantments": [{
+                                        "enchantments": "minecraft:silk_touch",
+                                        "levels": {"min": 1},
+                                    }],
+                                }},
+                            }],
+                        },
+                        {
+                            "type": "minecraft:item",
+                            "name": "yishu:" + drop,
+                            "functions": [
+                                {"function": "minecraft:apply_bonus",
+                                 "enchantment": "minecraft:fortune",
+                                 "formula": "minecraft:ore_drops"},
+                                {"function": "minecraft:explosion_decay"},
+                            ],
+                        },
+                    ],
+                }],
+            }],
+        })
+    write_json("yishu/loot_table/blocks/taiyi_wheat.json", {
+        "type": "minecraft:block",
+        "pools": [
+            {"rolls": 1.0, "entries": [
+                {"type": "minecraft:item", "name": "yishu:taiyi_seeds"}]},
+            {"rolls": 1.0, "entries": [
+                {"type": "minecraft:item", "name": "yishu:taiyi_grain"}],
+             "conditions": [{"condition": "minecraft:block_state_property",
+                             "block": "yishu:taiyi_wheat",
+                             "properties": {"age": "3"}}]},
+        ],
+    })
+
+
 # ==================================================================== 标签
 
 def gen_biome_tags():
-    print("== 群系标签（3 份）==")
+    print("== 群系标签（3 份；海洋不进 field 标签，免得村庄盖在海上）==")
     for realm in REALMS:
         write_json("yishu/tags/worldgen/biome/%s_field.json" % realm["prefix"], {
             "replace": False,
-            "values": ["yishu:" + b for b in realm["biomes"]],
+            "values": ["yishu:" + b for b in realm["biomes"] if "ocean" not in b],
         })
 
 
@@ -759,6 +943,7 @@ if __name__ == "__main__":
     gen_temple_templates()
     gen_structure_json()
     gen_chests()
+    gen_taiyi_ore_loot()
     gen_biome_tags()
     gen_structure_tag()
     print("完成。")

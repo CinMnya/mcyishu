@@ -1,0 +1,8 @@
+{
+ "parent": "minecraft:block/stairs_inner",
+ "textures": {
+  "bottom": "yishu:block/ziwei_wood_planks",
+  "side": "yishu:block/ziwei_wood_planks",
+  "top": "yishu:block/ziwei_wood_planks"
+ }
+}

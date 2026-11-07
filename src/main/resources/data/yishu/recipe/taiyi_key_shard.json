@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "yishu:taiyi_shard",
+    "X": "yishu:yinyang_stone"
+  },
+  "pattern": [
+    " D ",
+    "DXD",
+    " D "
+  ],
+  "result": {
+    "id": "yishu:taiyi_key"
+  }
+}

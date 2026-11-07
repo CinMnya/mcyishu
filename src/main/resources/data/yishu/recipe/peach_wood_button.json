@@ -1,0 +1,12 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "building",
+ "group": "wooden_buttons",
+ "ingredients": [
+  "yishu:peach_wood_planks"
+ ],
+ "result": {
+  "count": 1,
+  "id": "yishu:peach_wood_button"
+ }
+}

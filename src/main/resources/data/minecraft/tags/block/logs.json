@@ -1,23 +1,26 @@
 {
-  "replace": false,
-  "values": [
-    "yishu:astral_wood_log",
-    "yishu:cloud_wood_log",
-    "yishu:dou_wood_log",
-    "yishu:dun_wood_log",
-    "yishu:gui_wood_log",
-    "yishu:hexa_wood_log",
-    "yishu:ink_wood_log",
-    "yishu:jade_wood_log",
-    "yishu:men_wood_log",
-    "yishu:meteor_wood_log",
-    "yishu:moon_wood_log",
-    "yishu:mystery_wood_log",
-    "yishu:peach_wood_log",
-    "yishu:ren_wood_log",
-    "yishu:she_wood_log",
-    "yishu:tianji_wood_log",
-    "yishu:xing_wood_log",
-    "yishu:ziwei_wood_log"
-  ]
+ "replace": false,
+ "values": [
+  "yishu:astral_wood_log",
+  "yishu:cloud_wood_log",
+  "yishu:dou_wood_log",
+  "yishu:dun_wood_log",
+  "yishu:gui_wood_log",
+  "yishu:hexa_wood_log",
+  "yishu:ink_wood_log",
+  "yishu:jade_wood_log",
+  "yishu:jishen_wood_log",
+  "yishu:men_wood_log",
+  "yishu:meteor_wood_log",
+  "yishu:moon_wood_log",
+  "yishu:mystery_wood_log",
+  "yishu:peach_wood_log",
+  "yishu:ren_wood_log",
+  "yishu:she_wood_log",
+  "yishu:taiyi_wood_log",
+  "yishu:tianji_wood_log",
+  "yishu:wenchang_wood_log",
+  "yishu:xing_wood_log",
+  "yishu:ziwei_wood_log"
+ ]
 }

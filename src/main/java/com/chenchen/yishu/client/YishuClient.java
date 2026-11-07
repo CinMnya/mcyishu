@@ -171,6 +171,17 @@ public class YishuClient implements ClientModInitializer {
         fluid(YsFluids.ZIWEI_AMBROSIA, YsFluids.FLOWING_ZIWEI_AMBROSIA, "ziwei_ambrosia");
         fluid(YsFluids.LIUREN_WATER, YsFluids.FLOWING_LIUREN_WATER, "liuren_water");
         fluid(YsFluids.QIMEN_MERCURY, YsFluids.FLOWING_QIMEN_MERCURY, "qimen_mercury");
+        // —— 第 19 轮：太乙玄泉 ——
+        fluid(YsFluids.TAIYI_SPRING, YsFluids.FLOWING_TAIYI_SPRING, "taiyi_spring");
+
+        // 第 21 轮：七界凶液
+        fluid(YsFluids.ASTRAL_SLAG, YsFluids.FLOWING_ASTRAL_SLAG, "astral_slag");
+        fluid(YsFluids.JADE_ACID, YsFluids.FLOWING_JADE_ACID, "jade_acid");
+        fluid(YsFluids.YAO_MIASMA, YsFluids.FLOWING_YAO_MIASMA, "yao_miasma");
+        fluid(YsFluids.ZIWEI_BANE, YsFluids.FLOWING_ZIWEI_BANE, "ziwei_bane");
+        fluid(YsFluids.LIUREN_ABYSS, YsFluids.FLOWING_LIUREN_ABYSS, "liuren_abyss");
+        fluid(YsFluids.QIMEN_HELLFIRE, YsFluids.FLOWING_QIMEN_HELLFIRE, "qimen_hellfire");
+        fluid(YsFluids.TAIYI_FROST, YsFluids.FLOWING_TAIYI_FROST, "taiyi_frost");
     }
 
     private static void fluid(Fluid still, Fluid flowing, String path) {

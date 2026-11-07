@@ -5,10 +5,10 @@
       "id": "yishu:astral_dew_bucket"
     },
     "title": {
-      "text": "六界灵泉"
+      "text": "七界灵泉"
     },
     "description": {
-      "text": "用桶舀起一份异界的液体——星辉露、玉髓浆、玄墨水，或紫微露、壬水、遁甲汞。"
+      "text": "用桶舀起一份异界的液体——星辉露、玉髓浆、玄墨水，或紫微露、壬水、遁甲汞、太乙玄泉。"
     },
     "frame": "task",
     "show_toast": true,
@@ -62,6 +62,14 @@
           "items": "yishu:qimen_mercury_bucket"
         }
       }
+    },
+    "spring": {
+      "trigger": "minecraft:filled_bucket",
+      "conditions": {
+        "item": {
+          "items": "yishu:taiyi_spring_bucket"
+        }
+      }
     }
   },
   "requirements": [
@@ -71,7 +79,8 @@
       "ink",
       "ambrosia",
       "water",
-      "mercury"
+      "mercury",
+      "spring"
     ]
   ]
 }

@@ -1,0 +1,12 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "building",
+ "group": "planks",
+ "ingredients": [
+  "yishu:jade_wood_log"
+ ],
+ "result": {
+  "count": 4,
+  "id": "yishu:jade_wood_planks"
+ }
+}

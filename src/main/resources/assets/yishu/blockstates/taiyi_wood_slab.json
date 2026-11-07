@@ -1,0 +1,13 @@
+{
+ "variants": {
+  "type=bottom": {
+   "model": "yishu:block/taiyi_wood_slab"
+  },
+  "type=double": {
+   "model": "yishu:block/taiyi_wood_planks"
+  },
+  "type=top": {
+   "model": "yishu:block/taiyi_wood_slab_top"
+  }
+ }
+}

@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:block/fence_post",
+ "textures": {
+  "texture": "yishu:block/moon_wood_planks"
+ }
+}

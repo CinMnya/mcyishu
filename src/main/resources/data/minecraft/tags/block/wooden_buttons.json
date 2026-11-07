@@ -1,0 +1,26 @@
+{
+ "replace": false,
+ "values": [
+  "yishu:astral_wood_button",
+  "yishu:meteor_wood_button",
+  "yishu:moon_wood_button",
+  "yishu:jade_wood_button",
+  "yishu:cloud_wood_button",
+  "yishu:peach_wood_button",
+  "yishu:hexa_wood_button",
+  "yishu:ink_wood_button",
+  "yishu:mystery_wood_button",
+  "yishu:ziwei_wood_button",
+  "yishu:dou_wood_button",
+  "yishu:tianji_wood_button",
+  "yishu:ren_wood_button",
+  "yishu:gui_wood_button",
+  "yishu:she_wood_button",
+  "yishu:men_wood_button",
+  "yishu:xing_wood_button",
+  "yishu:taiyi_wood_button",
+  "yishu:wenchang_wood_button",
+  "yishu:jishen_wood_button",
+  "yishu:dun_wood_button"
+ ]
+}

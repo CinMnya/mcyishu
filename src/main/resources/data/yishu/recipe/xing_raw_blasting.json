@@ -1,0 +1,11 @@
+{
+ "type": "minecraft:blasting",
+ "category": "misc",
+ "ingredient": "yishu:xing_raw",
+ "result": {
+  "id": "yishu:qimen_crystal",
+  "count": 1
+ },
+ "experience": 0.7,
+ "cookingtime": 100
+}

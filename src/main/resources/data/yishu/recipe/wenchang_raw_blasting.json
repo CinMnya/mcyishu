@@ -1,0 +1,11 @@
+{
+ "type": "minecraft:blasting",
+ "category": "misc",
+ "ingredient": "yishu:wenchang_raw",
+ "result": {
+  "id": "yishu:taiyi_essence",
+  "count": 1
+ },
+ "experience": 0.7,
+ "cookingtime": 100
+}

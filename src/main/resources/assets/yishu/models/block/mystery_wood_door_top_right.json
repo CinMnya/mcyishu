@@ -1,0 +1,7 @@
+{
+ "parent": "minecraft:block/door_top_right",
+ "textures": {
+  "bottom": "yishu:block/mystery_wood_door_bottom",
+  "top": "yishu:block/mystery_wood_door_top"
+ }
+}

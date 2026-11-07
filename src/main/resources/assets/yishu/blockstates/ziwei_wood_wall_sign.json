@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=east": {
+   "model": "yishu:block/ziwei_wood_wall_sign",
+   "y": 270
+  },
+  "facing=north": {
+   "model": "yishu:block/ziwei_wood_wall_sign",
+   "y": 180
+  },
+  "facing=south": {
+   "model": "yishu:block/ziwei_wood_wall_sign"
+  },
+  "facing=west": {
+   "model": "yishu:block/ziwei_wood_wall_sign",
+   "y": 90
+  }
+ }
+}

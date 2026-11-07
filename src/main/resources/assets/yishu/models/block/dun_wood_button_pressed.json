@@ -1,0 +1,6 @@
+{
+ "parent": "minecraft:block/button_pressed",
+ "textures": {
+  "texture": "yishu:block/dun_wood_planks"
+ }
+}

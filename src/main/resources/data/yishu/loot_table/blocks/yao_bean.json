@@ -1,0 +1,50 @@
+{
+ "type": "minecraft:block",
+ "pools": [
+  {
+   "rolls": 1.0,
+   "entries": [
+    {
+     "type": "minecraft:item",
+     "name": "yishu:yao_seeds"
+    }
+   ]
+  },
+  {
+   "rolls": 1.0,
+   "conditions": [
+    {
+     "condition": "minecraft:block_state_property",
+     "block": "yishu:yao_bean",
+     "properties": {
+      "age": "3"
+     }
+    }
+   ],
+   "entries": [
+    {
+     "type": "minecraft:item",
+     "name": "yishu:yao_pod",
+     "functions": [
+      {
+       "function": "minecraft:set_count",
+       "count": {
+        "min": 1,
+        "max": 2
+       }
+      },
+      {
+       "function": "minecraft:apply_bonus",
+       "enchantment": "minecraft:fortune",
+       "formula": "minecraft:binomial_with_bonus_count",
+       "parameters": {
+        "extra": 2,
+        "probability": 0.5714286
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

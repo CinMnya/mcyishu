@@ -1,0 +1,10 @@
+{
+ "variants": {
+  "powered=false": {
+   "model": "yishu:block/ziwei_wood_pressure_plate"
+  },
+  "powered=true": {
+   "model": "yishu:block/ziwei_wood_pressure_plate_down"
+  }
+ }
+}

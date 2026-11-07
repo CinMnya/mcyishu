@@ -1,0 +1,18 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "group": "wooden_signs",
+ "pattern": [
+  "PPP",
+  "PPP",
+  " S "
+ ],
+ "key": {
+  "P": "yishu:moon_wood_planks",
+  "S": "minecraft:stick"
+ },
+ "result": {
+  "count": 3,
+  "id": "yishu:moon_wood_sign"
+ }
+}

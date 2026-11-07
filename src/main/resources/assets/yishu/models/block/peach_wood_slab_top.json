@@ -1,0 +1,8 @@
+{
+ "parent": "minecraft:block/slab_top",
+ "textures": {
+  "bottom": "yishu:block/peach_wood_planks",
+  "side": "yishu:block/peach_wood_planks",
+  "top": "yishu:block/peach_wood_planks"
+ }
+}

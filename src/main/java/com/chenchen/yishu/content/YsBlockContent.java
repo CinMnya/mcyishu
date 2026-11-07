@@ -9,6 +9,7 @@ import com.chenchen.yishu.fate.GanZhi;
 import com.chenchen.yishu.fate.GanZhi.WuXing;
 import com.chenchen.yishu.fate.Yun;
 import com.chenchen.yishu.fengshui.FengShuiField;
+import com.chenchen.yishu.fengshui.TerrainQi;
 import com.chenchen.yishu.fengshui.FengShuiSystems;
 import com.chenchen.yishu.fengshui.HouseScanner;
 import com.chenchen.yishu.liuyao.Divination;
@@ -237,7 +238,7 @@ public final class YsBlockContent {
             long epochDay = server.getOverworldClockTime() / 24000L;
             long year = Yun.age(epochDay);
 
-            FengShuiField.Sample sample = FengShuiField.sample(seed, dimension, pos.getX(), pos.getZ());
+            FengShuiField.Sample sample = TerrainQi.sample(server, dimension, pos.getX(), pos.getZ());
             FengShuiField.Grade grade = sample.grade(dimension);
 
             List<String> lines = new ArrayList<>();
@@ -773,7 +774,7 @@ public final class YsBlockContent {
                 return InteractionResult.PASS;
             }
             DimensionProfile dimension = DimensionProfile.of(level.dimension().identifier().toString());
-            FengShuiField.Sample sample = FengShuiField.sample(server.getSeed(), dimension,
+            FengShuiField.Sample sample = TerrainQi.sample(server, dimension,
                     pos.getX(), pos.getZ());
             YsText.send(player, "太极图", List.of(
                     "阴阳鱼缓缓转动，与地气相应。",

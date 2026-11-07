@@ -1,0 +1,7 @@
+{
+ "parent": "minecraft:block/template_wall_sign",
+ "textures": {
+  "all": "yishu:block/astral_wood_sign",
+  "particle": "yishu:block/astral_wood_planks"
+ }
+}

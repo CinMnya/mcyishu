@@ -1,0 +1,8 @@
+{
+ "parent": "minecraft:block/stairs_outer",
+ "textures": {
+  "bottom": "yishu:block/taiyi_wood_planks",
+  "side": "yishu:block/taiyi_wood_planks",
+  "top": "yishu:block/taiyi_wood_planks"
+ }
+}

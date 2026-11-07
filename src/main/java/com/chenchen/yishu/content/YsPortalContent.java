@@ -349,6 +349,11 @@ public final class YsPortalContent {
         return ParticleTypes.FLAME;
     }
 
+    /** 第 19 轮：太乙门的星屑。 */
+    public static ParticleOptions taiyiParticle() {
+        return ParticleTypes.END_ROD;
+    }
+
     /** 灵引的公共属性样板。 */    /** 灵引的公共属性样板。 */
     public static Item.Properties keyProps(String name) {
         return new Item.Properties().stacksTo(1).rarity(Rarity.RARE)

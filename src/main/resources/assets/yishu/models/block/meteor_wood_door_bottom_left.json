@@ -1,0 +1,7 @@
+{
+ "parent": "minecraft:block/door_bottom_left",
+ "textures": {
+  "bottom": "yishu:block/meteor_wood_door_bottom",
+  "top": "yishu:block/meteor_wood_door_top"
+ }
+}

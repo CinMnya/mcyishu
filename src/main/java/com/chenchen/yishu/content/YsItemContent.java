@@ -14,6 +14,7 @@ import com.chenchen.yishu.fate.FateProfile;
 import com.chenchen.yishu.fate.GanZhi.WuXing;
 import com.chenchen.yishu.fate.Yun;
 import com.chenchen.yishu.fengshui.FengShuiField;
+import com.chenchen.yishu.fengshui.TerrainQi;
 import com.chenchen.yishu.fengshui.FengShuiSystems;
 import com.chenchen.yishu.fengshui.HouseScanner;
 import com.chenchen.yishu.liuyao.Divination;
@@ -267,7 +268,7 @@ public final class YsItemContent {
 
         private InteractionResult reportField(ServerLevel server, Player player, BlockPos pos,
                                               DimensionProfile dimension) {
-            FengShuiField.Sample sample = FengShuiField.sample(server.getSeed(), dimension, pos.getX(), pos.getZ());
+            FengShuiField.Sample sample = TerrainQi.sample(server, dimension, pos.getX(), pos.getZ());
             FengShuiField.Grade grade = sample.grade(dimension);
             boolean professional = player instanceof ServerPlayer sp && TutorialSystem.professional(sp);
 
@@ -498,6 +499,56 @@ public final class YsItemContent {
 
         public String purpose() {
             return this.purpose;
+        }
+    }
+
+    // ==================================================================== 家族四·五：阵盘
+
+    /**
+     * 阵盘（第 20 轮）。
+     *
+     * <p>八卦、北斗、招财三盘。右键地面布阵：阵眼记进存档，当日有效，
+     * 阵内之人得阵法之利、邪祟受阵法所制 —— 效果由
+     * {@link com.chenchen.yishu.system.FormationSystem} 的周期循环落地。
+     *
+     * <p>刻意不做方块：阵是「势」，不是「物」。一块摆在地上的盘子
+     * 很容易被当成装饰家具忘掉，而「今天入夜前阵就散了」才有仪式感。
+     */
+    public static class FormationDisc extends Item {
+
+        private final String kind;
+
+        public FormationDisc(Properties properties, String kind) {
+            super(properties);
+            this.kind = kind;
+        }
+
+        public String kind() {
+            return this.kind;
+        }
+
+        @Override
+        public InteractionResult useOn(UseOnContext context) {
+            Level level = context.getLevel();
+            Player player = context.getPlayer();
+            if (player == null || level.isClientSide()) {
+                return InteractionResult.SUCCESS;
+            }
+            if (!(level instanceof ServerLevel server) || !(player instanceof ServerPlayer serverPlayer)) {
+                return InteractionResult.SUCCESS_SERVER;
+            }
+            BlockPos pos = context.getClickedPos().relative(context.getClickedFace());
+            String message = com.chenchen.yishu.system.FormationSystem.place(
+                    server, serverPlayer, pos, this.kind);
+            if (message != null) {
+                if (!player.getAbilities().instabuild) {
+                    context.getItemInHand().shrink(1);
+                }
+                level.playSound(null, pos, SoundEvents.BELL_BLOCK,
+                        SoundSource.PLAYERS, 0.9F, 0.6F);
+                YsText.send(serverPlayer, "布阵", List.of(message));
+            }
+            return InteractionResult.SUCCESS_SERVER;
         }
     }
 

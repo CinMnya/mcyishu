@@ -1,0 +1,12 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "building",
+ "group": "planks",
+ "ingredients": [
+  "yishu:astral_wood_log"
+ ],
+ "result": {
+  "count": 4,
+  "id": "yishu:astral_wood_planks"
+ }
+}

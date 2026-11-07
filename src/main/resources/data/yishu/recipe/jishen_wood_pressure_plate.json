@@ -1,0 +1,15 @@
+{
+ "type": "minecraft:crafting_shaped",
+ "category": "building",
+ "group": "wooden_pressure_plates",
+ "pattern": [
+  "PP"
+ ],
+ "key": {
+  "P": "yishu:jishen_wood_planks"
+ },
+ "result": {
+  "count": 1,
+  "id": "yishu:jishen_wood_pressure_plate"
+ }
+}

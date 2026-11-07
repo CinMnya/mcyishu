@@ -1,6 +1,8 @@
 package com.chenchen.yishu.command;
 
 import com.chenchen.yishu.YishuConfig;
+import com.chenchen.yishu.calendar.YishuCalendar;
+import com.chenchen.yishu.divination.MinorSchools;
 import com.chenchen.yishu.content.YsItemContent;
 import com.chenchen.yishu.core.YsReg;
 import com.chenchen.yishu.dimension.DimensionProfile;
@@ -9,6 +11,7 @@ import com.chenchen.yishu.fate.FateProfile;
 import com.chenchen.yishu.fate.GanZhi;
 import com.chenchen.yishu.fate.Yun;
 import com.chenchen.yishu.fengshui.FengShuiField;
+import com.chenchen.yishu.fengshui.TerrainQi;
 import com.chenchen.yishu.fengshui.FengShuiSystems;
 import com.chenchen.yishu.liuyao.Divination;
 import com.chenchen.yishu.network.YsNetworking;
@@ -61,6 +64,7 @@ import java.util.Set;
  * /yishu professional         — toggle professional (term) mode
  * /yishu ruins [name]         — list / locate the mod's ruins
  * /yishu taisui               — this year's Tai Sui direction
+ * /yishu merit                — your karma / merit standing
  * /yishu vein                 — are you on a dragon vein?
  * /yishu mob                  — read the nearest mob's fate
  * /yishu travel &lt;realm&gt;       — travel to one of the six realms
@@ -98,8 +102,20 @@ public final class YishuCommand {
                         .suggests(RUINS_SUGGESTIONS)
                         .executes(YishuCommand::ruinsLocate)));
         root.then(Commands.literal("taisui").executes(YishuCommand::taisui));
+        root.then(Commands.literal("merit").executes(YishuCommand::merit));
         root.then(Commands.literal("vein").executes(YishuCommand::vein));
         root.then(Commands.literal("mob").executes(YishuCommand::mob));
+        root.then(Commands.literal("oracle")
+                .then(Commands.argument("school", StringArgumentType.word())
+                        .executes(YishuCommand::oracleSchool)));
+        root.then(Commands.literal("calendar").executes(YishuCommand::calendar)
+                .then(Commands.literal("setyear")
+                        .then(Commands.argument("year", IntegerArgumentType.integer(
+                                YishuCalendar.YEAR_MIN, YishuCalendar.YEAR_MAX))
+                                .executes(YishuCommand::calendarSetYear)))
+                .then(Commands.literal("setday")
+                        .then(Commands.argument("offset", IntegerArgumentType.integer())
+                                .executes(YishuCommand::calendarSetDay))));
         root.then(Commands.literal("travel")
                 .then(Commands.argument("realm", StringArgumentType.word())
                         .suggests(REALM_SUGGESTIONS)
@@ -131,10 +147,13 @@ public final class YishuCommand {
                 "§b/yishu divine <问题> §f—— 起一卦，例如 §e/yishu divine find_ore§f。",
                 "§b/yishu fengshui §f—— 测一测你脚下的这块地。",
                 "§b/yishu almanac §f—— 今日宜与忌。",
+                "§b/yishu calendar [setyear|setday] §f—— 黄历时刻 / 设定本界域纪元。",
+                "§b/yishu oracle <school> §f—— 起一门术数；不写名字则列出全部。",
                 "§b/yishu tutorial §f—— 教学走到哪一步了。",
                 "§b/yishu professional §f—— 切换专业模式（术语层）。",
                 "§b/yishu ruins <名称> §f—— 定位一处遗迹；§e/yishu ruins§f 列出全部。",
                 "§b/yishu taisui §f—— 今年太岁方位；那个方向不宜动土。",
+                "§b/yishu merit §f—— 你的因果功德；积善有福报，作恶有雷劫。",
                 "§b/yishu vein §f—— 你是否站在龙脉上，最近的气节点在哪。",
                 "§b/yishu mob §f—— 读最近一只生物的命。",
                 "§b/yishu travel <界域> §f—— 前往六大界域之一。",
@@ -163,13 +182,16 @@ public final class YishuCommand {
         ServerPlayer player = ctx.getSource().getPlayerOrException();
         ServerLevel server = player.level();
         DimensionProfile dimension = DimensionProfile.of(server.dimension().identifier().getPath());
-        FengShuiField.Sample sample = FengShuiField.sample(server.getSeed(), dimension,
+        FengShuiField.Sample sample = TerrainQi.sample(server, dimension,
                 player.getBlockX(), player.getBlockZ());
         FengShuiField.Grade grade = sample.grade(dimension);
 
         List<String> lines = new ArrayList<>();
         lines.add(PlainSpeak.gradePlain(grade) + "。" + PlainSpeak.gradeAdvice(grade) + "。");
         lines.add(PlainSpeak.qiPlain(sample) + "。");
+        lines.add("§7地形：" + TerrainQi.terrainNote(server,
+                player.getBlockX(), player.getBlockZ()));
+        lines.add("§7挖山、引水、种树都会改这里的气（约 3 秒后重算）。");
         String better = PlainSpeak.betterDirection(server.getSeed(), dimension,
                 player.getBlockX(), player.getBlockZ(), 48);
         if (better != null && grade != FengShuiField.Grade.GREAT_LUCK) {
@@ -379,6 +401,37 @@ public final class YishuCommand {
         return 1;
     }
 
+    /** /yishu merit —— 因果功德（第 20 轮）。 */
+    private static int merit(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        ServerPlayer player = ctx.getSource().getPlayerOrException();
+        ServerLevel server = player.level();
+        long value = com.chenchen.yishu.system.MeritSystem.meritOf(server, player);
+        int tier = value >= 500 ? 4 : value >= 200 ? 3 : value >= 50 ? 2
+                : value >= -49 ? 1 : value >= -99 ? 0 : -1;
+        String tierZh = switch (tier) {
+            case 4 -> "§e功德圆满";
+            case 3 -> "§6福报深厚";
+            case 2 -> "§a善缘渐结";
+            case 1 -> "§7因果寻常";
+            case 0 -> "§c恶名渐著";
+            default -> "§4业火缠身";
+        };
+
+        List<String> lines = new ArrayList<>();
+        lines.add("当前功德：§e" + value + "§f　§7（" + tierZh + "§7）");
+        lines.add("");
+        lines.add("§7积德之道：喂饱牲畜、点化僵尸村民、善待灵兽。");
+        lines.add("§7损德之行：滥杀村民、灵兽与牲畜。");
+        if (value >= 200) {
+            lines.add("§a福报深厚：常怀幸运。");
+        }
+        if (value <= -100) {
+            lines.add("§4业火缠身：雷雨天谨防天谴。");
+        }
+        YsText.panel(player, "因果", lines);
+        return 1;
+    }
+
     private static int vein(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
         ServerPlayer player = ctx.getSource().getPlayerOrException();
         ServerLevel server = player.level();
@@ -440,7 +493,11 @@ public final class YishuCommand {
             new String[]{"end", "End", "minecraft:the_end"},
             new String[]{"fate_realm", "Fate Realm", "yishu:fate_realm"},
             new String[]{"fengshui_realm", "Feng Shui Realm", "yishu:fengshui_realm"},
-            new String[]{"liuyao_realm", "Liu Yao Realm", "yishu:liuyao_realm"});
+            new String[]{"liuyao_realm", "Liu Yao Realm", "yishu:liuyao_realm"},
+            new String[]{"ziwei_realm", "Zi Wei Realm", "yishu:ziwei_realm"},
+            new String[]{"liuren_realm", "Liu Ren Realm", "yishu:liuren_realm"},
+            new String[]{"qimen_realm", "Qi Men Realm", "yishu:qimen_realm"},
+            new String[]{"taiyi_realm", "Tai Yi Realm", "yishu:taiyi_realm"});
 
     private static final SuggestionProvider<CommandSourceStack> REALM_SUGGESTIONS =
             (ctx, builder) -> {
@@ -464,7 +521,8 @@ public final class YishuCommand {
         }
         if (realm == null) {
             YsText.chat(player, "没有叫「" + arg
-                    + "」的界域。可选：overworld / nether / end / fate_realm / fengshui_realm / liuyao_realm。");
+                    + "」的界域。可选：overworld / nether / end / fate_realm / fengshui_realm / "
+                    + "liuyao_realm / ziwei_realm / liuren_realm / qimen_realm / taiyi_realm。");
             return 0;
         }
         Identifier id = Identifier.parse(realm[2]);
@@ -539,6 +597,60 @@ public final class YishuCommand {
             }
         }
         return null;
+    }
+
+    /** One of the minor divination schools; no argument prints the catalogue. */
+    private static int oracleSchool(CommandContext<CommandSourceStack> ctx)
+            throws CommandSyntaxException {
+        ServerPlayer player = ctx.getSource().getPlayerOrException();
+        ServerLevel level = player.level();
+        String key = StringArgumentType.getString(ctx, "school").trim().toLowerCase(Locale.ROOT);
+        MinorSchools.School school = MinorSchools.School.of(key);
+        if (school == null) {
+            YsText.panel(player, "术数目录", MinorSchools.catalogue());
+            return 0;
+        }
+        YishuCalendar.Moment moment = YishuCalendar.now(level);
+        MinorSchools.Verdict verdict = MinorSchools.read(school, level.getSeed(),
+                player.getGameProfile().name(), moment);
+        List<String> lines = new ArrayList<>(verdict.lines());
+        lines.add("");
+        lines.add("§7" + moment.dateText() + " " + moment.hourText()
+                + " · " + moment.solarTermText() + " · " + moment.mansionText());
+        YsText.panel(player, verdict.title(), lines);
+        return 1;
+    }
+
+    /** Almanac clock: show the full calendar + personal fortune. */
+    private static int calendar(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
+        ServerPlayer player = ctx.getSource().getPlayerOrException();
+        ServerLevel level = player.level();
+        YishuCalendar.Moment moment = YishuCalendar.now(level);
+        YsText.panel(player, "黄历 · " + moment.dateText(),
+                YishuCalendar.clockPanel(level, player));
+        return 1;
+    }
+
+    private static int calendarSetYear(CommandContext<CommandSourceStack> ctx)
+            throws CommandSyntaxException {
+        ServerPlayer player = ctx.getSource().getPlayerOrException();
+        ServerLevel level = player.level();
+        int year = IntegerArgumentType.getInteger(ctx, "year");
+        YishuCalendar.setEpochYear(level, year);
+        ctx.getSource().sendSuccess(() -> net.minecraft.network.chat.Component.literal(
+                "§b[易枢]§f 本界域起始年号已设为 §e" + year + "§f。"), true);
+        return 1;
+    }
+
+    private static int calendarSetDay(CommandContext<CommandSourceStack> ctx)
+            throws CommandSyntaxException {
+        ServerPlayer player = ctx.getSource().getPlayerOrException();
+        ServerLevel level = player.level();
+        long offset = IntegerArgumentType.getInteger(ctx, "offset");
+        YishuCalendar.setDayOffset(level, offset);
+        ctx.getSource().sendSuccess(() -> net.minecraft.network.chat.Component.literal(
+                "§b[易枢]§f 本界域历法偏移已设为 §e" + offset + "§f 日。"), true);
+        return 1;
     }
 
     private static String summaryOf(List<FengShuiSystems.Almanac.Item> items, boolean favorable) {

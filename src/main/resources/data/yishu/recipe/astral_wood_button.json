@@ -1,0 +1,12 @@
+{
+ "type": "minecraft:crafting_shapeless",
+ "category": "building",
+ "group": "wooden_buttons",
+ "ingredients": [
+  "yishu:astral_wood_planks"
+ ],
+ "result": {
+  "count": 1,
+  "id": "yishu:astral_wood_button"
+ }
+}
